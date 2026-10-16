@@ -1,0 +1,362 @@
+---
+// The hero's talk card. With PUBLIC_DEMO_AGENT_TOKEN set it loads the platform's widget in headless
+// mode and drives a real call; without it the button says the demo is not connected yet.
+import Icon from '../site/Icon.astro';
+import { APP } from '../../lib/site';
+
+const widgetSrc = APP.demoToken
+  ? `${APP.url}/embed/lightmove-widget.js?token=${encodeURIComponent(APP.demoToken)}&apiEndpoint=${encodeURIComponent(new URL(APP.url).host)}`
+  : '';
+const bars = [34, 62, 88, 56, 30];
+---
+
+<div
+  class="demo in d2 lift"
+  data-voice-demo
+  data-widget-src={widgetSrc}
+  data-state="idle"
+  id="demo"
+>
+  <div class="demo-head">
+    <div class="demo-agent">
+      <span class="demo-avatar" aria-hidden="true">
+        A
+      </span>
+      <span class="stack">
+        <span class="demo-name">Aoife · demo receptionist</span>
+        <span class="demo-sub">Live on the LightMove.ai platform</span>
+      </span>
+    </div>
+    <span class="demo-status" data-demo-status aria-live="polite">
+      Ready
+    </span>
+  </div>
+
+  <div class="demo-stage" aria-hidden="true">
+    <span class="demo-glow"></span>
+    <div class="orb">
+      <span class="ring"></span>
+      <span class="ring" style="animation-delay: 1.2s"></span>
+      <span class="ring" style="animation-delay: 2.4s"></span>
+      <div class="orb-core">
+        {bars.map((h, i) => (
+          <span class="wave-bar calm" style={`height:${h}px;animation-delay:${i * 0.2}s`} />
+        ))}
+      </div>
+    </div>
+    <div class="chip float chip-top">
+      <span class="chip-icon">
+        <Icon name="calendar" size={16} strokeWidth={2} />
+      </span>
+      <span class="stack">
+        <strong>Booking confirmed</strong>
+        <span class="muted">Tue · 10:30</span>
+      </span>
+    </div>
+    <div class="chip float chip-bottom" style="animation-delay: 2s">
+      <span class="chip-icon warn">
+        <Icon name="transfer" size={16} strokeWidth={2} />
+      </span>
+      <span class="stack">
+        <strong>Handed to reception</strong>
+        <span class="muted">with a summary</span>
+      </span>
+    </div>
+  </div>
+
+  <p class="demo-hint" data-demo-hint>
+    Press the button and speak normally. Try booking a visit, asking for prices or changing your
+    mind halfway.
+  </p>
+
+  <button type="button" class="btn btn-primary demo-call" data-demo-call>
+    <Icon name="mic" />
+    <span data-demo-label>Talk to Aoife</span>
+  </button>
+  <p class="demo-note">Uses your microphone. Demo calls may be recorded to improve the agent.</p>
+</div>
+
+<style>
+  .demo {
+    flex: 1 1 460px;
+    min-width: 0;
+    position: relative;
+    background: var(--lm-card-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--lm-border);
+    border-radius: 28px;
+    box-shadow: var(--lm-shadow);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .demo-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .demo-agent {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .demo-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--lm-wash);
+    color: var(--lm-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+  }
+  .demo-name {
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 22px;
+  }
+  .demo-sub {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--lm-muted);
+  }
+  .demo-status {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--lm-wash);
+    color: var(--lm-brand);
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  [data-state='connected'] .demo-status::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 999px;
+    background: var(--lm-spark);
+    animation: lm-pulse 1.6s ease-in-out infinite;
+  }
+  [data-state='failed'] .demo-status {
+    background: var(--lm-warn-bg);
+    color: var(--lm-warn);
+  }
+  .demo-stage {
+    position: relative;
+    height: 300px;
+    border-radius: 20px;
+    background: var(--lm-bg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .demo-glow {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 999px;
+    background: rgba(61, 220, 151, 0.3);
+    filter: blur(48px);
+    opacity: 0.25;
+    transition: opacity 0.6s;
+  }
+  [data-state='connected'] .demo-glow {
+    opacity: 1;
+    animation: lm-breath 1.4s ease-in-out infinite;
+  }
+  .orb {
+    position: relative;
+    width: 190px;
+    height: 190px;
+  }
+  .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    border: 1.5px solid var(--lm-green);
+    animation: lm-ring 3.6s ease-out infinite;
+  }
+  .orb-core {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  [data-state='connected'] .orb-core :global(.wave-bar) {
+    animation-duration: 1.4s;
+    opacity: 1;
+  }
+  .chip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    box-shadow: var(--lm-shadow);
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .chip-top {
+    top: 18px;
+    left: 18px;
+  }
+  .chip-bottom {
+    bottom: 18px;
+    right: 18px;
+  }
+  .chip-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--lm-wash);
+    color: var(--lm-green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chip-icon.warn {
+    background: var(--lm-warn-bg);
+    color: var(--lm-spark);
+  }
+  .demo-hint {
+    font-size: 15px;
+    line-height: 22px;
+    color: var(--lm-muted);
+  }
+  .demo-call {
+    min-height: 58px;
+    border-radius: 14px;
+    font-size: 16px;
+  }
+  [data-state='connected'] .demo-call,
+  [data-state='connecting'] .demo-call {
+    background: var(--lm-text);
+    color: var(--lm-bg);
+  }
+  .demo-note {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--lm-muted);
+    text-align: center;
+  }
+  @media (max-width: 480px) {
+    .chip {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  type WidgetStatus = 'idle' | 'connecting' | 'connected' | 'failed';
+  interface LightMoveWidget {
+    start: () => void;
+    stop: () => void;
+    onStatusChange: (cb: (status: WidgetStatus, text?: string) => void) => void;
+    onError: (cb: (error: unknown) => void) => void;
+  }
+  type DemoWindow = Window & { LightMoveWidget?: LightMoveWidget };
+
+  const COPY: Record<WidgetStatus, { status: string; label: string; hint?: string }> = {
+    idle: { status: 'Ready', label: 'Talk to Aoife' },
+    connecting: {
+      status: 'Connecting…',
+      label: 'Cancel',
+      hint: 'Allow microphone access when your browser asks.',
+    },
+    connected: {
+      status: 'Live call',
+      label: 'Hang up',
+      hint: 'You are live. Speak normally, Aoife is listening.',
+    },
+    failed: {
+      status: 'Could not connect',
+      label: 'Try again',
+      hint: 'Something went wrong starting the call. Please try again.',
+    },
+  };
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-voice-demo]')) {
+    const button = root.querySelector<HTMLButtonElement>('[data-demo-call]');
+    const label = root.querySelector<HTMLElement>('[data-demo-label]');
+    const status = root.querySelector<HTMLElement>('[data-demo-status]');
+    const hint = root.querySelector<HTMLElement>('[data-demo-hint]');
+    if (!button || !label || !status || !hint) continue;
+    const defaultHint = hint.textContent ?? '';
+    const src = root.dataset.widgetSrc ?? '';
+    let widget: Promise<LightMoveWidget> | null = null;
+
+    const render = (state: WidgetStatus) => {
+      root.dataset.state = state;
+      status.textContent = COPY[state].status;
+      label.textContent = COPY[state].label;
+      hint.textContent = COPY[state].hint ?? defaultHint;
+    };
+
+    const loadWidget = () =>
+      new Promise<LightMoveWidget>((resolve, reject) => {
+        const w = window as DemoWindow;
+        if (w.LightMoveWidget) return resolve(w.LightMoveWidget);
+        const script = document.createElement('script');
+        script.id = 'lightmove-widget';
+        script.src = src;
+        script.async = true;
+        script.onerror = () => reject(new Error('widget failed to load'));
+        script.onload = () => {
+          // The widget fetches its config after load; poll briefly until its API exists.
+          let tries = 0;
+          const wait = setInterval(() => {
+            if (w.LightMoveWidget) {
+              clearInterval(wait);
+              w.LightMoveWidget.onStatusChange((s) => render(s in COPY ? s : 'idle'));
+              w.LightMoveWidget.onError(() => render('failed'));
+              resolve(w.LightMoveWidget);
+            } else if (++tries > 50) {
+              clearInterval(wait);
+              reject(new Error('widget API missing'));
+            }
+          }, 100);
+        };
+        document.head.append(script);
+      });
+
+    button.addEventListener('click', async () => {
+      if (!src) {
+        hint.textContent =
+          'The live demo is being connected. Sign up free to talk to a template agent in the app.';
+        return;
+      }
+      const state = root.dataset.state as WidgetStatus;
+      try {
+        widget ??= loadWidget();
+        const api = await widget;
+        if (state === 'connected' || state === 'connecting') {
+          api.stop();
+          render('idle');
+        } else {
+          render('connecting');
+          api.start();
+        }
+      } catch {
+        widget = null;
+        render('failed');
+      }
+    });
+  }
+</script>

@@ -1,0 +1,106 @@
+/* Starlight mapped onto the LightMove tokens. Starlight's --sl-color-white is its text colour and
+   --sl-color-black its background, in both themes. */
+
+:root,
+::backdrop {
+  --sl-font: var(--lm-font-body);
+  --sl-font-mono: var(--lm-font-mono);
+  --sl-content-width: 46rem;
+  --sl-nav-height: 4.25rem;
+}
+
+:root[data-theme='light'],
+[data-theme='light'] ::backdrop {
+  --sl-color-white: #0b1f17;
+  --sl-color-gray-1: #1d2f27;
+  --sl-color-gray-2: #33453d;
+  --sl-color-gray-3: #4a5a52;
+  --sl-color-gray-4: #7d8c85;
+  --sl-color-gray-5: #c7d4cd;
+  --sl-color-gray-6: #eef2f0;
+  --sl-color-gray-7: #f7faf8;
+  --sl-color-black: #ffffff;
+  --sl-color-accent-low: #e8f5ee;
+  --sl-color-accent: #0e7a4b;
+  --sl-color-accent-high: #0b5e3a;
+  --sl-color-hairline: #dce7e1;
+  --sl-color-hairline-light: #eaf0ed;
+  --sl-color-hairline-shade: #dce7e1;
+  --sl-color-bg-nav: rgba(255, 255, 255, 0.86);
+  --sl-color-bg-sidebar: #ffffff;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-white: #f4f6f8;
+  --sl-color-gray-1: #e2e6eb;
+  --sl-color-gray-2: #c4cad3;
+  --sl-color-gray-3: #a3acb9;
+  --sl-color-gray-4: #6f7886;
+  --sl-color-gray-5: #3a414d;
+  --sl-color-gray-6: #1c212a;
+  --sl-color-gray-7: #14181f;
+  --sl-color-black: #0b0d11;
+  --sl-color-accent-low: rgba(61, 220, 151, 0.12);
+  --sl-color-accent: #3ddc97;
+  --sl-color-accent-high: #8cf0c4;
+  --sl-color-hairline: #262c37;
+  --sl-color-hairline-light: #262c37;
+  --sl-color-hairline-shade: #07080b;
+  --sl-color-bg-nav: rgba(11, 13, 17, 0.86);
+  --sl-color-bg-sidebar: #0b0d11;
+}
+
+.header {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+h1#_top {
+  font-family: var(--lm-font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h1#_top {
+  letter-spacing: -0.03em;
+}
+
+.sidebar-content a[aria-current='page'] {
+  border-radius: 10px;
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-accent-high);
+  font-weight: 600;
+}
+
+:root[data-theme='light'] .sidebar-content a[aria-current='page'] {
+  color: #0e7a4b;
+}
+
+.sl-markdown-content .expressive-code,
+.sl-markdown-content pre {
+  border-radius: 14px;
+}
+
+.starlight-aside {
+  border-radius: 14px;
+  border-inline-start-width: 0;
+}
+
+/* Starlight's tip and note asides default to purple and blue, which aren't brand colours. */
+:root .starlight-aside--tip,
+:root .starlight-aside--note {
+  --sl-color-asides-text-accent: var(--sl-color-accent-high);
+  border-color: var(--sl-color-accent);
+  background-color: var(--sl-color-accent-low);
+}
+
+.pagination-links a {
+  border-radius: 16px;
+}
+
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent);
+}

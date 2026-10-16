@@ -1,0 +1,13 @@
+---
+import { graph, serializeJsonLd, type JsonLdNode } from '../../lib/seo/jsonld';
+
+interface Props {
+  nodes: readonly JsonLdNode[];
+}
+
+const { nodes } = Astro.props;
+---
+
+{nodes.length > 0 && (
+  <script is:inline type="application/ld+json" set:html={serializeJsonLd(graph(nodes))} />
+)}

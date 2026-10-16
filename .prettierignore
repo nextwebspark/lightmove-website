@@ -1,0 +1,7 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+design/
+public/admin/index.html
+.lighthouseci/

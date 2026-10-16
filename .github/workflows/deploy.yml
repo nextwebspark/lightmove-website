@@ -1,0 +1,143 @@
+name: Deploy
+
+# Merging to main deploys nothing. Only a release does, and a release names the tag it is shipping.
+# `release.yml` cuts the tag and calls this workflow; the dispatch entry is the same door held open by
+# hand, to redeploy a tag or roll back to an older one without cutting a new version.
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: The release tag to deploy.
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Release tag to deploy, e.g. v1.4.0. Use this to redeploy or to roll back.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy a release to Firebase Hosting
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      REF: ${{ inputs.ref }}
+      WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+      FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+      PUBLIC_BASE_URL: ${{ vars.PUBLIC_BASE_URL }}
+      PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+      PUBLIC_DEMO_AGENT_TOKEN: ${{ vars.PUBLIC_DEMO_AGENT_TOKEN }}
+    steps:
+      # A dispatched ref is free text; only a release tag may reach production.
+      - name: Check the ref is a release tag
+        run: |
+          case "$REF" in
+            v[0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "::error::'${REF}' is not a release tag (vX.Y.Z)."; exit 1 ;;
+          esac
+
+      - name: Check deploy configuration
+        id: config
+        run: |
+          if [ -z "$WORKLOAD_IDENTITY_PROVIDER" ] || [ -z "$SERVICE_ACCOUNT" ] || [ -z "$FIREBASE_PROJECT_ID" ]; then
+            echo "::notice title=Deploy skipped::Set the GCP_WORKLOAD_IDENTITY_PROVIDER, GCP_SERVICE_ACCOUNT and FIREBASE_PROJECT_ID repository variables to enable deploys."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # The tag, never a branch: what ships is whatever the release named, however far main has moved.
+      - if: steps.config.outputs.enabled == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.ref }}
+          persist-credentials: false
+
+      - if: steps.config.outputs.enabled == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - if: steps.config.outputs.enabled == 'true'
+        run: npm ci
+
+      - name: Verify and build
+        if: steps.config.outputs.enabled == 'true'
+        run: npm run verify
+
+      - name: Stamp the version
+        if: steps.config.outputs.enabled == 'true'
+        run: |
+          node -e '
+            const { writeFileSync } = require("node:fs");
+            const [version, commit] = process.argv.slice(1);
+            writeFileSync("dist/version.json", JSON.stringify({ version, commit, deployedAt: new Date().toISOString() }) + "\n");
+          ' "$REF" "$(git rev-parse HEAD)"
+
+      - name: Authenticate to Google Cloud
+        if: steps.config.outputs.enabled == 'true'
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT }}
+          create_credentials_file: true
+
+      - name: Deploy
+        if: steps.config.outputs.enabled == 'true'
+        run: |
+          npx --yes firebase-tools@15.30.0 deploy --only hosting --project "$FIREBASE_PROJECT_ID" \
+            --message "${REF} ($(git rev-parse --short HEAD))" --non-interactive
+
+      # A successful deploy means Firebase accepted the files, not that the site serves them as intended.
+      - name: Smoke test
+        if: steps.config.outputs.enabled == 'true'
+        run: |
+          SITE="$(node -p 'require("./firebase.json").hosting.site')"
+          URL="${PUBLIC_BASE_URL:-https://${SITE}.web.app}"
+          URL="${URL%/}"
+
+          echo "the release is what is live"
+          for ATTEMPT in 1 2 3 4 5 6; do
+            LIVE="$(curl -fsS "$URL/version.json" || true)"
+            grep -q "\"version\":\"${REF}\"" <<<"$LIVE" && break
+            [ "$ATTEMPT" = 6 ] && { echo "::error::${URL}/version.json serves '${LIVE}', not ${REF}."; exit 1; }
+            sleep 5
+          done
+
+          echo "the home page renders"
+          HOME_PAGE="$(curl -fsS "$URL/")"
+          grep -q '<h1' <<<"$HOME_PAGE"
+
+          echo "the security headers are served"
+          HEADERS="$(curl -fsSI "$URL/")"
+          grep -qi '^content-security-policy:' <<<"$HEADERS"
+          grep -qi '^strict-transport-security:' <<<"$HEADERS"
+
+          echo "search engines can find the site"
+          curl -fsS "$URL/robots.txt" | grep -q 'Sitemap:'
+          curl -fsS "$URL/sitemap-index.xml" | grep -q '<sitemapindex'
+          curl -fsS "$URL/llms.txt" | grep -q '^# LightMove.ai'
+
+          echo "the docs redirect works"
+          curl -fsSI "$URL/docs" | grep -qi '^location: .*/docs/getting-started/introduction'
+
+          echo "the CMS stays out of search"
+          ADMIN_HEADERS="$(curl -fsSIL "$URL/admin")"
+          grep -qi '^x-robots-tag:' <<<"$ADMIN_HEADERS"
+
+          echo "::notice::Deployed ${REF} ($(git rev-parse --short HEAD)) to ${URL}"

@@ -1,0 +1,34 @@
+---
+import PostCard from '../blog/PostCard.astro';
+import { getPublishedPosts } from '../../lib/blog';
+
+const posts = (await getPublishedPosts()).slice(0, 3);
+---
+
+{posts.length > 0 && (
+  <section class="container teaser">
+    <div class="section-head split reveal">
+      <h2 class="h-section">From the blog</h2>
+      <a href="/blog" class="link-arrow">
+        All posts →
+      </a>
+    </div>
+    <div class="row-wrap" style="gap:24px">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .teaser {
+    padding-bottom: 112px;
+  }
+  .teaser .section-head {
+    margin-bottom: 32px;
+  }
+  .teaser h2 {
+    font-size: clamp(28px, 3.4vw, 40px);
+  }
+</style>

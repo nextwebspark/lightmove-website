@@ -1,0 +1,102 @@
+---
+import Icon from '../site/Icon.astro';
+import { APP } from '../../lib/site';
+const bars = [60, 110, 150, 90];
+---
+
+<section class="section container" id="ways">
+  <div class="section-head center reveal">
+    <span class="eyebrow">Three ways to start</span>
+    <h2 class="h-section">Try it, build it yourself, or let us do it</h2>
+    <p class="lead">
+      Start with a ready-made agent today. Grow into your own workflows when you're ready.
+    </p>
+  </div>
+  <div class="ways">
+    <article class="card card-hover reveal">
+      <span class="icon-tile">
+        <Icon name="play" size={24} />
+      </span>
+      <span class="eyebrow muted">Free</span>
+      <h3 class="h-card">Try a template</h3>
+      <p class="muted grow">
+        Receptionist, booking line, lead qualifier, after-hours cover. Pick one, give it your
+        details, and talk to it in the browser.
+      </p>
+      <a href={APP.signUpUrl} class="link-arrow">
+        Browse templates →
+      </a>
+    </article>
+    <article class="card card-hover card-panel reveal">
+      <div class="panel-bars" aria-hidden="true">
+        {bars.map((h, i) => (
+          <span class="wave-bar" style={`height:${h}px;animation-delay:${i * 0.3}s`} />
+        ))}
+      </div>
+      <span class="icon-tile solid">
+        <Icon name="users" size={24} />
+      </span>
+      <span class="eyebrow">Done for you</span>
+      <h3 class="h-card">We build it for you</h3>
+      <p class="grow">
+        Tell us how your calls should go. We design the workflow, connect your calendar, CRM and
+        phone line, test it with you and hand it over live. Fixed quote up front.
+      </p>
+      <a href="/#contact" class="link-arrow">
+        Request a build →
+      </a>
+    </article>
+    <article class="card card-hover reveal">
+      <span class="icon-tile">
+        <Icon name="sliders" size={24} />
+      </span>
+      <span class="eyebrow muted">Pay as you go</span>
+      <h3 class="h-card">Build your own</h3>
+      <p class="muted grow">
+        Describe the agent in plain words and the builder drafts the workflow. Tweak each step, test
+        it out loud, go live. Billed per minute.
+      </p>
+      <a href="/docs/getting-started/quick-start" class="link-arrow">
+        Read the quick start →
+      </a>
+    </article>
+  </div>
+</section>
+
+<style>
+  .ways {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .ways .card {
+    flex: 1 1 320px;
+    padding: 36px;
+    gap: 18px;
+  }
+  .ways .h-card {
+    font-size: 26px;
+    line-height: 32px;
+  }
+  .grow {
+    flex-grow: 1;
+  }
+  .eyebrow.muted {
+    color: var(--lm-muted);
+  }
+  .panel-bars {
+    position: absolute;
+    right: -10px;
+    top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.22;
+  }
+  .panel-bars :global(.wave-bar) {
+    background: var(--lm-panel-accent);
+  }
+  .card-panel > :not(.panel-bars) {
+    position: relative;
+  }
+</style>

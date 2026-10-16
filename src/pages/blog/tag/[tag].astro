@@ -1,0 +1,57 @@
+---
+import PostCard from '../../../components/blog/PostCard.astro';
+import TagNav from '../../../components/blog/TagNav.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPublishedPosts, tagSlug } from '../../../lib/blog';
+import { tagDescription } from '../../../lib/blog-select';
+import { BLOG_TAGS } from '../../../lib/content-schemas';
+import { breadcrumbList } from '../../../lib/seo/jsonld';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return BLOG_TAGS.map((tag) => ({ tag, posts: posts.filter((p) => p.data.tag === tag) }))
+    .filter(({ posts: tagged }) => tagged.length > 0)
+    .map(({ tag, posts: tagged }) => ({
+      params: { tag: tagSlug(tag) },
+      props: { tag, posts: tagged },
+    }));
+}
+
+const { tag, posts } = Astro.props;
+const path = `/blog/tag/${tagSlug(tag)}`;
+const jsonLd = [
+  breadcrumbList([
+    { name: 'Blog', path: '/blog' },
+    { name: tag, path },
+  ]),
+];
+---
+
+<BaseLayout title={`${tag} posts`} description={tagDescription(tag)} ogTitle={tag} jsonLd={jsonLd}>
+  <section class="container head">
+    <span class="eyebrow">The LightMove blog</span>
+    <h1 class="h-section">{tag}</h1>
+  </section>
+  <div class="container">
+    <TagNav current={tag} />
+  </div>
+  <section class="container list">
+    <div class="row-wrap" style="gap:24px">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    padding-block: 72px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .list {
+    padding-bottom: 112px;
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+// Starlight's head plus what the rest of the site emits: a per-page share card, icons, the manifest
+// and a breadcrumb trail for search results.
+import Default from '@astrojs/starlight/components/Head.astro';
+import JsonLd from '../seo/JsonLd.astro';
+import { breadcrumbList } from '../../lib/seo/jsonld';
+import { absoluteUrl, ogImagePathFor } from '../../lib/seo/url';
+
+const { entry } = Astro.locals.starlightRoute;
+const imageUrl = absoluteUrl(ogImagePathFor(Astro.url.pathname));
+const trail = [
+  { name: 'Docs', path: '/docs' },
+  { name: entry.data.title, path: Astro.url.pathname },
+];
+---
+
+<Default />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={entry.data.title} />
+<meta name="twitter:image" content={imageUrl} />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<JsonLd nodes={[breadcrumbList(trail)]} />

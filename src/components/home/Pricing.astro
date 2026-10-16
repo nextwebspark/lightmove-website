@@ -1,0 +1,130 @@
+---
+import { APP } from '../../lib/site';
+
+// Prices are placeholders until billing is set up; never publish a number that isn't decided.
+const plans = [
+  {
+    name: 'Try',
+    price: 'Free',
+    unit: '',
+    blurb: 'Test templates in your browser.',
+    features: ['All templates', 'Browser test calls', 'Transcripts'],
+    cta: { label: 'Start free', href: APP.signUpUrl },
+    featured: false,
+  },
+  {
+    name: 'Pay as you go',
+    price: '[€X]',
+    unit: ' / minute',
+    blurb: 'Self-serve. Billed monthly by usage.',
+    features: ['Agent Builder', 'Phone numbers and SIP', 'Web widget', 'Recordings and summaries'],
+    cta: { label: 'Get started', href: APP.signUpUrl },
+    featured: true,
+  },
+  {
+    name: 'Done for you',
+    price: 'From [€X]',
+    unit: '',
+    blurb: 'One-off build, then pay as you go.',
+    features: ['Workflow designed for you', 'Integrations set up', 'Tested with your team'],
+    cta: { label: 'Request a quote', href: '/#contact' },
+    featured: false,
+  },
+];
+---
+
+<section class="section container" id="pricing">
+  <div class="section-head center reveal">
+    <span class="eyebrow">Pricing</span>
+    <h2 class="h-section">Simple and pay as you go</h2>
+    <p class="lead">No monthly commitment. Pay for the minutes your agents spend on calls.</p>
+  </div>
+  <div class="plans">
+    {plans.map((p) => (
+      <article class:list={['card card-hover plan reveal', { featured: p.featured }]}>
+        {p.featured && <span class="flag">Most popular</span>}
+        <h3 class="plan-name">{p.name}</h3>
+        <p class="price">
+          {p.price}
+          {p.unit && <span class="unit">{p.unit}</span>}
+        </p>
+        <p class="muted small">{p.blurb}</p>
+        <ul>
+          {p.features.map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+        <a href={p.cta.href} class:list={['btn', p.featured ? 'btn-primary' : 'btn-secondary']}>
+          {p.cta.label}
+        </a>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .plans {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .plan {
+    flex: 1 1 300px;
+    position: relative;
+    padding: 36px;
+    gap: 20px;
+  }
+  .plan.featured {
+    border: 2px solid var(--lm-brand);
+    box-shadow: var(--lm-shadow);
+  }
+  .flag {
+    position: absolute;
+    top: -14px;
+    left: 32px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--lm-brand);
+    color: var(--lm-on-brand);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .plan-name {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .price {
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 48px;
+    letter-spacing: -0.03em;
+    color: var(--lm-heading);
+  }
+  .unit {
+    font-family: var(--lm-font-body);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--lm-muted);
+    letter-spacing: 0;
+  }
+  .small {
+    font-size: 15px;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+    flex-grow: 1;
+  }
+  .btn {
+    min-height: 48px;
+  }
+</style>

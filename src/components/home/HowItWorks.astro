@@ -1,0 +1,66 @@
+---
+const steps = [
+  {
+    title: 'Describe the job',
+    body: 'What should it handle? What must it never promise? When should it pass the call to a person?',
+  },
+  {
+    title: 'Test it out loud',
+    body: 'Call it from the builder, try to trip it up, read the transcript and tighten the steps.',
+  },
+  {
+    title: 'Go live',
+    body: 'Point your number at it or add the web widget. Watch the call log for the first week.',
+  },
+];
+---
+
+<section class="section-band">
+  <div class="container section">
+    <div class="section-head center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 class="h-section">Live in an afternoon</h2>
+    </div>
+    <ol class="steps">
+      {steps.map((s, i) => (
+        <li class="card reveal">
+          <span class="num mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{s.title}</h3>
+          <p class="muted">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .steps li {
+    flex: 1 1 280px;
+    background: var(--lm-bg);
+    gap: 14px;
+  }
+  .num {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--lm-brand);
+    color: var(--lm-on-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+  h3 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+  }
+</style>

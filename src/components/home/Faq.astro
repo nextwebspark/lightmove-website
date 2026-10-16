@@ -1,0 +1,67 @@
+---
+import Icon from '../site/Icon.astro';
+import { FAQS } from '../../lib/faqs';
+---
+
+<section class="container faq" aria-labelledby="faq-title">
+  <h2 class="h-section reveal" id="faq-title">
+    Questions, answered
+  </h2>
+  <div class="stack" style="gap:12px">
+    {FAQS.map((f) => (
+      <details class="reveal">
+        <summary>
+          {f.question}
+          <span class="plus">
+            <Icon name="plus" size={22} />
+          </span>
+        </summary>
+        <p class="muted">{f.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .faq {
+    max-width: 860px;
+    padding-bottom: 112px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  h2 {
+    text-align: center;
+    font-size: clamp(28px, 3.4vw, 40px);
+  }
+  details {
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: 16px;
+    padding: 0 24px;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    font-weight: 600;
+    font-size: 17px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .plus {
+    color: var(--lm-brand);
+    transition: transform 0.25s;
+  }
+  details[open] .plus {
+    transform: rotate(45deg);
+  }
+  details p {
+    padding-bottom: 20px;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+const sectors = [
+  'Clinics',
+  'Dentists',
+  'Salons',
+  'Trades',
+  'Garages',
+  'Restaurants',
+  'Estate agents',
+  'Solicitors',
+  'VoIP operators',
+];
+// Rendered twice so the track can loop seamlessly; the copy is hidden from assistive tech.
+---
+
+<section class="marquee" aria-label="Who it's for">
+  <div class="marquee-track">
+    <ul>
+      {sectors.map((s) => (
+        <li>{s}</li>
+      ))}
+    </ul>
+    <ul aria-hidden="true">
+      {sectors.map((s) => (
+        <li>{s}</li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .marquee {
+    border-block: 1px solid var(--lm-border);
+    background: var(--lm-surface);
+    overflow: hidden;
+    padding-block: 22px;
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: lm-scroll 40s linear infinite;
+  }
+  ul {
+    display: flex;
+    gap: 48px;
+    margin: 0;
+    padding: 0 24px;
+    list-style: none;
+  }
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 48px;
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    color: var(--lm-muted);
+    white-space: nowrap;
+  }
+  li::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--lm-green);
+  }
+</style>

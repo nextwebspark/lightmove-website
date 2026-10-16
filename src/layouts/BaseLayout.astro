@@ -1,0 +1,48 @@
+---
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/500.css';
+import '@fontsource/dm-sans/600.css';
+import '@fontsource/sora/600.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import Seo, { type SeoProps } from '../components/seo/Seo.astro';
+import SiteFooter from '../components/site/SiteFooter.astro';
+import SiteHeader from '../components/site/SiteHeader.astro';
+import { SITE } from '../lib/site';
+
+type Props = SeoProps;
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline src="/theme-init.js"></script>
+    <Seo {...Astro.props} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="LightMove.ai blog"
+      href="/blog/rss.xml"
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

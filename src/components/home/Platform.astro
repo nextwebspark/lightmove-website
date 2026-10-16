@@ -1,0 +1,209 @@
+---
+import Icon from '../site/Icon.astro';
+import type { IconName } from '../site/Icon.astro';
+
+const calls = [
+  { title: 'New booking · Tue 10:30', meta: '09:14 · 1m 52s', status: 'Answered', warn: false },
+  {
+    title: 'Wants a quote for a boiler service',
+    meta: '12:47 · 2m 30s',
+    status: 'Needs follow-up',
+    warn: true,
+  },
+  {
+    title: 'Asked about Saturday opening',
+    meta: '21:05 · 0m 48s',
+    status: 'Answered',
+    warn: false,
+  },
+];
+
+const features: { icon: IconName; title: string; body: string }[] = [
+  {
+    icon: 'phone',
+    title: 'Phone and SIP',
+    body: 'Forward your existing number or connect a SIP trunk. Callers keep dialling the number they already know.',
+  },
+  {
+    icon: 'monitor',
+    title: 'Talk on your website',
+    body: 'One script tag adds a talk button to any site. Web calls land in the same log as phone calls.',
+  },
+  {
+    icon: 'wrench',
+    title: 'Connects to your tools',
+    body: 'Calendars, spreadsheets, CRMs and webhooks, so the agent can book, look things up and log what happened.',
+  },
+];
+---
+
+<section class="section-band" id="platform">
+  <div
+    class="glow"
+    style="width:480px;height:480px;left:-160px;top:120px;background:rgba(61,220,151,.12);animation-delay:-4s"
+    aria-hidden="true"
+  ></div>
+  <div class="container section platform">
+    <div class="section-head split reveal">
+      <div class="stack" style="gap:14px;max-width:640px">
+        <span class="eyebrow">The platform</span>
+        <h2 class="h-section">Everything a phone line needs, in one place</h2>
+      </div>
+      <p class="muted intro">
+        Build, test and run your agents from one dashboard. Every call is logged, recorded and
+        summarised for your team.
+      </p>
+    </div>
+
+    <div class="bento">
+      <article class="card card-hover tile wide reveal">
+        <div class="stack" style="gap:6px">
+          <h3 class="h-card">See every call at a glance</h3>
+          <p class="muted small">
+            Transcripts, recordings and a short summary for each call, with the ones that need you
+            flagged.
+          </p>
+        </div>
+        <div class="call-log" role="table" aria-label="Sample call log">
+          <div class="call-log-head" role="row">
+            <span role="columnheader">Today · sample</span>
+            <span role="columnheader">Status</span>
+          </div>
+          {calls.map((c) => (
+            <div class="call-row" role="row">
+              <span class="stack" role="cell">
+                <strong>{c.title}</strong>
+                <span class="mono muted">{c.meta}</span>
+              </span>
+              <span role="cell" class:list={['pill', { 'badge-warn': c.warn }]}>
+                {c.status}
+              </span>
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article class="card card-hover tile reveal">
+        <span class="icon-tile">
+          <Icon name="pen" size={24} />
+        </span>
+        <h3 class="h-card">Describe it, don't code it</h3>
+        <p class="muted small">
+          Write what the agent should do in plain English. The Agent Builder turns it into a
+          step-by-step workflow you can edit.
+        </p>
+        <p class="prompt mono">
+          "Answer for a physio clinic. Book, move or cancel visits. Pass anyone in pain to
+          reception."
+        </p>
+      </article>
+
+      {features.map((f) => (
+        <article class="card card-hover tile reveal">
+          <span class="icon-tile">
+            <Icon name={f.icon} size={24} />
+          </span>
+          <h3 class="h-card">{f.title}</h3>
+          <p class="muted small">{f.body}</p>
+        </article>
+      ))}
+
+      <article class="card card-panel tile wide voip reveal">
+        <div class="stack" style="gap:10px;flex:1 1 300px">
+          <span class="eyebrow">For VoIP operators</span>
+          <h3 class="h-card">Offer voice agents to your customers</h3>
+          <p class="small">
+            Plug LightMove into your SIP network and give every business on your books an AI
+            receptionist.
+          </p>
+        </div>
+        <a href="/#contact" class="btn btn-panel">
+          Talk to us
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .platform {
+    position: relative;
+  }
+  .intro {
+    max-width: 420px;
+    font-size: 17px;
+    line-height: 27px;
+  }
+  .bento {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .tile {
+    flex: 1 1 300px;
+    background: var(--lm-bg);
+  }
+  .tile.wide {
+    flex: 2 1 560px;
+  }
+  .tile.card-panel {
+    background: var(--lm-panel);
+  }
+  .small {
+    font-size: 15px;
+    line-height: 24px;
+  }
+  .call-log {
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: 16px;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .call-log-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--lm-border);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lm-muted);
+  }
+  .call-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+  }
+  .call-row + .call-row {
+    border-top: 1px solid var(--lm-border);
+  }
+  .call-row .mono {
+    font-size: 13px;
+  }
+  .call-row .pill {
+    align-self: center;
+  }
+  .prompt {
+    margin-top: auto;
+    padding: 14px;
+    border-radius: 12px;
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--lm-muted);
+  }
+  .voip {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+</style>

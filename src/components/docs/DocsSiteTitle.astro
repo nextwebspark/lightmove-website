@@ -1,0 +1,50 @@
+---
+// Replaces Starlight's site title with the LightMove lockup plus a "Docs" badge, linking home.
+import BrandMark from '../site/BrandMark.astro';
+---
+
+<span class="docs-title">
+  <a href="/" class="docs-brand" aria-label="LightMove.ai home">
+    <BrandMark size={28} />
+    <span class="docs-word" translate="no">
+      LightMove<span>.ai</span>
+    </span>
+  </a>
+  <a href="/docs" class="docs-badge">
+    Docs
+  </a>
+</span>
+
+<style>
+  .docs-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .docs-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .docs-word {
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    color: var(--sl-color-white);
+    white-space: nowrap;
+  }
+  .docs-word span {
+    color: var(--lm-brand);
+  }
+  .docs-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--lm-wash);
+    color: var(--lm-brand);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+</style>

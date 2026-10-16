@@ -1,0 +1,121 @@
+---
+import { formatDate, readingMinutes, type Post } from '../../lib/blog';
+import { getEntry } from 'astro:content';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const author = await getEntry(post.data.author);
+const bars = [80, 150, 220, 120, 64];
+---
+
+<a href={`/blog/${post.id}`} class="card card-hover featured in d2">
+  <div class="art" aria-hidden="true">
+    {bars.map((h, i) => (
+      <span
+        class="wave-bar"
+        style={`width:18px;height:${h}px;animation-delay:${i * 0.3}s;animation-duration:2.4s`}
+      />
+    ))}
+    <span class="flag">Featured</span>
+  </div>
+  <div class="copy">
+    <span class="pill">{post.data.tag}</span>
+    <span class="title">{post.data.title}</span>
+    <span class="muted desc">{post.data.description}</span>
+    <span class="byline">
+      <span class="avatar">{author?.data.initials}</span>
+      <span>
+        {author?.data.name} · {formatDate(post.data.pubDate)} · {readingMinutes(post.body)} min read
+      </span>
+    </span>
+    <span class="link-arrow">Read the post →</span>
+  </div>
+</a>
+
+<style>
+  .featured {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    gap: 0;
+    overflow: hidden;
+    border-radius: 28px;
+    text-decoration: none;
+    color: var(--lm-text);
+    margin-bottom: 40px;
+  }
+  .featured:hover {
+    color: var(--lm-text);
+  }
+  .art {
+    position: relative;
+    flex: 1 1 440px;
+    min-height: 320px;
+    background: var(--lm-wash);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .art :global(.wave-bar:last-of-type) {
+    opacity: 0.35;
+  }
+  .flag {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--lm-surface);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .copy {
+    flex: 1 1 440px;
+    min-width: 0;
+    padding: clamp(28px, 4vw, 56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+  }
+  .title {
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--lm-heading);
+  }
+  .desc {
+    font-size: 17px;
+    line-height: 27px;
+  }
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--lm-muted);
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--lm-panel);
+    color: var(--lm-panel-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .link-arrow {
+    color: var(--lm-brand);
+  }
+</style>
