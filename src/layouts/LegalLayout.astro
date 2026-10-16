@@ -1,0 +1,131 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { formatDate } from '../lib/blog';
+
+interface Props {
+  entry: CollectionEntry<'legal'>;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const toc = headings.filter((h) => h.depth === 2);
+const others = [
+  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms of Service' },
+];
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <section class="container legal-head">
+    <nav class="legal-tabs in" aria-label="Legal">
+      {
+        others.map((o) => (
+          <a href={o.href} aria-current={Astro.url.pathname === o.href ? 'page' : undefined}>
+            {o.label}
+          </a>
+        ))
+      }
+    </nav>
+    <h1 class="display in d1">{entry.data.title}</h1>
+    <p class="muted in d2">Last updated {formatDate(entry.data.updated)}</p>
+  </section>
+  <div class="container legal-body">
+    <nav class="toc" aria-label="Contents">
+      <span class="eyebrow">Contents</span>
+      {toc.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+    </nav>
+    <article class="legal-article">
+      {
+        !entry.data.reviewedByCounsel && (
+          <p class="notice">
+            <strong>Draft, pending legal review.</strong> This page describes how LightMove.ai works today and will be
+            finalised before launch.
+          </p>
+        )
+      }
+      <div class="prose legal-prose"><Content /></div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-head {
+    padding-block: 64px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .legal-head .display {
+    font-size: clamp(40px, 5vw, 60px);
+    margin-top: 8px;
+  }
+  .legal-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .legal-tabs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--lm-border);
+    background: var(--lm-surface);
+    color: var(--lm-text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .legal-tabs a[aria-current='page'] {
+    background: var(--lm-text);
+    border-color: var(--lm-text);
+    color: var(--lm-bg);
+  }
+  .legal-body {
+    padding-bottom: 96px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+  }
+  .toc {
+    flex: 1 1 220px;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .toc .eyebrow {
+    color: var(--lm-muted);
+    padding-bottom: 8px;
+  }
+  .toc a {
+    padding: 6px 0;
+    color: var(--lm-muted);
+    text-decoration: none;
+  }
+  .toc a:hover {
+    color: var(--lm-brand);
+  }
+  .legal-article {
+    flex: 999 1 560px;
+    min-width: 0;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .legal-prose {
+    font-size: 16px;
+    line-height: 27px;
+    gap: 16px;
+  }
+  .legal-prose :global(h2) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+</style>

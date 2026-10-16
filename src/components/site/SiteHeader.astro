@@ -1,0 +1,49 @@
+---
+import { APP } from '../../lib/site';
+import BrandLockup from './BrandLockup.astro';
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const links = [
+  { href: '/#platform', label: 'Product' },
+  { href: '/#use-cases', label: 'Use cases' },
+  { href: '/#pricing', label: 'Pricing' },
+  { href: '/docs', label: 'Docs' },
+  { href: '/blog', label: 'Blog' },
+];
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => !href.includes('#') && path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container">
+    <BrandLockup />
+    <nav class="nav" aria-label="Main">
+      <div class="nav-links">
+        {
+          links.map((link) => (
+            <a href={link.href} class="nav-link" aria-current={isCurrent(link.href) ? 'page' : undefined}>
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+      <ThemeToggle />
+      <details class="nav-menu">
+        <summary class="btn icon-btn" aria-label="Menu"><Icon name="menu" /></summary>
+        <div class="nav-menu-panel">
+          {
+            links.map((link) => (
+              <a href={link.href} class="nav-link">
+                {link.label}
+              </a>
+            ))
+          }
+          <a href={APP.url} class="nav-link">Sign in</a>
+        </div>
+      </details>
+      <a href={APP.signUpUrl} class="btn btn-primary nav-cta">Start free</a>
+    </nav>
+  </div>
+</header>

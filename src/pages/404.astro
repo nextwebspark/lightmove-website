@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist on lightmove.ai. Head back to the home page, the docs or the blog." noindex>
+  <section class="container nf">
+    <span class="eyebrow">404</span>
+    <h1 class="h-section">This line's gone quiet</h1>
+    <p class="lead">We couldn't find that page. It may have moved, or the link may be wrong.</p>
+    <div class="row-wrap" style="gap:12px;justify-content:center">
+      <a href="/" class="btn btn-primary btn-lg">Go home</a>
+      <a href="/docs" class="btn btn-secondary btn-lg">Read the docs</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    padding-block: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+</style>

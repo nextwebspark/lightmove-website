@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Terms of Service — LightMove.ai</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Sora:wght@600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.lm{--bg:#F7FAF8;--surface:#FFFFFF;--surface-2:#EEF2F0;--border:#DCE7E1;--text:#0B1F17;--muted:#4A5A52;--brand:#0E7A4B;--on-brand:#FFFFFF;--wash:#E8F5EE;--glass:rgba(247,250,248,.82);color-scheme:light;transition:background-color .35s,color .35s}
+.lm[data-theme="dark"]{--bg:#0A1F17;--surface:#133227;--surface-2:#1B3A2F;--border:#24493B;--text:#F2F7F4;--muted:#9DB5A9;--brand:#3DDC97;--on-brand:#0A1F17;--wash:rgba(61,220,151,.12);--glass:rgba(10,31,23,.82);--bg:#0B0D11;--surface:#12151B;--surface-2:#171B22;--border:#232833;--text:#F1F3F6;--muted:#8D96A6;--wash:rgba(61,220,151,.12);--glass:rgba(11,13,17,.82);--surface:#14181F;--surface-2:#1C212A;--border:#262C37;--text:#F4F6F8;--muted:#A3ACB9;color-scheme:dark}
+.lm[data-theme="dark"] h1,.lm[data-theme="dark"] h2{color:#FFFFFF}
+a{color:#0E7A4B}a:hover{color:#0B5E3A}
+.lm a{color:var(--brand)}
+.lm h2{margin:24px 0 0;font-family:Sora,sans-serif;font-weight:600;font-size:24px;line-height:30px;letter-spacing:-0.01em;scroll-margin-top:96px}
+.lm p,.lm ul{margin:0}
+.lm li{margin:6px 0}
+@keyframes lmUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lm-in{animation:lmUp .7s cubic-bezier(.2,.7,.2,1) both}
+.lm-btn{transition:transform .2s}.lm-btn:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion: reduce){.lm *{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div class="lm" data-theme="{{theme}}" style="font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 27px; min-height: 100vh;">
+
+<header style="position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;" aria-label="LightMove.ai home">
+<svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#169B62"></rect><rect x="14" y="26" width="6" height="12" rx="3" fill="#FFFFFF"></rect><rect x="24" y="19" width="6" height="26" rx="3" fill="#FFFFFF"></rect><rect x="34" y="13" width="6" height="38" rx="3" fill="#FFFFFF"></rect><rect x="44" y="24" width="6" height="16" rx="3" fill="#FFFFFF"></rect><circle cx="47" cy="16.5" r="3.5" fill="#FF883E"></circle></svg>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; letter-spacing: -0.03em; color: var(--text);">LightMove<span style="color: var(--brand);">.ai</span></span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px;">
+<a href="Main.dc.html#product" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Product</a>
+<a href="Docs.dc.html" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Docs</a>
+<a href="Blog.dc.html" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Blog</a>
+<button type="button" class="lm-btn" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="margin-left: 6px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
+<sc-if value="{{isDark}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{isLight}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+</button>
+</nav>
+</div>
+</header>
+
+<section style="max-width: 1240px; margin: 0 auto; padding: 64px 24px 32px; display: flex; flex-direction: column; gap: 16px;">
+<div class="lm-in" style="display: flex; gap: 8px;" aria-label="Legal">
+<a href="Privacy.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--border); box-sizing: border-box; background: var(--surface); color: var(--text); text-decoration: none; font-weight: 600; font-size: 14px;">Privacy Policy</a>
+<a href="Terms.dc.html" aria-current="page" style="display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; background: var(--text); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 14px;">Terms of Service</a>
+</div>
+<h1 class="lm-in" style="margin: 8px 0 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(40px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.04em; animation-delay: .05s;">Terms of Service</h1>
+<p class="lm-in" style="margin: 0; color: var(--muted); animation-delay: .1s;">Last updated [DATE] · lightmove.ai/terms</p>
+</section>
+
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 24px 96px; display: flex; flex-wrap: wrap; gap: 56px;">
+<nav aria-label="On this page" style="flex: 1 1 220px; max-width: 260px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 20px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px;">Contents</span>
+<a href="#agree" style="padding: 6px 0; color: var(--brand); font-weight: 600; text-decoration: none;">1. Agreement</a>
+<a href="#service" style="padding: 6px 0; color: var(--muted); text-decoration: none;">2. The service</a>
+<a href="#account" style="padding: 6px 0; color: var(--muted); text-decoration: none;">3. Your account</a>
+<a href="#use" style="padding: 6px 0; color: var(--muted); text-decoration: none;">4. Acceptable use</a>
+<a href="#content" style="padding: 6px 0; color: var(--muted); text-decoration: none;">5. Your content</a>
+<a href="#fees" style="padding: 6px 0; color: var(--muted); text-decoration: none;">6. Fees and billing</a>
+<a href="#builds" style="padding: 6px 0; color: var(--muted); text-decoration: none;">7. Done-for-you builds</a>
+<a href="#third" style="padding: 6px 0; color: var(--muted); text-decoration: none;">8. Third-party services</a>
+<a href="#liability" style="padding: 6px 0; color: var(--muted); text-decoration: none;">9. Liability</a>
+<a href="#end" style="padding: 6px 0; color: var(--muted); text-decoration: none;">10. Ending the agreement</a>
+<a href="#law" style="padding: 6px 0; color: var(--muted); text-decoration: none;">11. Governing law</a>
+<a href="#contact" style="padding: 6px 0; color: var(--muted); text-decoration: none;">12. Contact</a>
+</nav>
+
+<article style="flex: 999 1 560px; min-width: 0; max-width: 760px; display: flex; flex-direction: column; gap: 16px;">
+<p style="font-size: 18px; line-height: 30px; color: var(--muted);">These terms set out the rules for using LightMove.ai. Please read them carefully. By creating an account or using the service you agree to them.</p>
+
+<h2 id="agree">1. Agreement</h2>
+<p>These terms are between you (or the business you represent) and NextWebSpark [LEGAL ENTITY NAME, COMPANY NUMBER], [REGISTERED ADDRESS], Limerick, Ireland ("we", "us"). Our <a href="Privacy.dc.html">Privacy Policy</a> explains how we handle personal data.</p>
+
+<h2 id="service">2. The service</h2>
+<p>LightMove.ai lets you build, test and run AI voice agents that answer phone and web calls. Features may change as we improve the product. We will give reasonable notice of changes that materially reduce what you are paying for.</p>
+
+<h2 id="account">3. Your account</h2>
+<p>You must give accurate details and keep your login secure. You are responsible for activity under your account, including calls made by your agents.</p>
+
+<h2 id="use">4. Acceptable use</h2>
+<p>You agree not to use LightMove.ai to:</p>
+<ul>
+<li>break any law, including rules on marketing calls, call recording and consumer protection;</li>
+<li>make unsolicited sales calls without the consent the law requires;</li>
+<li>mislead callers about who they are speaking to where the law requires you to say an AI is answering;</li>
+<li>handle emergency calls or give medical, legal or financial advice that a person should give;</li>
+<li>harass people, or collect data you are not allowed to collect.</li>
+</ul>
+<p>You are responsible for telling callers about recording and for having a lawful basis to process their data.</p>
+
+<h2 id="content">5. Your content</h2>
+<p>You own your agent configurations, prompts and call data. You give us permission to process them only to provide and support the service, as described in the Privacy Policy.</p>
+
+<h2 id="fees">6. Fees and billing</h2>
+<p>Pay as you go plans are charged per minute of call time at the prices shown on our website, plus any phone number or carrier charges. We bill monthly through our payment provider. Prices exclude VAT unless stated. [CONFIRM BILLING CYCLE, CREDITS AND REFUND POLICY]</p>
+
+<h2 id="builds">7. Done-for-you builds</h2>
+<p>If we build an agent for you, the scope, price and timeline are set out in a separate quote. Running that agent afterwards is billed as pay as you go.</p>
+
+<h2 id="third">8. Third-party services</h2>
+<p>Agents can connect to services such as Google Calendar, Google Sheets, Gmail, CRMs and telephony carriers. Your use of those services is also governed by their own terms. We are not responsible for outages or changes on their side.</p>
+
+<h2 id="liability">9. Liability</h2>
+<p>AI agents can make mistakes. Review your agent's behaviour and call logs regularly. To the extent the law allows, our total liability in any 12-month period is limited to the fees you paid us in that period. [LEGAL REVIEW REQUIRED] Nothing in these terms limits liability that cannot be limited by law.</p>
+
+<h2 id="end">10. Ending the agreement</h2>
+<p>You can close your account at any time. We may suspend or close accounts that break these terms. After closure we delete your data as described in the Privacy Policy.</p>
+
+<h2 id="law">11. Governing law</h2>
+<p>These terms are governed by the laws of Ireland, and the Irish courts have jurisdiction over any dispute.</p>
+
+<h2 id="contact">12. Contact</h2>
+<p>Questions about these terms: <a href="mailto:legal@lightmove.ai">legal@lightmove.ai</a>.</p>
+</article>
+</div>
+
+<footer style="border-top: 1px solid var(--border); background: var(--surface);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 32px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted);">
+<span>© 2026 NextWebSpark · Limerick, Ireland</span>
+<span style="display: flex; gap: 20px;"><a href="Docs.dc.html" style="color: var(--muted); text-decoration: none;">Docs</a><a href="Privacy.dc.html" style="color: var(--muted); text-decoration: none;">Privacy</a><a href="Terms.dc.html" style="color: var(--muted); text-decoration: none;">Terms</a></span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null };
+  }
+  renderVals() {
+    const theme = this.state.theme || this.props.theme || 'light';
+    const dark = theme === 'dark';
+    return {
+      theme: theme,
+      isDark: dark,
+      isLight: !dark,
+      themeLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => this.setState({ theme: dark ? 'light' : 'dark' })
+    };
+  }
+}
+</script>
+</body>
+</html>

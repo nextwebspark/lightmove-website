@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LightMove.ai — Voice AI agents</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Sora:wght@600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.lm{--bg:#F7FAF8;--surface:#FFFFFF;--surface-2:#EEF2F0;--border:#DCE7E1;--text:#0B1F17;--muted:#4A5A52;--brand:#0E7A4B;--on-brand:#FFFFFF;--green:#169B62;--wash:#E8F5EE;--warn-bg:#FFF0E6;--warn:#A84A0C;--shadow:0 16px 40px rgba(11,31,23,.08);--panel:#0B1F17;--glass:rgba(247,250,248,.82);--panel-muted:#9DB5A9;--panel-field:#133227;--panel-line:#24493B;--card-glass:rgba(255,255,255,.86);--glow-o:.5;color-scheme:light;transition:background-color .35s,color .35s}
+.lm[data-theme="dark"]{--bg:#0A1F17;--surface:var(--panel-field);--surface-2:#1B3A2F;--border:var(--panel-line);--text:#F2F7F4;--muted:var(--panel-muted);--brand:#3DDC97;--on-brand:#0A1F17;--wash:rgba(61,220,151,.12);--warn-bg:#3A2414;--warn:#FFB27F;--shadow:0 16px 40px rgba(0,0,0,.35);--panel:#06140F;--glass:rgba(10,31,23,.82);--bg:#0B0D11;--surface:#12151B;--surface-2:#171B22;--border:#232833;--text:#F1F3F6;--muted:#8D96A6;--wash:rgba(61,220,151,.12);--warn-bg:rgba(255,136,62,.14);--warn:#FFB27F;--shadow:0 16px 40px rgba(0,0,0,.5);--panel:#171B22;--glass:rgba(11,13,17,.82);--code:#07080B;--code-line:#232833;--panel-muted:#8D96A6;--panel-field:#0B0D11;--panel-line:#2A303B;--surface:#14181F;--surface-2:#1C212A;--border:#262C37;--text:#F4F6F8;--muted:#A3ACB9;--panel:#1C212A;--panel-field:#0E1116;--card-glass:rgba(20,24,31,.72);--glow-o:1;color-scheme:dark}
+a{color:#0E7A4B}a:hover{color:#0B5E3A}
+.lm a{color:var(--brand)}
+@keyframes lmUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.lm-in{animation:lmUp .9s cubic-bezier(.2,.7,.2,1) both}
+@supports (animation-timeline: view()){.lm-reveal{animation:lmUp linear both;animation-timeline:view();animation-range:entry 0% entry 40%}}
+@keyframes lmWave{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+.lm-bar{display:block;width:12px;border-radius:999px;background:var(--brand);animation:lmWave 1.4s ease-in-out infinite}
+.lm-bar.calm{animation-duration:3s;opacity:.5}
+@keyframes lmRing{0%{transform:scale(.82);opacity:.7}100%{transform:scale(1.4);opacity:0}}
+.lm-ring{position:absolute;inset:0;border-radius:999px;border:1.5px solid var(--green);animation:lmRing 3.6s ease-out infinite}
+@keyframes lmFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.lm-float{animation:lmFloat 6s ease-in-out infinite}
+@keyframes lmPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.lm-dot{animation:lmPulse 1.6s ease-in-out infinite}
+@keyframes lmScroll{to{transform:translateX(-50%)}}
+.lm-marquee{display:flex;width:max-content;animation:lmScroll 40s linear infinite}
+.lm-card{transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,box-shadow .35s}
+.lm-card:hover{transform:translateY(-6px);border-color:var(--brand);box-shadow:var(--shadow)}
+.lm-btn{transition:transform .2s,filter .2s}.lm-btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.lm-dots{background-image:radial-gradient(var(--border) 1.2px,transparent 1.2px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse at 72% 38%,#000 15%,transparent 68%);mask-image:radial-gradient(ellipse at 72% 38%,#000 15%,transparent 68%)}
+.lm details summary{list-style:none;cursor:pointer}.lm details summary::-webkit-details-marker{display:none}
+.lm-plus{transition:transform .25s}.lm details[open] .lm-plus{transform:rotate(45deg)}
+.lm-msg{animation:lmUp .5s ease both}
+.lm-glow{position:absolute;border-radius:999px;filter:blur(90px);pointer-events:none;opacity:var(--glow-o)}
+@keyframes lmDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(48px,-32px) scale(1.08)}66%{transform:translate(-36px,24px) scale(.94)}}
+.lm-drift{animation:lmDrift 18s ease-in-out infinite}
+.lm-orbglow{position:absolute;width:280px;height:280px;border-radius:999px;background:rgba(61,220,151,.3);filter:blur(48px);opacity:.25;transition:opacity .6s}
+.lm-orbglow.on{opacity:1;animation:lmBreath 1.4s ease-in-out infinite}
+@keyframes lmBreath{0%,100%{transform:scale(.88)}50%{transform:scale(1.18)}}
+.lm[data-theme="dark"] .lm-card,.lm[data-theme="dark"] .lm-lift{box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.lm[data-theme="dark"] .lm-card:hover{border-color:rgba(61,220,151,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 24px 64px -24px rgba(61,220,151,.4)}
+.lm[data-theme="dark"] .lm-dots{background-image:radial-gradient(rgba(255,255,255,.08) 1.2px,transparent 1.2px)}
+.lm[data-theme="dark"] h1,.lm[data-theme="dark"] h2,.lm[data-theme="dark"] h3{color:#FFFFFF}
+@media (prefers-reduced-motion: reduce){.lm *{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div class="lm" data-theme="{{theme}}" style="font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 26px; min-height: 100vh; overflow-x: hidden;">
+
+<header style="position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;" aria-label="LightMove.ai home">
+<svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#169B62"></rect><rect x="14" y="26" width="6" height="12" rx="3" fill="#FFFFFF"></rect><rect x="24" y="19" width="6" height="26" rx="3" fill="#FFFFFF"></rect><rect x="34" y="13" width="6" height="38" rx="3" fill="#FFFFFF"></rect><rect x="44" y="24" width="6" height="16" rx="3" fill="#FFFFFF"></rect><circle cx="47" cy="16.5" r="3.5" fill="#FF883E"></circle></svg>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; letter-spacing: -0.03em; color: var(--text);">LightMove<span style="color: var(--brand);">.ai</span></span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px;">
+<a href="#product" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Product</a>
+<a href="#use-cases" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Use cases</a>
+<a href="#pricing" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Pricing</a>
+<a href="Docs.dc.html" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Docs</a>
+<a href="Blog.dc.html" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Blog</a>
+<button type="button" class="lm-btn" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="margin-left: 6px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
+<sc-if value="{{isDark}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{isLight}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+</button>
+<a href="https://app.lightmove.ai" class="lm-btn" style="margin-left: 6px; display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 12px; background: var(--brand); color: var(--on-brand); text-decoration: none; font-weight: 600; font-size: 15px;">Start free</a>
+</nav>
+</div>
+</header>
+
+<section style="position: relative; overflow: hidden;">
+<div class="lm-dots" style="position: absolute; inset: 0;" aria-hidden="true"></div>
+<div class="lm-glow lm-drift" style="width: 560px; height: 560px; right: 6%; top: 60px; background: rgba(61, 220, 151, 0.24);" aria-hidden="true"></div>
+<div class="lm-glow lm-drift" style="width: 340px; height: 340px; left: -100px; top: -80px; background: rgba(255, 136, 62, 0.12); animation-delay: -7s;" aria-hidden="true"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; padding: 88px 24px 104px; display: flex; flex-wrap: wrap; align-items: center; gap: 64px;">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 28px;">
+<div class="lm-in" style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-size: 14px; line-height: 18px; font-weight: 500;"><span class="lm-dot" style="width: 8px; height: 8px; border-radius: 999px; background: #FF883E;"></span>Voice AI agents, made in Limerick</div>
+<h1 class="lm-in" style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(44px, 6vw, 80px); line-height: 1.02; letter-spacing: -0.04em; animation-delay: .08s;">Every call answered.<br><span style="color: var(--brand);">Day or night.</span></h1>
+<p class="lm-in" style="margin: 0; max-width: 540px; font-size: 19px; line-height: 30px; color: var(--muted); animation-delay: .16s;">LightMove.ai gives your business a voice agent that picks up the phone, books appointments and answers questions in a natural voice, then hands over to your team when it matters.</p>
+<div class="lm-in" style="display: flex; flex-wrap: wrap; gap: 12px; animation-delay: .24s;">
+<a href="https://app.lightmove.ai" class="lm-btn" style="display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 26px; border-radius: 14px; background: var(--brand); color: var(--on-brand); text-decoration: none; font-weight: 600; font-size: 16px;">Build your agent free
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"></path></svg></a>
+<a href="#contact" class="lm-btn" style="display: inline-flex; align-items: center; height: 54px; padding: 0 26px; border-radius: 14px; border: 1.5px solid var(--border); box-sizing: border-box; background: var(--surface); color: var(--text); text-decoration: none; font-weight: 600; font-size: 16px;">Have us build it</a>
+</div>
+<ul class="lm-in" style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 20px; font-size: 14px; color: var(--muted); animation-delay: .32s;">
+<li style="display: inline-flex; align-items: center; gap: 8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No card to try</li>
+<li style="display: inline-flex; align-items: center; gap: 8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Keep your phone number</li>
+<li style="display: inline-flex; align-items: center; gap: 8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>Pay only for minutes used</li>
+</ul>
+</div>
+
+<div id="demo" class="lm-in lm-lift" style="flex: 1 1 460px; min-width: 0; position: relative; background: var(--card-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 28px; box-shadow: var(--shadow); padding: 28px; display: flex; flex-direction: column; gap: 20px; animation-delay: .2s;">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<span style="width: 44px; height: 44px; border-radius: 14px; background: var(--wash); color: var(--brand); display: inline-flex; align-items: center; justify-content: center; font-family: Sora, sans-serif; font-weight: 600;">A</span>
+<span style="display: flex; flex-direction: column;">
+<span style="font-weight: 600; font-size: 17px; line-height: 22px;">Aoife · demo receptionist</span>
+<span style="font-size: 13px; line-height: 18px; color: var(--muted);">Live on the LightMove.ai platform</span>
+</span>
+</div>
+<sc-if value="{{live}}" hint-placeholder-val="{{ false }}">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);"><span class="lm-dot" style="width: 8px; height: 8px; border-radius: 999px; background: #FF883E;"></span>Live call <span style="font-family: 'JetBrains Mono', monospace; letter-spacing: 0; font-weight: 500;">00:07</span></span>
+</sc-if>
+<sc-if value="{{idle}}" hint-placeholder-val="{{ true }}">
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--wash); color: var(--brand); font-size: 13px; line-height: 16px; font-weight: 600;">Ready</span>
+</sc-if>
+</div>
+
+<div style="position: relative; height: 300px; border-radius: 20px; background: var(--bg); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<span class="{{orbGlow}}" aria-hidden="true"></span>
+<div style="position: relative; width: 190px; height: 190px;" aria-hidden="true">
+<span class="lm-ring"></span>
+<span class="lm-ring" style="animation-delay: 1.2s;"></span>
+<span class="lm-ring" style="animation-delay: 2.4s;"></span>
+<div style="position: absolute; inset: 0; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; gap: 8px;">
+<span class="{{barClass}}" style="height: 34px; animation-delay: 0s;"></span>
+<span class="{{barClass}}" style="height: 62px; animation-delay: .2s;"></span>
+<span class="{{barClass}}" style="height: 88px; animation-delay: .4s;"></span>
+<span class="{{barClass}}" style="height: 56px; animation-delay: .6s;"></span>
+<span class="{{barClass}}" style="height: 30px; animation-delay: .8s;"></span>
+</div>
+</div>
+<div class="lm-float" style="position: absolute; top: 18px; left: 18px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); font-size: 13px; line-height: 18px;">
+<span style="width: 28px; height: 28px; border-radius: 8px; background: var(--wash); display: inline-flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+<span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Booking confirmed</span><span style="color: var(--muted);">Tue · 10:30</span></span>
+</div>
+<div class="lm-float" style="position: absolute; bottom: 18px; right: 18px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); font-size: 13px; line-height: 18px; animation-delay: 2s;">
+<span style="width: 28px; height: 28px; border-radius: 8px; background: var(--warn-bg); display: inline-flex; align-items: center; justify-content: center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF883E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></span>
+<span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Handed to reception</span><span style="color: var(--muted);">with a summary</span></span>
+</div>
+</div>
+
+<sc-if value="{{live}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 22px;">
+<div class="lm-msg" style="align-self: flex-start; max-width: 88%; padding: 10px 14px; border-radius: 14px 14px 14px 4px; background: var(--wash); color: var(--text);">Hi, you're through to Aoife. I can book a visit, check opening hours or take a message. How can I help?</div>
+<div class="lm-msg" style="align-self: flex-end; padding: 10px 14px; border-radius: 14px 14px 4px 14px; background: var(--surface-2); color: var(--muted); animation-delay: .6s;">Listening…</div>
+</div>
+</sc-if>
+<sc-if value="{{idle}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: var(--muted);">Press the button and speak normally. Try booking a visit, asking for prices or changing your mind halfway.</p>
+</sc-if>
+
+<button type="button" class="lm-btn" onClick="{{toggleLive}}" style="height: 58px; border: 0; border-radius: 14px; background: {{callBg}}; color: {{callColor}}; font-family: inherit; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+<span>{{callLabel}}</span>
+</button>
+<p style="margin: 0; font-size: 12px; line-height: 16px; color: var(--muted); text-align: center;">Uses your microphone. Demo calls may be recorded to improve the agent.</p>
+</div>
+</div>
+</section>
+
+<section aria-label="Who it's for" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); overflow: hidden; padding: 22px 0;">
+<div class="lm-marquee" style="gap: 48px; font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; letter-spacing: -0.01em; color: var(--muted); white-space: nowrap;">
+<span>Clinics</span><span style="color: #169B62;">●</span><span>Dentists</span><span style="color: #169B62;">●</span><span>Salons</span><span style="color: #169B62;">●</span><span>Trades</span><span style="color: #169B62;">●</span><span>Garages</span><span style="color: #169B62;">●</span><span>Restaurants</span><span style="color: #169B62;">●</span><span>Estate agents</span><span style="color: #169B62;">●</span><span>Solicitors</span><span style="color: #169B62;">●</span><span>VoIP operators</span><span style="color: #169B62;">●</span>
+<span>Clinics</span><span style="color: #169B62;">●</span><span>Dentists</span><span style="color: #169B62;">●</span><span>Salons</span><span style="color: #169B62;">●</span><span>Trades</span><span style="color: #169B62;">●</span><span>Garages</span><span style="color: #169B62;">●</span><span>Restaurants</span><span style="color: #169B62;">●</span><span>Estate agents</span><span style="color: #169B62;">●</span><span>Solicitors</span><span style="color: #169B62;">●</span><span>VoIP operators</span><span style="color: #169B62;">●</span>
+</div>
+</section>
+
+<section id="ways" style="max-width: 1240px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 48px;">
+<div class="lm-reveal" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;">
+<span style="font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);">Three ways to start</span>
+<h2 style="margin: 0; max-width: 720px; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -0.03em;">Try it, build it yourself, or let us do it</h2>
+<p style="margin: 0; max-width: 560px; color: var(--muted); font-size: 18px; line-height: 28px;">Start with a ready-made agent today. Grow into your own workflows when you're ready.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px;">
+<div class="lm-card lm-reveal" style="flex: 1 1 320px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 18px;">
+<div style="width: 52px; height: 52px; border-radius: 14px; background: var(--wash); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg></div>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);">Free</span>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.02em;">Try a template</h3>
+<p style="margin: 0; color: var(--muted); flex-grow: 1;">Receptionist, booking line, lead qualifier, after-hours cover. Pick one, give it your details, and talk to it in the browser.</p>
+<a href="https://app.lightmove.ai" style="font-weight: 600; text-decoration: none;">Browse templates →</a>
+</div>
+<div class="lm-card lm-reveal" style="flex: 1 1 320px; min-width: 0; position: relative; background: var(--panel); color: #F2F7F4; border: 1px solid var(--panel); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 18px; overflow: hidden;">
+<div style="position: absolute; right: -10px; top: 24px; display: flex; align-items: center; gap: 8px; opacity: .22;" aria-hidden="true"><span class="lm-bar" style="height: 60px; background: #3DDC97;"></span><span class="lm-bar" style="height: 110px; background: #3DDC97; animation-delay: .3s;"></span><span class="lm-bar" style="height: 150px; background: #3DDC97; animation-delay: .6s;"></span><span class="lm-bar" style="height: 90px; background: #3DDC97; animation-delay: .9s;"></span></div>
+<div style="position: relative; width: 52px; height: 52px; border-radius: 14px; background: #3DDC97; display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A1F17" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"></path></svg></div>
+<span style="position: relative; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #3DDC97;">Done for you</span>
+<h3 style="position: relative; margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.02em;">We build it for you</h3>
+<p style="position: relative; margin: 0; color: var(--panel-muted); flex-grow: 1;">Tell us how your calls should go. We design the workflow, connect your calendar, CRM and phone line, test it with you and hand it over live. Fixed quote up front.</p>
+<a href="#contact" style="position: relative; font-weight: 600; text-decoration: none; color: #3DDC97;">Request a build →</a>
+</div>
+<div class="lm-card lm-reveal" style="flex: 1 1 320px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 18px;">
+<div style="width: 52px; height: 52px; border-radius: 14px; background: var(--wash); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg></div>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);">Pay as you go</span>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.02em;">Build your own</h3>
+<p style="margin: 0; color: var(--muted); flex-grow: 1;">Describe the agent in plain words and the builder drafts the workflow. Tweak each step, test it out loud, go live. Billed per minute.</p>
+<a href="Docs.dc.html" style="font-weight: 600; text-decoration: none;">Read the quick start →</a>
+</div>
+</div>
+</section>
+
+<section id="product" style="position: relative; overflow: hidden; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<div class="lm-glow lm-drift" style="width: 480px; height: 480px; left: -160px; top: 120px; background: rgba(61, 220, 151, 0.12); animation-delay: -4s;" aria-hidden="true"></div>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 48px;">
+<div class="lm-reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px;">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 640px;">
+<span style="font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);">The platform</span>
+<h2 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -0.03em;">Everything a phone line needs, in one place</h2>
+</div>
+<p style="margin: 0; max-width: 420px; color: var(--muted); font-size: 17px; line-height: 27px;">Build, test and run your agents from one dashboard. Every call is logged, recorded and summarised for your team.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+<div class="lm-card lm-reveal" style="flex: 2 1 560px; min-width: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 20px;">
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em;">See every call at a glance</h3>
+<p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 24px;">Transcripts, recordings and a short summary for each call, with the ones that need you flagged.</p>
+</div>
+<div style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; font-size: 14px; line-height: 20px;">
+<div style="display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);"><span>Today · sample</span><span>Status</span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border);">
+<span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">New booking · Tue 10:30</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted);">09:14 · 1m 52s</span></span>
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--wash); color: var(--brand); font-size: 13px; font-weight: 600;">Answered</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border);">
+<span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Wants a quote for a boiler service</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted);">12:47 · 2m 30s</span></span>
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--warn-bg); color: var(--warn); font-size: 13px; font-weight: 600;">Needs follow-up</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px;">
+<span style="display: flex; flex-direction: column;"><span style="font-weight: 600;">Asked about Saturday opening</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted);">21:05 · 0m 48s</span></span>
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--wash); color: var(--brand); font-size: 13px; font-weight: 600;">Answered</span>
+</div>
+</div>
+</div>
+
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 16px;">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: var(--wash); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg></div>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em;">Describe it, don't code it</h3>
+<p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 24px;">Write what the agent should do in plain English. The Agent Builder turns it into a step-by-step workflow you can edit.</p>
+<div style="margin-top: auto; padding: 14px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 20px; color: var(--muted);">"Answer for a physio clinic. Book, move or cancel visits. Pass anyone in pain to reception."</div>
+</div>
+
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 16px;">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: var(--wash); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"></path></svg></div>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em;">Phone and SIP</h3>
+<p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 24px;">Forward your existing number or connect a SIP trunk. Callers keep dialling the number they already know.</p>
+</div>
+
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 16px;">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: var(--wash); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M8 21h8M12 18v3"></path></svg></div>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em;">Talk on your website</h3>
+<p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 24px;">One script tag adds a talk button to any site. Web calls land in the same log as phone calls.</p>
+</div>
+
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 16px;">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: var(--wash); display: flex; align-items: center; justify-content: center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"></path></svg></div>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 22px; line-height: 28px; letter-spacing: -0.01em;">Connects to your tools</h3>
+<p style="margin: 0; color: var(--muted); font-size: 15px; line-height: 24px;">Calendars, CRMs and webhooks, so the agent can book, look things up and log what happened.</p>
+</div>
+
+<div class="lm-card lm-reveal" style="flex: 2 1 560px; min-width: 0; background: var(--panel); color: #F2F7F4; border: 1px solid var(--panel); border-radius: 24px; padding: 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px;">
+<div style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 10px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #3DDC97;">For VoIP operators</span>
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 24px; line-height: 30px; letter-spacing: -0.01em;">Offer voice agents to your customers</h3>
+<p style="margin: 0; color: var(--panel-muted); font-size: 15px; line-height: 24px;">Plug LightMove into your SIP network and give every business on your books an AI receptionist.</p>
+</div>
+<a href="#contact" class="lm-btn" style="display: inline-flex; align-items: center; height: 48px; padding: 0 22px; border-radius: 12px; background: #3DDC97; color: #0A1F17; text-decoration: none; font-weight: 600; font-size: 15px;">Talk to us</a>
+</div>
+</div>
+</div>
+</section>
+
+<section id="use-cases" style="max-width: 1240px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 40px;">
+<div class="lm-reveal" style="display: flex; flex-direction: column; gap: 14px; max-width: 640px;">
+<span style="font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);">Use cases</span>
+<h2 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -0.03em;">Hear how it handles your calls</h2>
+</div>
+<div role="tablist" aria-label="Industries" style="display: flex; flex-wrap: wrap; gap: 8px;">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.color}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color .25s, color .25s;">{{t.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: stretch;">
+<div style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 18px; justify-content: center;">
+<h3 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 30px; line-height: 36px; letter-spacing: -0.02em;">{{useCase.title}}</h3>
+<p style="margin: 0; color: var(--muted); font-size: 17px; line-height: 27px;">{{useCase.body}}</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px;">
+<sc-for list="{{useCase.points}}" as="p" hint-placeholder-count="3">
+<li style="display: flex; align-items: center; gap: 12px;"><span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 999px; background: var(--wash); display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#169B62" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>{{p}}</li>
+</sc-for>
+</ul>
+</div>
+<div style="flex: 1 1 440px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 28px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted);">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; color: var(--brand);"><span class="lm-dot" style="width: 8px; height: 8px; border-radius: 999px; background: #FF883E;"></span>Sample call</span>
+<span style="font-family: 'JetBrains Mono', monospace;">{{useCase.time}}</span>
+</div>
+<sc-for list="{{useCase.lines}}" as="l" hint-placeholder-count="4">
+<div class="lm-msg" style="align-self: {{l.align}}; max-width: 86%; padding: 12px 16px; border-radius: {{l.radius}}; background: {{l.bg}}; color: var(--text); font-size: 15px; line-height: 23px; animation-delay: {{l.delay}};">
+<span style="display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 2px;">{{l.who}}</span>{{l.text}}</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 56px;">
+<div class="lm-reveal" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;">
+<span style="font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);">How it works</span>
+<h2 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -0.03em;">Live in an afternoon</h2>
+</div>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 24px;">
+<li class="lm-reveal" style="flex: 1 1 280px; min-width: 0; position: relative; padding: 32px; border-radius: 24px; background: var(--bg); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px;">
+<span style="width: 48px; height: 48px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 500;">01</span>
+<h3 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600;">Describe the job</h3>
+<p style="margin: 0; color: var(--muted);">What should it handle? What must it never promise? When should it pass the call to a person?</p>
+</li>
+<li class="lm-reveal" style="flex: 1 1 280px; min-width: 0; position: relative; padding: 32px; border-radius: 24px; background: var(--bg); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px;">
+<span style="width: 48px; height: 48px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 500;">02</span>
+<h3 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600;">Test it out loud</h3>
+<p style="margin: 0; color: var(--muted);">Call it from the builder, try to trip it up, read the transcript and tighten the steps.</p>
+</li>
+<li class="lm-reveal" style="flex: 1 1 280px; min-width: 0; position: relative; padding: 32px; border-radius: 24px; background: var(--bg); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px;">
+<span style="width: 48px; height: 48px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-weight: 500;">03</span>
+<h3 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600;">Go live</h3>
+<p style="margin: 0; color: var(--muted);">Point your number at it or add the web widget. Watch the call log for the first week.</p>
+</li>
+</ol>
+</div>
+</section>
+
+<section id="pricing" style="max-width: 1240px; margin: 0 auto; padding: 112px 24px; display: flex; flex-direction: column; gap: 48px;">
+<div class="lm-reveal" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;">
+<span style="font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand);">Pricing</span>
+<h2 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(32px, 4vw, 48px); line-height: 1.08; letter-spacing: -0.03em;">Simple and pay as you go</h2>
+<p style="margin: 0; max-width: 520px; color: var(--muted); font-size: 18px; line-height: 28px;">No monthly commitment. Pay for the minutes your agents spend on calls.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch;">
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 20px;">
+<span style="font-weight: 600; font-size: 18px;">Try</span>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 44px; line-height: 48px; letter-spacing: -0.03em;">Free</span>
+<span style="color: var(--muted); font-size: 15px;">Test templates in your browser.</span>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; flex-grow: 1;">
+<li>All templates</li><li>Browser test calls</li><li>Transcripts</li>
+</ul>
+<a href="https://app.lightmove.ai" class="lm-btn" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; border-radius: 12px; border: 1.5px solid var(--border); box-sizing: border-box; color: var(--text); text-decoration: none; font-weight: 600;">Start free</a>
+</div>
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; position: relative; background: var(--surface); border: 2px solid var(--brand); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--shadow);">
+<span style="position: absolute; top: -14px; left: 32px; padding: 4px 12px; border-radius: 999px; background: var(--brand); color: var(--on-brand); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;">Most popular</span>
+<span style="font-weight: 600; font-size: 18px;">Pay as you go</span>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 44px; line-height: 48px; letter-spacing: -0.03em;">[€X]<span style="font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: var(--muted); letter-spacing: 0;"> / minute</span></span>
+<span style="color: var(--muted); font-size: 15px;">Self-serve. Billed monthly by usage.</span>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; flex-grow: 1;">
+<li>Agent Builder</li><li>Phone numbers and SIP</li><li>Web widget</li><li>Recordings and summaries</li>
+</ul>
+<a href="https://app.lightmove.ai" class="lm-btn" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; border-radius: 12px; background: var(--brand); color: var(--on-brand); text-decoration: none; font-weight: 600;">Get started</a>
+</div>
+<div class="lm-card lm-reveal" style="flex: 1 1 300px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; gap: 20px;">
+<span style="font-weight: 600; font-size: 18px;">Done for you</span>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 44px; line-height: 48px; letter-spacing: -0.03em;">From [€X]</span>
+<span style="color: var(--muted); font-size: 15px;">One-off build, then pay as you go.</span>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px; flex-grow: 1;">
+<li>Workflow designed for you</li><li>Integrations set up</li><li>Tested with your team</li>
+</ul>
+<a href="#contact" class="lm-btn" style="display: inline-flex; align-items: center; justify-content: center; height: 48px; border-radius: 12px; border: 1.5px solid var(--border); box-sizing: border-box; color: var(--text); text-decoration: none; font-weight: 600;">Request a quote</a>
+</div>
+</div>
+</section>
+
+<section style="max-width: 860px; margin: 0 auto; padding: 0 24px 112px; display: flex; flex-direction: column; gap: 32px;">
+<h2 class="lm-reveal" style="margin: 0; text-align: center; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -0.03em;">Questions, answered</h2>
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<details class="lm-reveal" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 24px;">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; font-weight: 600; font-size: 17px;">Does it sound robotic?<span class="lm-plus" style="font-size: 24px; color: var(--brand);" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 20px; color: var(--muted);">Agents use natural, modern voices and reply quickly enough for a normal back-and-forth. Try the demo at the top of this page and judge for yourself.</p>
+</details>
+<details class="lm-reveal" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 24px;">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; font-weight: 600; font-size: 17px;">Can I keep my existing number?<span class="lm-plus" style="font-size: 24px; color: var(--brand);" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 20px; color: var(--muted);">Yes. Forward your number to LightMove or connect your SIP trunk. Your customers keep calling the number they know.</p>
+</details>
+<details class="lm-reveal" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 24px;">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; font-weight: 600; font-size: 17px;">What happens when the agent can't help?<span class="lm-plus" style="font-size: 24px; color: var(--brand);" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 20px; color: var(--muted);">You decide. It can transfer the call to a person, take a message or book a callback, and every call comes with a summary.</p>
+</details>
+<details class="lm-reveal" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 24px;">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; font-weight: 600; font-size: 17px;">Do I need technical skills?<span class="lm-plus" style="font-size: 24px; color: var(--brand);" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 20px; color: var(--muted);">No. Describe the job in plain words and the builder drafts the workflow. Or let our team build and test it for you.</p>
+</details>
+<details class="lm-reveal" style="background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 0 24px;">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; font-weight: 600; font-size: 17px;">Where is call data stored?<span class="lm-plus" style="font-size: 24px; color: var(--brand);" aria-hidden="true">+</span></summary>
+<p style="margin: 0 0 20px; color: var(--muted);">[CONFIRM HOSTING REGION AND RETENTION]. Recordings and transcripts are only visible to your team.</p>
+</details>
+</div>
+</section>
+
+<section style="max-width: 1240px; margin: 0 auto; padding: 0 24px 112px; display: flex; flex-direction: column; gap: 32px;">
+<div class="lm-reveal" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px;">
+<h2 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; letter-spacing: -0.03em;">From the blog</h2>
+<a href="Blog.dc.html" style="font-weight: 600; text-decoration: none;">All posts →</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px;">
+<a href="BlogPost.dc.html" class="lm-card lm-reveal" style="flex: 1 1 320px; min-width: 0; text-decoration: none; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;">
+<div style="height: 160px; background: var(--wash); display: flex; align-items: center; justify-content: center; gap: 8px;" aria-hidden="true"><span class="lm-bar calm" style="height: 40px;"></span><span class="lm-bar calm" style="height: 80px; animation-delay: .4s;"></span><span class="lm-bar calm" style="height: 110px; animation-delay: .8s;"></span><span class="lm-bar calm" style="height: 64px; animation-delay: 1.2s;"></span></div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 13px; color: var(--muted);"><span style="color: var(--brand); font-weight: 600;">Guide</span> · [DATE]</span><span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; line-height: 26px; letter-spacing: -0.01em;">Your first voice agent in an afternoon</span></div>
+</a>
+<a href="BlogPost.dc.html" class="lm-card lm-reveal" style="flex: 1 1 320px; min-width: 0; text-decoration: none; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;">
+<div style="height: 160px; background: var(--warn-bg); display: flex; align-items: center; justify-content: center;" aria-hidden="true"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#FF883E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 13px; color: var(--muted);"><span style="color: var(--brand); font-weight: 600;">Product</span> · [DATE]</span><span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; line-height: 26px; letter-spacing: -0.01em;">When should an agent hand over to a person?</span></div>
+</a>
+<a href="BlogPost.dc.html" class="lm-card lm-reveal" style="flex: 1 1 320px; min-width: 0; text-decoration: none; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;">
+<div style="height: 160px; background: var(--panel); display: flex; align-items: center; justify-content: center;" aria-hidden="true"><svg width="72" height="72" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#169B62"></rect><rect x="14" y="26" width="6" height="12" rx="3" fill="#FFFFFF"></rect><rect x="24" y="19" width="6" height="26" rx="3" fill="#FFFFFF"></rect><rect x="34" y="13" width="6" height="38" rx="3" fill="#FFFFFF"></rect><rect x="44" y="24" width="6" height="16" rx="3" fill="#FFFFFF"></rect><circle cx="47" cy="16.5" r="3.5" fill="#FF883E"></circle></svg></div>
+<div style="padding: 24px; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 13px; color: var(--muted);"><span style="color: var(--brand); font-weight: 600;">Company</span> · [DATE]</span><span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; line-height: 26px; letter-spacing: -0.01em;">Why we're building LightMove in Limerick</span></div>
+</a>
+</div>
+</section>
+
+<section id="contact" style="max-width: 1240px; margin: 0 auto; padding: 0 24px 112px;">
+<div class="lm-reveal" style="position: relative; overflow: hidden; background: var(--panel); color: #F2F7F4; border: 1px solid var(--border); border-radius: 32px; padding: clamp(32px, 5vw, 72px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 40px;">
+<div class="lm-glow lm-drift" style="width: 520px; height: 520px; right: -120px; top: -160px; background: rgba(61, 220, 151, 0.28); opacity: 1;" aria-hidden="true"></div>
+<div style="position: absolute; right: 40px; bottom: -20px; display: flex; align-items: flex-end; gap: 14px; opacity: .14;" aria-hidden="true">
+<span class="lm-bar" style="width: 22px; height: 120px; background: #3DDC97;"></span><span class="lm-bar" style="width: 22px; height: 220px; background: #3DDC97; animation-delay: .3s;"></span><span class="lm-bar" style="width: 22px; height: 300px; background: #3DDC97; animation-delay: .6s;"></span><span class="lm-bar" style="width: 22px; height: 180px; background: #3DDC97; animation-delay: .9s;"></span><span class="lm-bar" style="width: 22px; height: 90px; background: #3DDC97; animation-delay: 1.2s;"></span>
+</div>
+<div style="position: relative; flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 16px;">
+<h2 style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.04; letter-spacing: -0.035em;">Stop missing calls.<br><span style="color: #3DDC97;">Start this week.</span></h2>
+<p style="margin: 0; color: var(--panel-muted); font-size: 18px; line-height: 28px; max-width: 480px;">Tell us what your callers need. We'll reply within one working day with a plan and a quote.</p>
+</div>
+<form style="position: relative; flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px;">
+<label for="lm-email" style="font-size: 14px; font-weight: 600; color: #F2F7F4;">Work email</label>
+<div style="display: flex; flex-wrap: wrap; gap: 12px;">
+<input id="lm-email" type="email" placeholder="you@company.ie" style="flex: 1 1 220px; min-width: 0; height: 54px; box-sizing: border-box; padding: 0 16px; border-radius: 14px; border: 1px solid var(--panel-line); background: var(--panel-field); color: #F2F7F4; font-family: inherit; font-size: 16px;">
+<button type="submit" class="lm-btn" style="height: 54px; padding: 0 24px; border-radius: 14px; border: 0; background: #3DDC97; color: #0A1F17; font-family: inherit; font-weight: 600; font-size: 16px; cursor: pointer;">Request a build</button>
+</div>
+<span style="font-size: 13px; color: var(--panel-muted);">Or email hello@lightmove.ai</span>
+</form>
+</div>
+</section>
+
+<footer style="border-top: 1px solid var(--border); background: var(--surface);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 64px 24px 32px; display: flex; flex-direction: column; gap: 48px;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px;">
+<div style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 14px; max-width: 340px;">
+<span style="display: flex; align-items: center; gap: 10px;">
+<svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#169B62"></rect><rect x="14" y="26" width="6" height="12" rx="3" fill="#FFFFFF"></rect><rect x="24" y="19" width="6" height="26" rx="3" fill="#FFFFFF"></rect><rect x="34" y="13" width="6" height="38" rx="3" fill="#FFFFFF"></rect><rect x="44" y="24" width="6" height="16" rx="3" fill="#FFFFFF"></rect><circle cx="47" cy="16.5" r="3.5" fill="#FF883E"></circle></svg>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 19px; letter-spacing: -0.03em;">LightMove<span style="color: var(--brand);">.ai</span></span>
+</span>
+<p style="margin: 0; font-size: 14px; line-height: 22px; color: var(--muted);">Voice AI agents for Irish businesses and VoIP operators. A NextWebSpark product, made in Limerick, Ireland.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 64px; font-size: 14px; line-height: 20px;">
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);">Product</span>
+<a href="#product" style="color: var(--text); text-decoration: none;">Platform</a>
+<a href="#use-cases" style="color: var(--text); text-decoration: none;">Use cases</a>
+<a href="#pricing" style="color: var(--text); text-decoration: none;">Pricing</a>
+<a href="https://app.lightmove.ai" style="color: var(--text); text-decoration: none;">Sign in</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);">Resources</span>
+<a href="Docs.dc.html" style="color: var(--text); text-decoration: none;">Docs</a>
+<a href="Blog.dc.html" style="color: var(--text); text-decoration: none;">Blog</a>
+<a href="Docs.dc.html" style="color: var(--text); text-decoration: none;">Web widget</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);">Company</span>
+<a href="#contact" style="color: var(--text); text-decoration: none;">Contact</a>
+<a href="Privacy.dc.html" style="color: var(--text); text-decoration: none;">Privacy</a>
+<a href="Terms.dc.html" style="color: var(--text); text-decoration: none;">Terms</a>
+</div>
+</div>
+</div>
+<div style="border-top: 1px solid var(--border); padding-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted);">
+<span>© 2026 NextWebSpark · Limerick, Ireland</span>
+<span>hello@lightmove.ai</span>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":6400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null, live: false, tab: 'clinic' };
+  }
+  renderVals() {
+    const theme = this.state.theme || this.props.theme || 'light';
+    const dark = theme === 'dark';
+    const live = this.state.live;
+    const cases = {
+      clinic: {
+        label: 'Clinics', time: '09:14',
+        title: 'Bookings without the hold music',
+        body: 'Patients book, move and cancel visits any hour. Your front desk gets a tidy list instead of a voicemail backlog.',
+        points: ['Books straight into your calendar', 'Answers opening hours and prices', 'Passes anyone in pain to reception'],
+        lines: [['Caller', 'Hi, can I move my Thursday physio to next week?'], ['Agent', 'Of course. I have Tuesday at 10:30 or Wednesday at 2. Which suits you?'], ['Caller', 'Tuesday, please.'], ['Agent', 'Done. You are booked for Tuesday at 10:30. See you then.']]
+      },
+      trades: {
+        label: 'Trades', time: '12:47',
+        title: 'Never miss a job while you are on the tools',
+        body: 'The agent takes the details, checks how urgent it is and books a call-back, so you can finish the job in front of you.',
+        points: ['Captures address and the problem', 'Flags emergencies straight away', 'Books a call-back slot'],
+        lines: [['Caller', 'My boiler stopped working this morning.'], ['Agent', 'Sorry to hear that. Is there any smell of gas, or is it just no heat?'], ['Caller', 'Just no heat.'], ['Agent', 'Thanks. Can I take your address and a good time for the engineer to ring you back?']]
+      },
+      food: {
+        label: 'Restaurants', time: '18:02',
+        title: 'Tables booked while the kitchen is busy',
+        body: 'Take reservations and answer the usual questions at peak hours without pulling staff off the floor.',
+        points: ['Takes bookings and party sizes', 'Answers menu and allergy questions', 'Handles changes and cancellations'],
+        lines: [['Caller', 'Have you a table for four on Saturday around eight?'], ['Agent', 'I can do 7:45 or 8:30 for four. Would either work?'], ['Caller', '8:30 is perfect.'], ['Agent', 'Lovely. What name should I put that under?']]
+      },
+      property: {
+        label: 'Estate agents', time: '20:31',
+        title: 'Viewings booked after hours',
+        body: 'Buyers ring in the evening. The agent answers questions on a listing and books the viewing before they call someone else.',
+        points: ['Answers questions on listings', 'Books viewings into your diary', 'Qualifies buyers and renters'],
+        lines: [['Caller', 'Is the house on Ennis Road still available?'], ['Agent', 'It is. Would you like to book a viewing? I have Thursday evening or Saturday morning.'], ['Caller', 'Saturday morning.'], ['Agent', 'Great, 10 o’clock on Saturday. Can I take a mobile number for the agent?']]
+      }
+    };
+    const tabKey = this.state.tab;
+    const tabs = Object.keys(cases).map((k) => {
+      const sel = k === tabKey;
+      return {
+        label: cases[k].label,
+        selected: sel ? 'true' : 'false',
+        bg: sel ? 'var(--text)' : 'var(--surface)',
+        color: sel ? 'var(--bg)' : 'var(--text)',
+        border: sel ? 'var(--text)' : 'var(--border)',
+        pick: () => this.setState({ tab: k })
+      };
+    });
+    const c = cases[tabKey];
+    const useCase = {
+      title: c.title, body: c.body, points: c.points, time: c.time,
+      lines: c.lines.map((l, i) => {
+        const agent = l[0] === 'Agent';
+        return {
+          who: agent ? 'LightMove agent' : 'Caller',
+          text: l[1],
+          align: agent ? 'flex-start' : 'flex-end',
+          bg: agent ? 'var(--wash)' : 'var(--surface-2)',
+          radius: agent ? '16px 16px 16px 4px' : '16px 16px 4px 16px',
+          delay: (i * 0.25) + 's'
+        };
+      })
+    };
+    return {
+      theme: theme,
+      isDark: dark,
+      isLight: !dark,
+      themeLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => this.setState({ theme: dark ? 'light' : 'dark' }),
+      live: live,
+      idle: !live,
+      barClass: live ? 'lm-bar' : 'lm-bar calm',
+      orbGlow: live ? 'lm-orbglow on' : 'lm-orbglow',
+      callLabel: live ? 'Hang up' : 'Talk to Aoife',
+      callBg: live ? 'var(--text)' : 'var(--brand)',
+      callColor: live ? 'var(--bg)' : 'var(--on-brand)',
+      toggleLive: () => this.setState({ live: !live }),
+      tabs: tabs,
+      useCase: useCase
+    };
+  }
+}
+</script>
+</body>
+</html>

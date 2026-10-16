@@ -1,0 +1,89 @@
+---
+import Icon from '../site/Icon.astro';
+
+const faqs = [
+  {
+    q: 'Does it sound robotic?',
+    a: 'Agents use natural, modern voices and reply quickly enough for a normal back-and-forth. Try the demo at the top of this page and judge for yourself.',
+  },
+  {
+    q: 'Can I keep my existing number?',
+    a: 'Yes. Forward your number to LightMove or connect your SIP trunk. Your customers keep calling the number they know.',
+  },
+  {
+    q: "What happens when the agent can't help?",
+    a: 'You decide. It can transfer the call to a person, take a message or book a callback, and every call comes with a summary.',
+  },
+  {
+    q: 'Do I need technical skills?',
+    a: 'No. Describe the job in plain words and the builder drafts the workflow. Or let our team build and test it for you.',
+  },
+  {
+    q: 'Where is call data stored?',
+    a: '[CONFIRM HOSTING REGION AND RETENTION]. Recordings and transcripts are only visible to your team. See our Privacy Policy for details.',
+  },
+];
+---
+
+<section class="container faq">
+  <h2 class="h-section reveal">Questions, answered</h2>
+  <div class="stack" style="gap:12px">
+    {
+      faqs.map((f) => (
+        <details class="reveal">
+          <summary>
+            {f.q}
+            <span class="plus">
+              <Icon name="plus" size={22} />
+            </span>
+          </summary>
+          <p class="muted">{f.a}</p>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .faq {
+    max-width: 860px;
+    padding-bottom: 112px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  h2 {
+    text-align: center;
+    font-size: clamp(28px, 3.4vw, 40px);
+  }
+  details {
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: 16px;
+    padding: 0 24px;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    font-weight: 600;
+    font-size: 17px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .plus {
+    color: var(--lm-brand);
+    transition: transform 0.25s;
+  }
+  details[open] .plus {
+    transform: rotate(45deg);
+  }
+  details p {
+    padding-bottom: 20px;
+  }
+</style>

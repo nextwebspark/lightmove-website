@@ -1,0 +1,47 @@
+---
+import PostCard from '../../components/blog/PostCard.astro';
+import TagNav from '../../components/blog/TagNav.astro';
+import FeaturedPost from '../../components/blog/FeaturedPost.astro';
+import RssBand from '../../components/blog/RssBand.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts } from '../../lib/blog';
+
+const posts = await getPublishedPosts();
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p !== featured);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Guides, product news and what we're learning from building AI voice agents for Irish businesses."
+>
+  <section class="container blog-hero">
+    <span class="eyebrow in">The LightMove blog</span>
+    <h1 class="display in d1">Notes on <span class="accent">voice AI</span></h1>
+    <p class="lead in d2">Guides, product news and what we're learning from building phone agents in Ireland.</p>
+  </section>
+  <div class="container"><TagNav /></div>
+  {featured && <div class="container"><FeaturedPost post={featured} /></div>}
+  <section class="container posts">
+    <div class="row-wrap" style="gap:24px">{rest.map((post) => <PostCard post={post} />)}</div>
+    <RssBand />
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    padding-block: 80px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .blog-hero .display {
+    font-size: clamp(44px, 5.6vw, 72px);
+  }
+  .blog-hero .lead {
+    max-width: 560px;
+  }
+  .posts {
+    padding-bottom: 112px;
+  }
+</style>

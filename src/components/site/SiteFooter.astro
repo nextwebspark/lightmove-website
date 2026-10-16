@@ -1,0 +1,66 @@
+---
+import { APP, SITE } from '../../lib/site';
+import BrandLockup from './BrandLockup.astro';
+
+const columns = [
+  {
+    title: 'Product',
+    links: [
+      { href: '/#platform', label: 'Platform' },
+      { href: '/#use-cases', label: 'Use cases' },
+      { href: '/#pricing', label: 'Pricing' },
+      { href: APP.url, label: 'Sign in' },
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      { href: '/docs', label: 'Docs' },
+      { href: '/blog', label: 'Blog' },
+      { href: '/docs/go-live/web-widget', label: 'Web widget' },
+      { href: '/blog/rss.xml', label: 'RSS' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { href: '/#contact', label: 'Contact' },
+      { href: '/privacy', label: 'Privacy Policy' },
+      { href: '/terms', label: 'Terms of Service' },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-about">
+        <BrandLockup size={30} />
+        <p class="muted">
+          Voice AI agents for Irish businesses and VoIP operators. A {SITE.company} product, made in {
+            SITE.location
+          }.
+        </p>
+      </div>
+      <div class="footer-cols">
+        {
+          columns.map((column) => (
+            <nav class="footer-col" aria-label={column.title}>
+              <h2>{column.title}</h2>
+              {column.links.map((link) => (
+                <a href={link.href}>{link.label}</a>
+              ))}
+            </nav>
+          ))
+        }
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {year} {SITE.company} · {SITE.location}</span>
+      <a href={`mailto:${SITE.emails.hello}`} class="muted">{SITE.emails.hello}</a>
+    </div>
+  </div>
+</footer>

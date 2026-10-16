@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LightMove.ai — Docs</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Sora:wght@600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.lm{--bg:#F7FAF8;--surface:#FFFFFF;--surface-2:#EEF2F0;--border:#DCE7E1;--text:#0B1F17;--muted:#4A5A52;--brand:#0E7A4B;--on-brand:#FFFFFF;--wash:#E8F5EE;--warn-bg:#FFF0E6;--warn:#A84A0C;--code:#0B1F17;--code-line:#24493B;--glass:rgba(255,255,255,.85);--panel-muted:#9DB5A9;color-scheme:light;transition:background-color .35s,color .35s}
+.lm[data-theme="dark"]{--bg:#0A1F17;--surface:#133227;--surface-2:#1B3A2F;--border:#24493B;--text:#F2F7F4;--muted:var(--panel-muted);--brand:#3DDC97;--on-brand:#0A1F17;--wash:rgba(61,220,151,.12);--warn-bg:#3A2414;--warn:#FFB27F;--code:#06140F;--code-line:#24493B;--glass:rgba(10,31,23,.85);--bg:#0B0D11;--surface:#12151B;--surface-2:#171B22;--border:#232833;--text:#F1F3F6;--muted:#8D96A6;--wash:rgba(61,220,151,.12);--warn-bg:rgba(255,136,62,.14);--warn:#FFB27F;--glass:rgba(11,13,17,.82);--code:#07080B;--code-line:#232833;--panel-muted:#8D96A6;--surface:#14181F;--surface-2:#1C212A;--border:#262C37;--text:#F4F6F8;--muted:#A3ACB9;color-scheme:dark}
+.lm[data-theme="dark"] .lm-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.lm[data-theme="dark"] h1,.lm[data-theme="dark"] h2{color:#FFFFFF}
+a{color:#0E7A4B}a:hover{color:#0B5E3A}
+.lm a{color:var(--brand)}
+@keyframes lmUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lm-in{animation:lmUp .7s cubic-bezier(.2,.7,.2,1) both}
+.lm-nav{transition:background-color .2s,color .2s}.lm-nav:hover{background:var(--surface-2)}
+.lm-card{transition:transform .3s,border-color .3s}.lm-card:hover{transform:translateY(-3px);border-color:var(--brand)}
+.lm-btn{transition:transform .2s}.lm-btn:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion: reduce){.lm *{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div class="lm" data-theme="{{theme}}" style="font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 26px; min-height: 100vh;">
+
+<header style="position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
+<div style="max-width: 1360px; margin: 0 auto; padding: 12px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<div style="display: flex; align-items: center; gap: 14px;">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;" aria-label="LightMove.ai home">
+<svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#169B62"></rect><rect x="14" y="26" width="6" height="12" rx="3" fill="#FFFFFF"></rect><rect x="24" y="19" width="6" height="26" rx="3" fill="#FFFFFF"></rect><rect x="34" y="13" width="6" height="38" rx="3" fill="#FFFFFF"></rect><rect x="44" y="24" width="6" height="16" rx="3" fill="#FFFFFF"></rect><circle cx="47" cy="16.5" r="3.5" fill="#FF883E"></circle></svg>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 18px; letter-spacing: -0.03em; color: var(--text);">LightMove<span style="color: var(--brand);">.ai</span></span>
+</a>
+<span style="padding: 4px 10px; border-radius: 999px; background: var(--wash); color: var(--brand); font-size: 13px; font-weight: 600;">Docs</span>
+</div>
+<form role="search" style="flex: 1 1 280px; max-width: 440px; position: relative; display: flex;">
+<label for="docs-q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Search the docs</label>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; left: 14px; top: 13px; color: var(--muted);"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+<input id="docs-q" type="search" placeholder="Search the docs" style="width: 100%; height: 44px; box-sizing: border-box; padding: 0 56px 0 42px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); font-family: inherit; font-size: 15px; color: var(--text);">
+<span style="position: absolute; right: 12px; top: 11px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 20px; color: var(--muted);">⌘K</span>
+</form>
+<nav aria-label="Site" style="display: flex; align-items: center; gap: 4px;">
+<a href="Main.dc.html" style="padding: 10px 12px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Home</a>
+<a href="Blog.dc.html" style="padding: 10px 12px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Blog</a>
+<button type="button" class="lm-btn" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
+<sc-if value="{{isDark}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{isLight}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+</button>
+<a href="https://app.lightmove.ai" class="lm-btn" style="margin-left: 6px; display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 12px; background: var(--brand); color: var(--on-brand); text-decoration: none; font-weight: 600; font-size: 15px;">Open app</a>
+</nav>
+</div>
+</header>
+
+<div style="max-width: 1360px; margin: 0 auto; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 48px;">
+
+<nav aria-label="Docs" style="flex: 1 1 240px; max-width: 264px; padding: 36px 0; display: flex; flex-direction: column; gap: 28px; font-size: 15px; line-height: 22px;">
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0 12px 8px;">Get started</span>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Introduction</a>
+<a href="#" aria-current="page" style="padding: 8px 12px; border-radius: 10px; background: var(--wash); color: var(--brand); font-weight: 600; text-decoration: none;">Quick start</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Key ideas</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0 12px 8px;">Build agents</span>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Agent Builder</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Workflows and steps</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Voices and languages</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Tools and integrations</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Transfers to a person</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0 12px 8px;">Go live</span>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Phone numbers and SIP</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Web widget</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Calls, transcripts, recordings</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0 12px 8px;">Account</span>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">Pay as you go billing</a>
+<a href="#" class="lm-nav" style="padding: 8px 12px; border-radius: 10px; color: var(--text); text-decoration: none;">API keys</a>
+</div>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-wrap: wrap; gap: 48px; padding: 36px 0 96px;">
+<article style="flex: 999 1 520px; min-width: 0; max-width: 760px; display: flex; flex-direction: column; gap: 20px;">
+<span class="lm-in" style="font-size: 14px; color: var(--muted);">Get started / Quick start</span>
+<h1 class="lm-in" style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 48px; line-height: 54px; letter-spacing: -0.03em; animation-delay: .05s;">Quick start</h1>
+<p class="lm-in" style="margin: 0; font-size: 19px; line-height: 30px; color: var(--muted); animation-delay: .1s;">Build a voice agent, test it in your browser and connect it to a phone number. About fifteen minutes.</p>
+
+<div class="lm-in" style="display: flex; flex-wrap: wrap; gap: 12px; animation-delay: .15s;">
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; color: var(--muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>15 min</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; color: var(--muted);">Beginner</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 0; margin-top: 16px; border-left: 2px solid var(--border); padding-left: 28px; position: relative;">
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px; padding-bottom: 36px;">
+<span style="position: absolute; left: -45px; top: 0; width: 32px; height: 32px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px;">1</span>
+<h2 id="create" style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.01em;">Create an agent</h2>
+<p style="margin: 0;">Sign in at <a href="https://app.lightmove.ai">app.lightmove.ai</a> and choose <strong>New agent</strong>. Describe what it should do in a sentence or two. The Agent Builder drafts a workflow you can edit.</p>
+<div style="display: flex; gap: 12px; padding: 16px 18px; border-radius: 14px; background: var(--wash); color: var(--text); font-size: 15px; line-height: 24px;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; color: var(--brand);"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+<span><strong>Tip:</strong> be specific about the edges: what the agent must not promise, and when it should hand over to a person.</span>
+</div>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px; padding-bottom: 36px;">
+<span style="position: absolute; left: -45px; top: 0; width: 32px; height: 32px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px;">2</span>
+<h2 id="test" style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.01em;">Test it in the browser</h2>
+<p style="margin: 0;">Press <strong>Test call</strong> in the builder and speak to the agent. Each test is saved with a transcript so you can see where it went off track.</p>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px; padding-bottom: 36px;">
+<span style="position: absolute; left: -45px; top: 0; width: 32px; height: 32px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px;">3</span>
+<h2 id="live" style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.01em;">Put it on your website</h2>
+<p style="margin: 0;">Copy the embed snippet from <strong>Deploy → Web widget</strong> and paste it before the closing body tag.</p>
+<div style="border-radius: 14px; background: var(--code); color: #E8F5EE; overflow: hidden; border: 1px solid var(--code-line);">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--code-line); font-size: 13px; color: var(--panel-muted);">
+<span style="display: inline-flex; align-items: center; gap: 8px;"><span style="width: 10px; height: 10px; border-radius: 999px; background: #3DDC97;"></span>index.html</span>
+<button type="button" class="lm-btn" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--code-line); background: transparent; color: #E8F5EE; font-family: inherit; font-size: 13px; cursor: pointer;">Copy</button>
+</div>
+<pre style="margin: 0; padding: 18px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 22px;"><code><span style="color: var(--panel-muted);">&lt;</span><span style="color: #3DDC97;">script</span>
+  <span style="color: #FFB27F;">id</span>=<span style="color: #E8F5EE;">"lightmove-widget"</span>
+  <span style="color: #FFB27F;">src</span>=<span style="color: #E8F5EE;">"https://app.lightmove.ai/embed/widget.js"</span>
+  <span style="color: #FFB27F;">data-agent</span>=<span style="color: #E8F5EE;">"[YOUR_AGENT_TOKEN]"</span>
+  <span style="color: #FFB27F;">async</span><span style="color: var(--panel-muted);">&gt;&lt;/</span><span style="color: #3DDC97;">script</span><span style="color: var(--panel-muted);">&gt;</span></code></pre>
+</div>
+</div>
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px;">
+<span style="position: absolute; left: -45px; top: 0; width: 32px; height: 32px; border-radius: 999px; background: var(--brand); color: var(--on-brand); display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px;">4</span>
+<h2 id="phone" style="margin: 0; font-family: Sora, sans-serif; font-weight: 600; font-size: 26px; line-height: 32px; letter-spacing: -0.01em;">Connect a phone number</h2>
+<p style="margin: 0;">Under <strong>Deploy → Telephony</strong>, connect a number from your provider or point your SIP trunk at LightMove. Calls to that number now reach your agent.</p>
+<div style="display: flex; gap: 12px; padding: 16px 18px; border-radius: 14px; background: var(--warn-bg); color: var(--text); font-size: 15px; line-height: 24px;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; color: var(--warn);"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+<span><strong>Before going live:</strong> run at least three test calls end to end, including one transfer to a person.</span>
+</div>
+</div>
+</div>
+
+<div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 16px;">
+<a href="#" class="lm-card" style="flex: 1 1 240px; padding: 18px 20px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); text-decoration: none; color: var(--text); display: flex; flex-direction: column; gap: 4px;">
+<span style="font-size: 13px; color: var(--muted);">Previous</span>
+<span style="font-weight: 600;">← Introduction</span>
+</a>
+<a href="#" class="lm-card" style="flex: 1 1 240px; padding: 18px 20px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); text-decoration: none; color: var(--text); display: flex; flex-direction: column; gap: 4px; text-align: right;">
+<span style="font-size: 13px; color: var(--muted);">Next</span>
+<span style="font-weight: 600;">Key ideas →</span>
+</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 14px; color: var(--muted);">
+<span>Was this page helpful?</span>
+<span style="display: flex; gap: 8px;">
+<button type="button" class="lm-btn" style="height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; cursor: pointer;">Yes</button>
+<button type="button" class="lm-btn" style="height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: inherit; cursor: pointer;">No</button>
+</span>
+</div>
+</article>
+
+<aside aria-label="On this page" style="flex: 1 1 200px; max-width: 220px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 20px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);">On this page</span>
+<a href="#create" style="color: var(--brand); font-weight: 600; text-decoration: none; border-left: 2px solid var(--brand); padding-left: 12px;">Create an agent</a>
+<a href="#test" style="color: var(--muted); text-decoration: none; border-left: 2px solid var(--border); padding-left: 12px;">Test it in the browser</a>
+<a href="#live" style="color: var(--muted); text-decoration: none; border-left: 2px solid var(--border); padding-left: 12px;">Put it on your website</a>
+<a href="#phone" style="color: var(--muted); text-decoration: none; border-left: 2px solid var(--border); padding-left: 12px;">Connect a phone number</a>
+<div style="margin-top: 20px; padding: 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px;">
+<span style="font-weight: 600; color: var(--text);">Stuck?</span>
+<span style="color: var(--muted);">We can build it for you, or help you finish it.</span>
+<a href="Main.dc.html#contact" style="font-weight: 600; text-decoration: none;">Contact us →</a>
+</div>
+</aside>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null };
+  }
+  renderVals() {
+    const theme = this.state.theme || this.props.theme || 'light';
+    const dark = theme === 'dark';
+    return {
+      theme: theme,
+      isDark: dark,
+      isLight: !dark,
+      themeLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => this.setState({ theme: dark ? 'light' : 'dark' })
+    };
+  }
+}
+</script>
+</body>
+</html>

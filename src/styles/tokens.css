@@ -1,0 +1,69 @@
+/* LightMove.ai colour tokens, shared by the site and the Starlight docs.
+   Light values are the brand kit's; dark values are the app's charcoal surfaces with mint as
+   the only accent. The theme is set on <html data-theme> by public/theme-init.js. */
+
+:root {
+  --lm-green: #169b62;
+  --lm-spark: #ff883e;
+
+  --lm-bg: #f7faf8;
+  --lm-surface: #ffffff;
+  --lm-surface-2: #eef2f0;
+  --lm-border: #dce7e1;
+  --lm-text: #0b1f17;
+  --lm-heading: #0b1f17;
+  --lm-muted: #4a5a52;
+  --lm-brand: #0e7a4b;
+  --lm-brand-hover: #0b5e3a;
+  --lm-on-brand: #ffffff;
+  --lm-wash: #e8f5ee;
+  --lm-warn-bg: #fff0e6;
+  --lm-warn: #a84a0c;
+  --lm-shadow: 0 16px 40px rgba(11, 31, 23, 0.08);
+  --lm-glass: rgba(247, 250, 248, 0.82);
+  --lm-card-glass: rgba(255, 255, 255, 0.86);
+  --lm-glow-opacity: 0.5;
+
+  /* Panels stay dark in both themes (the "done for you" card, closing CTA, code). */
+  --lm-panel: #0b1f17;
+  --lm-panel-text: #f2f7f4;
+  --lm-panel-muted: #9db5a9;
+  --lm-panel-field: #133227;
+  --lm-panel-line: #24493b;
+  --lm-panel-accent: #3ddc97;
+  --lm-code: #0b1f17;
+
+  --lm-font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --lm-font-body: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --lm-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --lm-bg: #0b0d11;
+  --lm-surface: #14181f;
+  --lm-surface-2: #1c212a;
+  --lm-border: #262c37;
+  --lm-text: #f4f6f8;
+  --lm-heading: #ffffff;
+  --lm-muted: #a3acb9;
+  --lm-brand: #3ddc97;
+  --lm-brand-hover: #63e6ac;
+  --lm-on-brand: #0a1f17;
+  --lm-wash: rgba(61, 220, 151, 0.12);
+  --lm-warn-bg: rgba(255, 136, 62, 0.14);
+  --lm-warn: #ffb27f;
+  --lm-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --lm-glass: rgba(11, 13, 17, 0.82);
+  --lm-card-glass: rgba(20, 24, 31, 0.72);
+  --lm-glow-opacity: 1;
+
+  --lm-panel: #1c212a;
+  --lm-panel-muted: #a3acb9;
+  --lm-panel-field: #0e1116;
+  --lm-panel-line: #2a303b;
+  --lm-code: #07080b;
+
+  color-scheme: dark;
+}

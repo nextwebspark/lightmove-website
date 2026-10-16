@@ -1,0 +1,51 @@
+---
+import { BLOG_TAGS } from '../../content.config';
+import { tagSlug } from '../../lib/blog';
+
+interface Props {
+  current?: string;
+}
+const { current } = Astro.props;
+const items = [{ label: 'All', href: '/blog' }, ...BLOG_TAGS.map((t) => ({ label: t, href: `/blog/tag/${tagSlug(t)}` }))];
+const isCurrent = (label: string) => (current ? label === current : label === 'All');
+---
+
+<nav class="tag-nav" aria-label="Filter posts by tag">
+  {
+    items.map((item) => (
+      <a href={item.href} aria-current={isCurrent(item.label) ? 'page' : undefined}>
+        {item.label}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .tag-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 32px;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--lm-border);
+    background: var(--lm-surface);
+    color: var(--lm-text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+  a[aria-current='page'] {
+    background: var(--lm-text);
+    border-color: var(--lm-text);
+    color: var(--lm-bg);
+  }
+</style>

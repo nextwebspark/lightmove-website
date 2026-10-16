@@ -1,0 +1,214 @@
+---
+import Icon from '../site/Icon.astro';
+import { USE_CASES } from '../../lib/use-cases';
+---
+
+<section class="section container" id="use-cases">
+  <div class="section-head reveal">
+    <span class="eyebrow">Use cases</span>
+    <h2 class="h-section">Hear how it handles your calls</h2>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Industries" data-tabs>
+    {
+      USE_CASES.map((u, i) => (
+        <button
+          type="button"
+          role="tab"
+          class="tab"
+          id={`tab-${u.id}`}
+          aria-controls={`panel-${u.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+        >
+          {u.label}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    USE_CASES.map((u, i) => (
+      <div class="panel" role="tabpanel" id={`panel-${u.id}`} aria-labelledby={`tab-${u.id}`} hidden={i !== 0}>
+        <div class="panel-copy">
+          <h3 class="panel-title">{u.title}</h3>
+          <p class="muted lead-sm">{u.body}</p>
+          <ul class="points">
+            {u.points.map((p) => (
+              <li>
+                <span class="tick">
+                  <Icon name="check" size={14} strokeWidth={2.5} />
+                </span>
+                {p}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="transcript">
+          <div class="transcript-head">
+            <span class="eyebrow live">
+              <span class="live-dot" />
+              Sample call
+            </span>
+            <span class="mono muted">{u.time}</span>
+          </div>
+          {u.lines.map((l, j) => (
+            <p class:list={['bubble', { agent: l.agent }]} style={`animation-delay:${j * 0.25}s`}>
+              <span class="who">{l.agent ? 'LightMove agent' : 'Caller'}</span>
+              {l.text}
+            </p>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+  .tab {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid var(--lm-border);
+    background: var(--lm-surface);
+    color: var(--lm-text);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+  .tab[aria-selected='true'] {
+    background: var(--lm-text);
+    border-color: var(--lm-text);
+    color: var(--lm-bg);
+  }
+  .panel:not([hidden]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+  .panel-copy {
+    flex: 1 1 380px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+  }
+  .panel-title {
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.02em;
+  }
+  .lead-sm {
+    font-size: 17px;
+    line-height: 27px;
+  }
+  .points {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .points li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tick {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--lm-wash);
+    color: var(--lm-green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .transcript {
+    flex: 1 1 440px;
+    min-width: 0;
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--lm-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .transcript-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--lm-border);
+    font-size: 13px;
+  }
+  .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bubble {
+    align-self: flex-end;
+    max-width: 86%;
+    padding: 12px 16px;
+    border-radius: 16px 16px 4px 16px;
+    background: var(--lm-surface-2);
+    font-size: 15px;
+    line-height: 23px;
+    animation: lm-up 0.5s ease both;
+  }
+  .bubble.agent {
+    align-self: flex-start;
+    border-radius: 16px 16px 16px 4px;
+    background: var(--lm-wash);
+  }
+  .who {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--lm-muted);
+    margin-bottom: 2px;
+  }
+</style>
+
+<script>
+  for (const list of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (tab: HTMLButtonElement) => {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+      }
+    };
+    list.addEventListener('click', (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLButtonElement>('[role="tab"]');
+      if (tab) select(tab);
+    });
+    list.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(document.activeElement as HTMLButtonElement);
+      if (i < 0 || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus();
+      select(next);
+    });
+  }
+</script>

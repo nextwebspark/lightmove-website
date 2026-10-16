@@ -1,0 +1,86 @@
+# Sveltia CMS: edit the blog and legal pages in the browser at lightmove.ai/admin.
+# Fields mirror the zod schemas in src/content.config.ts; change both together.
+backend:
+  name: github
+  repo: nextwebspark/lightmove-website
+  branch: main
+  commit_messages:
+    create: 'content: add {{collection}} "{{slug}}"'
+    update: 'content: update {{collection}} "{{slug}}"'
+    delete: 'content: delete {{collection}} "{{slug}}"'
+
+site_url: https://lightmove.ai
+display_url: https://lightmove.ai
+logo_url: /favicon.svg
+media_folder: public/images/blog
+public_folder: /images/blog
+
+collections:
+  - name: blog
+    label: Blog posts
+    label_singular: Blog post
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    sortable_fields: [pubDate, title]
+    summary: '{{title}} · {{pubDate | date("YYYY-MM-DD")}}'
+    fields:
+      - { name: title, label: Title, widget: string, hint: 'Up to 90 characters.' }
+      - name: description
+        label: Description
+        widget: text
+        hint: '50–160 characters. Used on cards, in search results and link previews.'
+      - { name: pubDate, label: Publish date, widget: datetime, format: 'YYYY-MM-DD', time_format: false }
+      - name: updatedDate
+        label: Updated date
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        time_format: false
+        required: false
+      - { name: tag, label: Tag, widget: select, options: [Guides, Product, Telephony, Company] }
+      - name: author
+        label: Author
+        widget: relation
+        collection: authors
+        search_fields: [name]
+        value_field: '{{slug}}'
+        display_fields: [name]
+      - { name: featured, label: Featured on the blog page, widget: boolean, default: false }
+      - { name: draft, label: Draft (hidden from the live site), widget: boolean, default: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: authors
+    label: Authors
+    label_singular: Author
+    folder: src/content/authors
+    create: true
+    extension: json
+    format: json
+    slug: '{{slug}}'
+    identifier_field: name
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: role, label: Role, widget: string }
+      - { name: initials, label: Initials, widget: string, hint: 'Up to 3 letters, shown in the avatar.' }
+
+  - name: legal
+    label: Legal pages
+    files:
+      - name: privacy
+        label: Privacy Policy
+        file: src/content/legal/privacy.md
+        fields: &legal_fields
+          - { name: title, label: Title, widget: string }
+          - { name: description, label: Description, widget: text }
+          - { name: updated, label: Last updated, widget: datetime, format: 'YYYY-MM-DD', time_format: false }
+          - name: reviewedByCounsel
+            label: Reviewed by counsel (removes the draft notice)
+            widget: boolean
+            default: false
+          - { name: body, label: Body, widget: markdown }
+      - name: terms
+        label: Terms of Service
+        file: src/content/legal/terms.md
+        fields: *legal_fields

@@ -1,0 +1,55 @@
+---
+import PostCard from '../../../components/blog/PostCard.astro';
+import TagNav from '../../../components/blog/TagNav.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { BLOG_TAGS } from '../../../content.config';
+import { getPublishedPosts, tagSlug } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return BLOG_TAGS.map((tag) => ({
+    params: { tag: tagSlug(tag) },
+    props: { tag, posts: posts.filter((p) => p.data.tag === tag) },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`${tag} posts`}
+  description={`${tag} posts from the LightMove.ai blog: guides and notes on building AI voice agents for Irish businesses.`}
+>
+  <section class="container head">
+    <span class="eyebrow">The LightMove blog</span>
+    <h1 class="h-section">{tag}</h1>
+  </section>
+  <div class="container"><TagNav current={tag} /></div>
+  <section class="container list">
+    {
+      posts.length > 0 ? (
+        <div class="row-wrap" style="gap:24px">
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <p class="muted">
+          No {tag.toLowerCase()} posts yet. <a href="/blog">See all posts</a>.
+        </p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .head {
+    padding-block: 72px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .list {
+    padding-bottom: 112px;
+  }
+</style>

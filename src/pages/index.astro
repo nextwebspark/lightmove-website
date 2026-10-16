@@ -1,0 +1,27 @@
+---
+import BlogTeaser from '../components/home/BlogTeaser.astro';
+import ContactCta from '../components/home/ContactCta.astro';
+import Faq from '../components/home/Faq.astro';
+import Hero from '../components/home/Hero.astro';
+import HowItWorks from '../components/home/HowItWorks.astro';
+import Marquee from '../components/home/Marquee.astro';
+import Platform from '../components/home/Platform.astro';
+import Pricing from '../components/home/Pricing.astro';
+import UseCases from '../components/home/UseCases.astro';
+import Ways from '../components/home/Ways.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site';
+---
+
+<BaseLayout title={SITE.name} description={SITE.description}>
+  <Hero />
+  <Marquee />
+  <Ways />
+  <Platform />
+  <UseCases />
+  <HowItWorks />
+  <Pricing />
+  <Faq />
+  <BlogTeaser />
+  <ContactCta />
+</BaseLayout>

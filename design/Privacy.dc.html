@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Privacy Policy — LightMove.ai</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Sora:wght@600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.lm{--bg:#F7FAF8;--surface:#FFFFFF;--surface-2:#EEF2F0;--border:#DCE7E1;--text:#0B1F17;--muted:#4A5A52;--brand:#0E7A4B;--on-brand:#FFFFFF;--wash:#E8F5EE;--glass:rgba(247,250,248,.82);color-scheme:light;transition:background-color .35s,color .35s}
+.lm[data-theme="dark"]{--bg:#0A1F17;--surface:#133227;--surface-2:#1B3A2F;--border:#24493B;--text:#F2F7F4;--muted:#9DB5A9;--brand:#3DDC97;--on-brand:#0A1F17;--wash:rgba(61,220,151,.12);--glass:rgba(10,31,23,.82);--bg:#0B0D11;--surface:#12151B;--surface-2:#171B22;--border:#232833;--text:#F1F3F6;--muted:#8D96A6;--wash:rgba(61,220,151,.12);--glass:rgba(11,13,17,.82);--surface:#14181F;--surface-2:#1C212A;--border:#262C37;--text:#F4F6F8;--muted:#A3ACB9;color-scheme:dark}
+.lm[data-theme="dark"] h1,.lm[data-theme="dark"] h2{color:#FFFFFF}
+a{color:#0E7A4B}a:hover{color:#0B5E3A}
+.lm a{color:var(--brand)}
+.lm h2{margin:24px 0 0;font-family:Sora,sans-serif;font-weight:600;font-size:24px;line-height:30px;letter-spacing:-0.01em;scroll-margin-top:96px}
+.lm p,.lm ul{margin:0}
+.lm li{margin:6px 0}
+@keyframes lmUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lm-in{animation:lmUp .7s cubic-bezier(.2,.7,.2,1) both}
+.lm-btn{transition:transform .2s}.lm-btn:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion: reduce){.lm *{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div class="lm" data-theme="{{theme}}" style="font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; color: var(--text); background: var(--bg); font-size: 16px; line-height: 27px; min-height: 100vh;">
+
+<header style="position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--border); background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;" aria-label="LightMove.ai home">
+<svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#169B62"></rect><rect x="14" y="26" width="6" height="12" rx="3" fill="#FFFFFF"></rect><rect x="24" y="19" width="6" height="26" rx="3" fill="#FFFFFF"></rect><rect x="34" y="13" width="6" height="38" rx="3" fill="#FFFFFF"></rect><rect x="44" y="24" width="6" height="16" rx="3" fill="#FFFFFF"></rect><circle cx="47" cy="16.5" r="3.5" fill="#FF883E"></circle></svg>
+<span style="font-family: Sora, sans-serif; font-weight: 600; font-size: 20px; letter-spacing: -0.03em; color: var(--text);">LightMove<span style="color: var(--brand);">.ai</span></span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px;">
+<a href="Main.dc.html#product" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Product</a>
+<a href="Docs.dc.html" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Docs</a>
+<a href="Blog.dc.html" style="padding: 10px 14px; color: var(--text); text-decoration: none; font-weight: 500; font-size: 15px;">Blog</a>
+<button type="button" class="lm-btn" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="margin-left: 6px; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
+<sc-if value="{{isDark}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+<sc-if value="{{isLight}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+</button>
+</nav>
+</div>
+</header>
+
+<section style="max-width: 1240px; margin: 0 auto; padding: 64px 24px 32px; display: flex; flex-direction: column; gap: 16px;">
+<div class="lm-in" style="display: flex; gap: 8px;" role="tablist" aria-label="Legal">
+<a href="Privacy.dc.html" aria-current="page" style="display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; background: var(--text); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 14px;">Privacy Policy</a>
+<a href="Terms.dc.html" style="display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--border); box-sizing: border-box; background: var(--surface); color: var(--text); text-decoration: none; font-weight: 600; font-size: 14px;">Terms of Service</a>
+</div>
+<h1 class="lm-in" style="margin: 8px 0 0; font-family: Sora, sans-serif; font-weight: 600; font-size: clamp(40px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.04em; animation-delay: .05s;">Privacy Policy</h1>
+<p class="lm-in" style="margin: 0; color: var(--muted); animation-delay: .1s;">Last updated [DATE] · lightmove.ai/privacy</p>
+</section>
+
+<div style="max-width: 1240px; margin: 0 auto; padding: 0 24px 96px; display: flex; flex-wrap: wrap; gap: 56px;">
+<nav aria-label="On this page" style="flex: 1 1 220px; max-width: 260px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 20px;">
+<span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px;">Contents</span>
+<a href="#who" style="padding: 6px 0; color: var(--muted); text-decoration: none;">1. Who we are</a>
+<a href="#collect" style="padding: 6px 0; color: var(--muted); text-decoration: none;">2. What we collect</a>
+<a href="#use" style="padding: 6px 0; color: var(--muted); text-decoration: none;">3. How we use it</a>
+<a href="#google" style="padding: 6px 0; color: var(--brand); font-weight: 600; text-decoration: none;">4. Google user data</a>
+<a href="#share" style="padding: 6px 0; color: var(--muted); text-decoration: none;">5. Who we share it with</a>
+<a href="#retain" style="padding: 6px 0; color: var(--muted); text-decoration: none;">6. How long we keep it</a>
+<a href="#rights" style="padding: 6px 0; color: var(--muted); text-decoration: none;">7. Your rights</a>
+<a href="#security" style="padding: 6px 0; color: var(--muted); text-decoration: none;">8. Security and transfers</a>
+<a href="#contact" style="padding: 6px 0; color: var(--muted); text-decoration: none;">9. Contact us</a>
+</nav>
+
+<article style="flex: 999 1 560px; min-width: 0; max-width: 760px; display: flex; flex-direction: column; gap: 16px;">
+<p style="font-size: 18px; line-height: 30px; color: var(--muted);">This policy explains what personal data LightMove.ai collects, why, and the choices you have. It covers our website, the LightMove.ai app and the voice agents our customers run on it.</p>
+
+<h2 id="who">1. Who we are</h2>
+<p>LightMove.ai is operated by NextWebSpark [LEGAL ENTITY NAME, COMPANY NUMBER], [REGISTERED ADDRESS], Limerick, Ireland. For account and website data we are the data controller. For call data that our customers' agents handle, we act as a data processor on our customer's behalf.</p>
+
+<h2 id="collect">2. What we collect</h2>
+<ul>
+<li><strong>Account details:</strong> your name, work email, company and login details.</li>
+<li><strong>Call data:</strong> audio recordings, transcripts, caller phone numbers, call summaries and anything callers say to an agent.</li>
+<li><strong>Agent configuration:</strong> the prompts, workflows and settings you create.</li>
+<li><strong>Billing details:</strong> handled by our payment provider. We do not store full card numbers.</li>
+<li><strong>Usage data:</strong> basic logs and analytics about how the website and app are used. [CONFIRM COOKIES AND ANALYTICS TOOLS]</li>
+</ul>
+
+<h2 id="use">3. How we use it</h2>
+<ul>
+<li>To run the service: answer calls, run your workflows and show you call logs.</li>
+<li>To support you, bill you and keep the service secure.</li>
+<li>To improve the product, using aggregated or de-identified data where we can.</li>
+</ul>
+<p>We do not sell personal data. [CONFIRM POLICY ON USING CUSTOMER DATA TO TRAIN MODELS]</p>
+
+<h2 id="google">4. Google user data</h2>
+<p>You can connect a Google account so your agents can work with your calendar, spreadsheets and email. We only request access when you connect an integration, and only use it for the features you set up:</p>
+<div style="border: 1px solid var(--border); border-radius: 16px; overflow: hidden; font-size: 15px; line-height: 24px;">
+<div style="display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface);"><span style="flex: 1 1 180px; font-weight: 600;">Google Calendar</span><span style="flex: 2 1 280px; color: var(--muted);">Check availability and create, move or cancel events when a caller books.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface);"><span style="flex: 1 1 180px; font-weight: 600;">Google Sheets</span><span style="flex: 2 1 280px; color: var(--muted);">Read and write rows in sheets you choose, for example to log calls or look up prices.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface);"><span style="flex: 1 1 180px; font-weight: 600;">Gmail (send only)</span><span style="flex: 2 1 280px; color: var(--muted);">Send emails you have set up in a workflow, such as call summaries. We cannot read your inbox.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface);"><span style="flex: 1 1 180px; font-weight: 600;">Google Drive (app files)</span><span style="flex: 2 1 280px; color: var(--muted);">Access only files LightMove.ai creates or you open with it.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 14px 18px; background: var(--surface);"><span style="flex: 1 1 180px; font-weight: 600;">Email address</span><span style="flex: 2 1 280px; color: var(--muted);">Identify which Google account is connected.</span></div>
+</div>
+<div style="padding: 18px 20px; border-radius: 16px; background: var(--wash); font-size: 15px; line-height: 25px;">LightMove.ai's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</div>
+<p>We do not use Google user data for advertising, do not sell it, and do not let people read it unless you ask us to, it is needed for security, or the law requires it. You can disconnect at any time in the app or at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</p>
+
+<h2 id="share">5. Who we share it with</h2>
+<p>We use trusted providers to run the service, including cloud hosting (Google Cloud), speech and language model providers, telephony carriers and our payment provider. Each is bound by a data processing agreement. [LINK TO SUB-PROCESSOR LIST]</p>
+
+<h2 id="retain">6. How long we keep it</h2>
+<p>Call recordings and transcripts are kept for [RETENTION PERIOD] unless you delete them sooner or change the setting. Account data is kept while your account is open and for [PERIOD] afterwards for legal and billing reasons.</p>
+
+<h2 id="rights">7. Your rights</h2>
+<p>Under the GDPR you can ask to access, correct, delete, restrict or move your personal data, and object to how we use it. Email us to make a request. If you are unhappy with our response you can complain to the <a href="https://www.dataprotection.ie">Data Protection Commission</a> in Ireland.</p>
+<p>If you called a business that uses LightMove.ai, that business controls your call data. Contact them first. We will help them answer your request.</p>
+
+<h2 id="security">8. Security and transfers</h2>
+<p>Data is encrypted in transit and access is limited to staff who need it. Data is hosted in [REGION]. Where data leaves the EEA, we use Standard Contractual Clauses or another lawful safeguard.</p>
+
+<h2 id="contact">9. Contact us</h2>
+<p>Questions about privacy: <a href="mailto:privacy@lightmove.ai">privacy@lightmove.ai</a> or write to NextWebSpark, [ADDRESS], Limerick, Ireland.</p>
+</article>
+</div>
+
+<footer style="border-top: 1px solid var(--border); background: var(--surface);">
+<div style="max-width: 1240px; margin: 0 auto; padding: 32px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted);">
+<span>© 2026 NextWebSpark · Limerick, Ireland</span>
+<span style="display: flex; gap: 20px;"><a href="Docs.dc.html" style="color: var(--muted); text-decoration: none;">Docs</a><a href="Privacy.dc.html" style="color: var(--muted); text-decoration: none;">Privacy</a><a href="Terms.dc.html" style="color: var(--muted); text-decoration: none;">Terms</a></span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null };
+  }
+  renderVals() {
+    const theme = this.state.theme || this.props.theme || 'light';
+    const dark = theme === 'dark';
+    return {
+      theme: theme,
+      isDark: dark,
+      isLight: !dark,
+      themeLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => this.setState({ theme: dark ? 'light' : 'dark' })
+    };
+  }
+}
+</script>
+</body>
+</html>

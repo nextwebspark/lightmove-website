@@ -1,0 +1,37 @@
+---
+import Icon from '../site/Icon.astro';
+---
+
+<div class="rss reveal">
+  <div class="stack" style="gap:6px">
+    <h2>Get new posts by RSS</h2>
+    <p>No account needed. Works with any feed reader.</p>
+  </div>
+  <a href="/blog/rss.xml" class="btn btn-panel"><Icon name="rss" size={18} strokeWidth={2} />Subscribe to RSS</a>
+</div>
+
+<style>
+  .rss {
+    margin-top: 56px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 40px;
+    border-radius: 24px;
+    background: var(--lm-panel);
+    color: var(--lm-panel-text);
+  }
+  h2 {
+    color: var(--lm-panel-text);
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 32px;
+    letter-spacing: -0.02em;
+  }
+  p {
+    color: var(--lm-panel-muted);
+  }
+</style>
