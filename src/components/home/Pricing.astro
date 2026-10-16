@@ -40,27 +40,25 @@ const plans = [
     <p class="lead">No monthly commitment. Pay for the minutes your agents spend on calls.</p>
   </div>
   <div class="plans">
-    {
-      plans.map((p) => (
-        <article class:list={['card card-hover plan reveal', { featured: p.featured }]}>
-          {p.featured && <span class="flag">Most popular</span>}
-          <h3 class="plan-name">{p.name}</h3>
-          <p class="price">
-            {p.price}
-            {p.unit && <span class="unit">{p.unit}</span>}
-          </p>
-          <p class="muted small">{p.blurb}</p>
-          <ul>
-            {p.features.map((f) => (
-              <li>{f}</li>
-            ))}
-          </ul>
-          <a href={p.cta.href} class:list={['btn', p.featured ? 'btn-primary' : 'btn-secondary']}>
-            {p.cta.label}
-          </a>
-        </article>
-      ))
-    }
+    {plans.map((p) => (
+      <article class:list={['card card-hover plan reveal', { featured: p.featured }]}>
+        {p.featured && <span class="flag">Most popular</span>}
+        <h3 class="plan-name">{p.name}</h3>
+        <p class="price">
+          {p.price}
+          {p.unit && <span class="unit">{p.unit}</span>}
+        </p>
+        <p class="muted small">{p.blurb}</p>
+        <ul>
+          {p.features.map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+        <a href={p.cta.href} class:list={['btn', p.featured ? 'btn-primary' : 'btn-secondary']}>
+          {p.cta.label}
+        </a>
+      </article>
+    ))}
   </div>
 </section>
 

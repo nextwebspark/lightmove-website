@@ -5,23 +5,21 @@ import { getPublishedPosts } from '../../lib/blog';
 const posts = (await getPublishedPosts()).slice(0, 3);
 ---
 
-{
-  posts.length > 0 && (
-    <section class="container teaser">
-      <div class="section-head split reveal">
-        <h2 class="h-section">From the blog</h2>
-        <a href="/blog" class="link-arrow">
-          All posts →
-        </a>
-      </div>
-      <div class="row-wrap" style="gap:24px">
-        {posts.map((post) => (
-          <PostCard post={post} />
-        ))}
-      </div>
-    </section>
-  )
-}
+{posts.length > 0 && (
+  <section class="container teaser">
+    <div class="section-head split reveal">
+      <h2 class="h-section">From the blog</h2>
+      <a href="/blog" class="link-arrow">
+        All posts →
+      </a>
+    </div>
+    <div class="row-wrap" style="gap:24px">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
+)}
 
 <style>
   .teaser {

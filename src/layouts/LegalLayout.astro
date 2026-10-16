@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import { formatDate } from '../lib/blog';
+import { breadcrumbList } from '../lib/seo/jsonld';
 
 interface Props {
   entry: CollectionEntry<'legal'>;
@@ -17,16 +18,18 @@ const others = [
 ];
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  jsonLd={[breadcrumbList([{ name: entry.data.title, path: `/${entry.id}` }])]}
+>
   <section class="container legal-head">
     <nav class="legal-tabs in" aria-label="Legal">
-      {
-        others.map((o) => (
-          <a href={o.href} aria-current={Astro.url.pathname === o.href ? 'page' : undefined}>
-            {o.label}
-          </a>
-        ))
-      }
+      {others.map((o) => (
+        <a href={o.href} aria-current={Astro.url.pathname === o.href ? 'page' : undefined}>
+          {o.label}
+        </a>
+      ))}
     </nav>
     <h1 class="display in d1">{entry.data.title}</h1>
     <p class="muted in d2">Last updated {formatDate(entry.data.updated)}</p>
@@ -34,18 +37,20 @@ const others = [
   <div class="container legal-body">
     <nav class="toc" aria-label="Contents">
       <span class="eyebrow">Contents</span>
-      {toc.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+      {toc.map((h) => (
+        <a href={`#${h.slug}`}>{h.text}</a>
+      ))}
     </nav>
     <article class="legal-article">
-      {
-        !entry.data.reviewedByCounsel && (
-          <p class="notice">
-            <strong>Draft, pending legal review.</strong> This page describes how LightMove.ai works today and will be
-            finalised before launch.
-          </p>
-        )
-      }
-      <div class="prose legal-prose"><Content /></div>
+      {!entry.data.reviewedByCounsel && (
+        <p class="notice">
+          <strong>Draft, pending legal review.</strong> This page describes how LightMove.ai works
+          today and will be finalised before launch.
+        </p>
+      )}
+      <div class="prose legal-prose">
+        <Content />
+      </div>
     </article>
   </div>
 </BaseLayout>

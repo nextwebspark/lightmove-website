@@ -34,7 +34,10 @@ export default defineConfig({
         './src/styles/tokens.css',
         './src/styles/docs.css',
       ],
+      head: [{ tag: 'meta', attrs: { name: 'theme-color', content: '#169B62' } }],
+      routeMiddleware: './src/routeData.ts',
       components: {
+        Head: './src/components/docs/DocsHead.astro',
         SiteTitle: './src/components/docs/DocsSiteTitle.astro',
       },
       sidebar: [

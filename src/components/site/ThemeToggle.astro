@@ -2,9 +2,18 @@
 import Icon from './Icon.astro';
 ---
 
-<button type="button" class="btn icon-btn theme-toggle" data-theme-toggle aria-label="Switch colour theme">
-  <span class="theme-icon-dark"><Icon name="moon" /></span>
-  <span class="theme-icon-light"><Icon name="sun" /></span>
+<button
+  type="button"
+  class="btn icon-btn theme-toggle"
+  data-theme-toggle
+  aria-label="Switch colour theme"
+>
+  <span class="theme-icon-dark">
+    <Icon name="moon" />
+  </span>
+  <span class="theme-icon-light">
+    <Icon name="sun" />
+  </span>
 </button>
 
 <style>
@@ -23,7 +32,9 @@ import Icon from './Icon.astro';
   // Same storage key as Starlight's own picker, so the docs and the site stay in step.
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
     const label = () =>
-      document.documentElement.dataset.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      document.documentElement.dataset.theme === 'dark'
+        ? 'Switch to light mode'
+        : 'Switch to dark mode';
     button.setAttribute('aria-label', label());
     button.addEventListener('click', () => {
       const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';

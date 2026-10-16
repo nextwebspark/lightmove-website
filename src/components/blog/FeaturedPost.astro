@@ -12,7 +12,12 @@ const bars = [80, 150, 220, 120, 64];
 
 <a href={`/blog/${post.id}`} class="card card-hover featured in d2">
   <div class="art" aria-hidden="true">
-    {bars.map((h, i) => <span class="wave-bar" style={`width:18px;height:${h}px;animation-delay:${i * 0.3}s;animation-duration:2.4s`} />)}
+    {bars.map((h, i) => (
+      <span
+        class="wave-bar"
+        style={`width:18px;height:${h}px;animation-delay:${i * 0.3}s;animation-duration:2.4s`}
+      />
+    ))}
     <span class="flag">Featured</span>
   </div>
   <div class="copy">
@@ -21,7 +26,9 @@ const bars = [80, 150, 220, 120, 64];
     <span class="muted desc">{post.data.description}</span>
     <span class="byline">
       <span class="avatar">{author?.data.initials}</span>
-      <span>{author?.data.name} · {formatDate(post.data.pubDate)} · {readingMinutes(post.body)} min read</span>
+      <span>
+        {author?.data.name} · {formatDate(post.data.pubDate)} · {readingMinutes(post.body)} min read
+      </span>
     </span>
     <span class="link-arrow">Read the post →</span>
   </div>

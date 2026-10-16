@@ -10,10 +10,36 @@ import Pricing from '../components/home/Pricing.astro';
 import UseCases from '../components/home/UseCases.astro';
 import Ways from '../components/home/Ways.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE } from '../lib/site';
+import { FAQS } from '../lib/faqs';
+import { staticPages } from '../lib/pages';
+import { faqPage, organization, softwareApplication, webSite } from '../lib/seo/jsonld';
+
+const page = staticPages.home;
+const jsonLd = [
+  organization(),
+  webSite(),
+  softwareApplication({
+    description: page.description,
+    featureList: [
+      'AI voice agents that answer phone and web calls',
+      'Agent Builder: describe an agent in plain words',
+      'Phone numbers, call forwarding and SIP trunks',
+      'Embeddable web voice widget',
+      'Google Calendar, Sheets and Gmail integrations',
+      'Call recordings, transcripts and summaries',
+      'Transfers to a person',
+    ],
+  }),
+  faqPage(FAQS),
+];
 ---
 
-<BaseLayout title={SITE.name} description={SITE.description}>
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  ogTitle={page.ogTitle}
+  jsonLd={jsonLd}
+>
   <Hero />
   <Marquee />
   <Ways />

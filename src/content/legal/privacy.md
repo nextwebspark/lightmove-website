@@ -31,12 +31,12 @@ We do not sell personal data. [CONFIRM POLICY ON USING CUSTOMER DATA TO TRAIN MO
 
 You can connect a Google account so your agents can work with your calendar, spreadsheets and email. We only request access when you connect an integration, and only use it for the features you set up.
 
-| Google service           | What LightMove.ai does with it                                                                 |
-| ------------------------ | ---------------------------------------------------------------------------------------------- |
+| Google service           | What LightMove.ai does with it                                                                |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
 | Google Calendar          | Check availability and create, move or cancel events when a caller books.                     |
-| Google Sheets            | Read and write rows in sheets you choose, for example to log calls or look up prices.          |
+| Google Sheets            | Read and write rows in sheets you choose, for example to log calls or look up prices.         |
 | Gmail (send only)        | Send emails you have set up in a workflow, such as call summaries. We cannot read your inbox. |
-| Google Drive (app files) | Access only files LightMove.ai creates or you open with it.                                    |
+| Google Drive (app files) | Access only files LightMove.ai creates or you open with it.                                   |
 | Email address            | Identify which Google account is connected.                                                   |
 
 LightMove.ai's use and transfer to any other app of information received from Google APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.

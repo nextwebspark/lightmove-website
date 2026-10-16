@@ -21,29 +21,35 @@ const isCurrent = (href: string) => !href.includes('#') && path.startsWith(href)
     <BrandLockup />
     <nav class="nav" aria-label="Main">
       <div class="nav-links">
-        {
-          links.map((link) => (
-            <a href={link.href} class="nav-link" aria-current={isCurrent(link.href) ? 'page' : undefined}>
-              {link.label}
-            </a>
-          ))
-        }
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class="nav-link"
+            aria-current={isCurrent(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
       </div>
       <ThemeToggle />
       <details class="nav-menu">
-        <summary class="btn icon-btn" aria-label="Menu"><Icon name="menu" /></summary>
+        <summary class="btn icon-btn" aria-label="Menu">
+          <Icon name="menu" />
+        </summary>
         <div class="nav-menu-panel">
-          {
-            links.map((link) => (
-              <a href={link.href} class="nav-link">
-                {link.label}
-              </a>
-            ))
-          }
-          <a href={APP.url} class="nav-link">Sign in</a>
+          {links.map((link) => (
+            <a href={link.href} class="nav-link">
+              {link.label}
+            </a>
+          ))}
+          <a href={APP.url} class="nav-link">
+            Sign in
+          </a>
         </div>
       </details>
-      <a href={APP.signUpUrl} class="btn btn-primary nav-cta">Start free</a>
+      <a href={APP.signUpUrl} class="btn btn-primary nav-cta">
+        Start free
+      </a>
     </nav>
   </div>
 </header>

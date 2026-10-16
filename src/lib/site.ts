@@ -1,13 +1,17 @@
 export const SITE = {
   name: 'LightMove.ai',
   shortName: 'LightMove',
-  tld: '.ai',
   url: 'https://lightmove.ai',
-  tagline: 'Voice AI agents that answer every call',
+  tagline: 'AI voice agents for business',
   description:
-    'LightMove.ai builds voice agents that answer the phone, book appointments and hand over to your team. Made in Limerick, Ireland.',
+    'LightMove.ai builds AI voice agents that answer your phone, book appointments and hand over to your team. Made in Limerick, Ireland.',
   company: 'NextWebSpark',
   location: 'Limerick, Ireland',
+  locale: 'en-IE',
+  ogLocale: 'en_IE',
+  themeColor: '#169B62',
+  /** Official profiles for Organization.sameAs. Add each one as it goes live; never a placeholder. */
+  sameAs: [] as readonly string[],
   emails: {
     hello: 'hello@lightmove.ai',
     privacy: 'privacy@lightmove.ai',
@@ -22,10 +26,6 @@ export const APP = {
   signUpUrl: appUrl,
   demoToken: import.meta.env.PUBLIC_DEMO_AGENT_TOKEN || '',
 } as const;
-
-export function absoluteUrl(path: string): string {
-  return new URL(path, SITE.url).toString().replace(/\/$/, '') || SITE.url;
-}
 
 export function contactHref(subject: string): string {
   return `mailto:${SITE.emails.hello}?subject=${encodeURIComponent(subject)}`;

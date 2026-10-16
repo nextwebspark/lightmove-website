@@ -1,23 +1,27 @@
 ---
-import { BLOG_TAGS } from '../../content.config';
-import { tagSlug } from '../../lib/blog';
+import { BLOG_TAGS } from '../../lib/content-schemas';
+import { getPublishedPosts, tagSlug } from '../../lib/blog';
 
 interface Props {
   current?: string;
 }
 const { current } = Astro.props;
-const items = [{ label: 'All', href: '/blog' }, ...BLOG_TAGS.map((t) => ({ label: t, href: `/blog/tag/${tagSlug(t)}` }))];
+// Only tags with posts get a page, so the nav never links to an empty listing.
+const posts = await getPublishedPosts();
+const tags = BLOG_TAGS.filter((tag) => posts.some((post) => post.data.tag === tag));
+const items = [
+  { label: 'All', href: '/blog' },
+  ...tags.map((t) => ({ label: t, href: `/blog/tag/${tagSlug(t)}` })),
+];
 const isCurrent = (label: string) => (current ? label === current : label === 'All');
 ---
 
 <nav class="tag-nav" aria-label="Filter posts by tag">
-  {
-    items.map((item) => (
-      <a href={item.href} aria-current={isCurrent(item.label) ? 'page' : undefined}>
-        {item.label}
-      </a>
-    ))
-  }
+  {items.map((item) => (
+    <a href={item.href} aria-current={isCurrent(item.label) ? 'page' : undefined}>
+      {item.label}
+    </a>
+  ))}
 </nav>
 
 <style>

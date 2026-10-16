@@ -15,8 +15,16 @@ const sectors = [
 
 <section class="marquee" aria-label="Who it's for">
   <div class="marquee-track">
-    <ul>{sectors.map((s) => <li>{s}</li>)}</ul>
-    <ul aria-hidden="true">{sectors.map((s) => <li>{s}</li>)}</ul>
+    <ul>
+      {sectors.map((s) => (
+        <li>{s}</li>
+      ))}
+    </ul>
+    <ul aria-hidden="true">
+      {sectors.map((s) => (
+        <li>{s}</li>
+      ))}
+    </ul>
   </div>
 </section>
 

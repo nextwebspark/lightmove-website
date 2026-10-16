@@ -7,3 +7,4 @@ dist/
 .firebase/
 *.log
 .DS_Store
+.lighthouseci/

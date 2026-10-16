@@ -40,27 +40,28 @@ const year = new Date().getFullYear();
       <div class="footer-about">
         <BrandLockup size={30} />
         <p class="muted">
-          Voice AI agents for Irish businesses and VoIP operators. A {SITE.company} product, made in {
-            SITE.location
-          }.
+          Voice AI agents for Irish businesses and VoIP operators. A {SITE.company} product, made in{' '}
+          {SITE.location}.
         </p>
       </div>
       <div class="footer-cols">
-        {
-          columns.map((column) => (
-            <nav class="footer-col" aria-label={column.title}>
-              <h2>{column.title}</h2>
-              {column.links.map((link) => (
-                <a href={link.href}>{link.label}</a>
-              ))}
-            </nav>
-          ))
-        }
+        {columns.map((column) => (
+          <nav class="footer-col" aria-label={column.title}>
+            <h2>{column.title}</h2>
+            {column.links.map((link) => (
+              <a href={link.href}>{link.label}</a>
+            ))}
+          </nav>
+        ))}
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© {year} {SITE.company} · {SITE.location}</span>
-      <a href={`mailto:${SITE.emails.hello}`} class="muted">{SITE.emails.hello}</a>
+      <span>
+        © {year} {SITE.company} · {SITE.location}
+      </span>
+      <a href={`mailto:${SITE.emails.hello}`} class="muted">
+        {SITE.emails.hello}
+      </a>
     </div>
   </div>
 </footer>

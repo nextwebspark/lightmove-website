@@ -10,7 +10,10 @@ interface Props {
 const { post, compact = false } = Astro.props;
 
 // Each tag gets its own cover so the grid has rhythm without stock imagery.
-const covers: Record<Post['data']['tag'], { icon: IconName; tone: 'wash' | 'warn' | 'panel' | 'plain' }> = {
+const covers: Record<
+  Post['data']['tag'],
+  { icon: IconName; tone: 'wash' | 'warn' | 'panel' | 'plain' }
+> = {
   Guides: { icon: 'message', tone: 'wash' },
   Product: { icon: 'transfer', tone: 'warn' },
   Telephony: { icon: 'phone', tone: 'plain' },
@@ -20,15 +23,15 @@ const cover = covers[post.data.tag];
 ---
 
 <a href={`/blog/${post.id}`} class="card card-hover post-card reveal">
-  {
-    !compact && (
-      <div class:list={['cover', cover.tone]} aria-hidden="true">
-        <Icon name={cover.icon} size={64} strokeWidth={1.25} />
-      </div>
-    )
-  }
+  {!compact && (
+    <div class:list={['cover', cover.tone]} aria-hidden="true">
+      <Icon name={cover.icon} size={64} strokeWidth={1.25} />
+    </div>
+  )}
   <div class="body">
-    <span class="meta"><span class="tag">{post.data.tag}</span> · {formatDate(post.data.pubDate)}</span>
+    <span class="meta">
+      <span class="tag">{post.data.tag}</span> · {formatDate(post.data.pubDate)}
+    </span>
     <span class="title">{post.data.title}</span>
     {!compact && <span class="muted desc">{post.data.description}</span>}
     {!compact && <span class="meta">{readingMinutes(post.body)} min read</span>}

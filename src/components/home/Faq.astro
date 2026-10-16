@@ -1,46 +1,24 @@
 ---
 import Icon from '../site/Icon.astro';
-
-const faqs = [
-  {
-    q: 'Does it sound robotic?',
-    a: 'Agents use natural, modern voices and reply quickly enough for a normal back-and-forth. Try the demo at the top of this page and judge for yourself.',
-  },
-  {
-    q: 'Can I keep my existing number?',
-    a: 'Yes. Forward your number to LightMove or connect your SIP trunk. Your customers keep calling the number they know.',
-  },
-  {
-    q: "What happens when the agent can't help?",
-    a: 'You decide. It can transfer the call to a person, take a message or book a callback, and every call comes with a summary.',
-  },
-  {
-    q: 'Do I need technical skills?',
-    a: 'No. Describe the job in plain words and the builder drafts the workflow. Or let our team build and test it for you.',
-  },
-  {
-    q: 'Where is call data stored?',
-    a: '[CONFIRM HOSTING REGION AND RETENTION]. Recordings and transcripts are only visible to your team. See our Privacy Policy for details.',
-  },
-];
+import { FAQS } from '../../lib/faqs';
 ---
 
-<section class="container faq">
-  <h2 class="h-section reveal">Questions, answered</h2>
+<section class="container faq" aria-labelledby="faq-title">
+  <h2 class="h-section reveal" id="faq-title">
+    Questions, answered
+  </h2>
   <div class="stack" style="gap:12px">
-    {
-      faqs.map((f) => (
-        <details class="reveal">
-          <summary>
-            {f.q}
-            <span class="plus">
-              <Icon name="plus" size={22} />
-            </span>
-          </summary>
-          <p class="muted">{f.a}</p>
-        </details>
-      ))
-    }
+    {FAQS.map((f) => (
+      <details class="reveal">
+        <summary>
+          {f.question}
+          <span class="plus">
+            <Icon name="plus" size={22} />
+          </span>
+        </summary>
+        <p class="muted">{f.answer}</p>
+      </details>
+    ))}
   </div>
 </section>
 

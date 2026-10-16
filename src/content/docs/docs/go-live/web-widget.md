@@ -22,11 +22,11 @@ Create an embed token under **Deploy → Web widget**, add your site to the allo
 
 Choose the mode in the token settings:
 
-| Mode         | What visitors see                                                             |
-| ------------ | ----------------------------------------------------------------------------- |
-| **Floating** | A talk button in the corner of every page.                                    |
+| Mode         | What visitors see                                                            |
+| ------------ | ---------------------------------------------------------------------------- |
+| **Floating** | A talk button in the corner of every page.                                   |
 | **Inline**   | The widget renders inside an element with `id="lightmove-inline-container"`. |
-| **Headless** | No UI. Your page drives the call with the JavaScript API below.               |
+| **Headless** | No UI. Your page drives the call with the JavaScript API below.              |
 
 ## JavaScript API
 

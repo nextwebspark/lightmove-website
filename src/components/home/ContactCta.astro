@@ -5,18 +5,36 @@ const bars = [120, 220, 300, 180, 90];
 
 <section class="container cta-wrap" id="contact">
   <div class="cta reveal">
-    <div class="glow" style="width:520px;height:520px;right:-120px;top:-160px;background:rgba(61,220,151,.28);opacity:1" aria-hidden="true"></div>
+    <div
+      class="glow"
+      style="width:520px;height:520px;right:-120px;top:-160px;background:rgba(61,220,151,.28);opacity:1"
+      aria-hidden="true"
+    ></div>
     <div class="cta-bars" aria-hidden="true">
-      {bars.map((h, i) => <span class="wave-bar" style={`width:22px;height:${h}px;animation-delay:${i * 0.3}s`} />)}
+      {bars.map((h, i) => (
+        <span class="wave-bar" style={`width:22px;height:${h}px;animation-delay:${i * 0.3}s`} />
+      ))}
     </div>
     <div class="cta-copy">
-      <h2>Stop missing calls.<br /><span>Start this week.</span></h2>
-      <p>Tell us what your callers need. We'll reply within one working day with a plan and a quote.</p>
+      <h2>
+        Stop missing calls.
+        <br />
+        <span>Start this week.</span>
+      </h2>
+      <p>
+        Tell us what your callers need. We'll reply within one working day with a plan and a quote.
+      </p>
     </div>
     <div class="cta-actions">
-      <a href={contactHref('Build me a voice agent')} class="btn btn-panel btn-lg">Request a build</a>
-      <a href={contactHref('VoIP partnership')} class="btn btn-lg ghost">VoIP partnerships</a>
-      <p class="small">Or email <a href={`mailto:${SITE.emails.hello}`}>{SITE.emails.hello}</a></p>
+      <a href={contactHref('Build me a voice agent')} class="btn btn-panel btn-lg">
+        Request a build
+      </a>
+      <a href={contactHref('VoIP partnership')} class="btn btn-lg ghost">
+        VoIP partnerships
+      </a>
+      <p class="small">
+        Or email <a href={`mailto:${SITE.emails.hello}`}>{SITE.emails.hello}</a>
+      </p>
     </div>
   </div>
 </section>

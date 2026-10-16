@@ -1,0 +1,119 @@
+name: Release
+
+# The one button that ships. Merging to main proves the site is releasable and stops there; this cuts a
+# version out of whatever main has reached and hands that tag to Deploy.
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Which part of the version to increment.
+        type: choice
+        options: [patch, minor, major]
+        default: patch
+      force:
+        description: Release even if CI is not green on main.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Two releases cutting versions at once would race for the same number.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    name: Cut the version
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      # Every tag, so the next version can be computed, and the whole history, so the release notes have
+      # something to be generated from. Credentials are kept here, and only here, to push the tag.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+
+      # A SHA CI never ran on is not releasable either, which is why a missing check fails rather than
+      # passing by absence.
+      - name: Require a green CI on main
+        if: ${{ !inputs.force }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GATE: Lint, check, test, build, Lighthouse
+        run: |
+          SHA="$(git rev-parse HEAD)"
+          CONCLUSION="$(gh api -X GET "repos/${GITHUB_REPOSITORY}/commits/${SHA}/check-runs" \
+                          -f check_name="$GATE" --jq '.check_runs[0].conclusion // "pending"')"
+          if [ "$CONCLUSION" != "success" ]; then
+            echo "::error::CI check '${GATE}' is ${CONCLUSION:-missing} on ${SHA}. Wait for CI, or re-run with force to override."
+            exit 1
+          fi
+
+      # The latest tag decides the next one, so nothing is written down anywhere and nothing can drift.
+      # -v:refname sorts by version, not lexically, so v1.10.0 outranks v1.9.0.
+      - name: Work out the next version
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          LATEST="$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)"
+
+          case "${LATEST#v}" in
+            *[!0-9.]*)
+              echo "::error::Latest tag ${LATEST} is not a plain vX.Y.Z. Cut the next one by hand."
+              exit 1 ;;
+          esac
+
+          if [ -z "$LATEST" ]; then
+            NEXT="v0.1.0"
+          else
+            IFS='.' read -r MAJOR MINOR PATCH <<<"${LATEST#v}"
+            case "$BUMP" in
+              major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+              minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+              patch) PATCH=$((PATCH + 1)) ;;
+              *) echo "::error::Unknown bump '${BUMP}'."; exit 1 ;;
+            esac
+            NEXT="v${MAJOR}.${MINOR}.${PATCH}"
+          fi
+
+          if git rev-parse -q --verify "refs/tags/${NEXT}" >/dev/null; then
+            echo "::error::Tag ${NEXT} already exists."
+            exit 1
+          fi
+
+          echo "version=${NEXT}" >> "$GITHUB_OUTPUT"
+          echo "::notice::Releasing ${NEXT} from ${LATEST:-no previous release} at $(git rev-parse --short HEAD)."
+
+      - name: Tag it
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: gh release create "$VERSION" --title "$VERSION" --generate-notes --verify-tag
+
+  # A tag pushed by GITHUB_TOKEN does not fire other workflows, so Deploy is called directly. It resolves
+  # at the caller's ref (main), which means a rollback uses today's deploy config, not the tag's copy.
+  deploy:
+    needs: tag
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ref: ${{ needs.tag.outputs.version }}

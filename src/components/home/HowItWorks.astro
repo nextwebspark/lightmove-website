@@ -4,8 +4,14 @@ const steps = [
     title: 'Describe the job',
     body: 'What should it handle? What must it never promise? When should it pass the call to a person?',
   },
-  { title: 'Test it out loud', body: 'Call it from the builder, try to trip it up, read the transcript and tighten the steps.' },
-  { title: 'Go live', body: 'Point your number at it or add the web widget. Watch the call log for the first week.' },
+  {
+    title: 'Test it out loud',
+    body: 'Call it from the builder, try to trip it up, read the transcript and tighten the steps.',
+  },
+  {
+    title: 'Go live',
+    body: 'Point your number at it or add the web widget. Watch the call log for the first week.',
+  },
 ];
 ---
 
@@ -16,15 +22,13 @@ const steps = [
       <h2 class="h-section">Live in an afternoon</h2>
     </div>
     <ol class="steps">
-      {
-        steps.map((s, i) => (
-          <li class="card reveal">
-            <span class="num mono">{String(i + 1).padStart(2, '0')}</span>
-            <h3>{s.title}</h3>
-            <p class="muted">{s.body}</p>
-          </li>
-        ))
-      }
+      {steps.map((s, i) => (
+        <li class="card reveal">
+          <span class="num mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{s.title}</h3>
+          <p class="muted">{s.body}</p>
+        </li>
+      ))}
     </ol>
   </div>
 </section>

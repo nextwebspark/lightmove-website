@@ -10,58 +10,60 @@ import { USE_CASES } from '../../lib/use-cases';
   </div>
 
   <div class="tabs" role="tablist" aria-label="Industries" data-tabs>
-    {
-      USE_CASES.map((u, i) => (
-        <button
-          type="button"
-          role="tab"
-          class="tab"
-          id={`tab-${u.id}`}
-          aria-controls={`panel-${u.id}`}
-          aria-selected={i === 0 ? 'true' : 'false'}
-          tabindex={i === 0 ? 0 : -1}
-        >
-          {u.label}
-        </button>
-      ))
-    }
+    {USE_CASES.map((u, i) => (
+      <button
+        type="button"
+        role="tab"
+        class="tab"
+        id={`tab-${u.id}`}
+        aria-controls={`panel-${u.id}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+      >
+        {u.label}
+      </button>
+    ))}
   </div>
 
-  {
-    USE_CASES.map((u, i) => (
-      <div class="panel" role="tabpanel" id={`panel-${u.id}`} aria-labelledby={`tab-${u.id}`} hidden={i !== 0}>
-        <div class="panel-copy">
-          <h3 class="panel-title">{u.title}</h3>
-          <p class="muted lead-sm">{u.body}</p>
-          <ul class="points">
-            {u.points.map((p) => (
-              <li>
-                <span class="tick">
-                  <Icon name="check" size={14} strokeWidth={2.5} />
-                </span>
-                {p}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div class="transcript">
-          <div class="transcript-head">
-            <span class="eyebrow live">
-              <span class="live-dot" />
-              Sample call
-            </span>
-            <span class="mono muted">{u.time}</span>
-          </div>
-          {u.lines.map((l, j) => (
-            <p class:list={['bubble', { agent: l.agent }]} style={`animation-delay:${j * 0.25}s`}>
-              <span class="who">{l.agent ? 'LightMove agent' : 'Caller'}</span>
-              {l.text}
-            </p>
+  {USE_CASES.map((u, i) => (
+    <div
+      class="panel"
+      role="tabpanel"
+      id={`panel-${u.id}`}
+      aria-labelledby={`tab-${u.id}`}
+      hidden={i !== 0}
+    >
+      <div class="panel-copy">
+        <h3 class="panel-title">{u.title}</h3>
+        <p class="muted lead-sm">{u.body}</p>
+        <ul class="points">
+          {u.points.map((p) => (
+            <li>
+              <span class="tick">
+                <Icon name="check" size={14} strokeWidth={2.5} />
+              </span>
+              {p}
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-    ))
-  }
+      <div class="transcript">
+        <div class="transcript-head">
+          <span class="eyebrow live">
+            <span class="live-dot" />
+            Sample call
+          </span>
+          <span class="mono muted">{u.time}</span>
+        </div>
+        {u.lines.map((l, j) => (
+          <p class:list={['bubble', { agent: l.agent }]} style={`animation-delay:${j * 0.25}s`}>
+            <span class="who">{l.agent ? 'LightMove agent' : 'Caller'}</span>
+            {l.text}
+          </p>
+        ))}
+      </div>
+    </div>
+  ))}
 </section>
 
 <style>
@@ -196,7 +198,8 @@ import { USE_CASES } from '../../lib/use-cases';
         const on = t === tab;
         t.setAttribute('aria-selected', String(on));
         t.tabIndex = on ? 0 : -1;
-        document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+        const panel = document.getElementById(t.getAttribute('aria-controls') ?? '');
+        if (panel) panel.hidden = !on;
       }
     };
     list.addEventListener('click', (e) => {

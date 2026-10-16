@@ -32,7 +32,13 @@ collections:
         label: Description
         widget: text
         hint: '50–160 characters. Used on cards, in search results and link previews.'
-      - { name: pubDate, label: Publish date, widget: datetime, format: 'YYYY-MM-DD', time_format: false }
+      - {
+          name: pubDate,
+          label: Publish date,
+          widget: datetime,
+          format: 'YYYY-MM-DD',
+          time_format: false,
+        }
       - name: updatedDate
         label: Updated date
         widget: datetime
@@ -63,7 +69,12 @@ collections:
     fields:
       - { name: name, label: Name, widget: string }
       - { name: role, label: Role, widget: string }
-      - { name: initials, label: Initials, widget: string, hint: 'Up to 3 letters, shown in the avatar.' }
+      - {
+          name: initials,
+          label: Initials,
+          widget: string,
+          hint: 'Up to 3 letters, shown in the avatar.',
+        }
 
   - name: legal
     label: Legal pages
@@ -74,7 +85,13 @@ collections:
         fields: &legal_fields
           - { name: title, label: Title, widget: string }
           - { name: description, label: Description, widget: text }
-          - { name: updated, label: Last updated, widget: datetime, format: 'YYYY-MM-DD', time_format: false }
+          - {
+              name: updated,
+              label: Last updated,
+              widget: datetime,
+              format: 'YYYY-MM-DD',
+              time_format: false,
+            }
           - name: reviewedByCounsel
             label: Reviewed by counsel (removes the draft notice)
             widget: boolean

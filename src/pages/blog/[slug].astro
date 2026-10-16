@@ -4,7 +4,8 @@ import PostCard from '../../components/blog/PostCard.astro';
 import Icon from '../../components/site/Icon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { formatDate, getPublishedPosts, readingMinutes, tagSlug, type Post } from '../../lib/blog';
-import { absoluteUrl } from '../../lib/site';
+import { blogPosting, breadcrumbList } from '../../lib/seo/jsonld';
+import { absoluteUrl, ogImagePathFor } from '../../lib/seo/url';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -23,15 +24,48 @@ const related = [
   ...all.filter((p) => p.id !== post.id && p.data.tag === post.data.tag),
   ...all.filter((p) => p.id !== post.id && p.data.tag !== post.data.tag),
 ].slice(0, 3);
-const shareUrl = absoluteUrl(`/blog/${post.id}`);
+const path = `/blog/${post.id}`;
+const shareUrl = absoluteUrl(path);
 const bars = [90, 170, 250, 140, 70];
+const jsonLd = [
+  blogPosting({
+    title: post.data.title,
+    description: post.data.description,
+    path,
+    imagePath: ogImagePathFor(path),
+    publishedAt: post.data.pubDate,
+    updatedAt: post.data.updatedDate,
+    authorName: author?.data.name ?? 'LightMove.ai',
+    tags: [post.data.tag],
+  }),
+  breadcrumbList([
+    { name: 'Blog', path: '/blog' },
+    { name: post.data.tag, path: `/blog/tag/${tagSlug(post.data.tag)}` },
+    { name: post.data.title, path },
+  ]),
+];
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} ogType="article" publishedTime={post.data.pubDate}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+  draft={post.data.draft}
+  article={{
+    publishedTime: post.data.pubDate,
+    modifiedTime: post.data.updatedDate,
+    tags: [post.data.tag],
+  }}
+  jsonLd={jsonLd}
+>
   <div class="progress" aria-hidden="true"></div>
   <header class="container post-head">
-    <a href="/blog" class="link-arrow in">← All posts</a>
-    <a href={`/blog/tag/${tagSlug(post.data.tag)}`} class="pill in d1">{post.data.tag}</a>
+    <a href="/blog" class="link-arrow in">
+      ← All posts
+    </a>
+    <a href={`/blog/tag/${tagSlug(post.data.tag)}`} class="pill in d1">
+      {post.data.tag}
+    </a>
     <h1 class="in d1">{post.data.title}</h1>
     <p class="lead in d2">{post.data.description}</p>
     <div class="byline in d3">
@@ -39,9 +73,8 @@ const bars = [90, 170, 250, 140, 70];
       <span class="stack">
         <strong>{author?.data.name}</strong>
         <span class="muted">
-          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time> · {
-            readingMinutes(post.body)
-          } min read
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time> ·{' '}
+          {readingMinutes(post.body)} min read
         </span>
       </span>
     </div>
@@ -49,7 +82,12 @@ const bars = [90, 170, 250, 140, 70];
 
   <div class="container art-wrap">
     <div class="art in d3" aria-hidden="true">
-      {bars.map((h, i) => <span class="wave-bar" style={`width:20px;height:${h}px;animation-delay:${i * 0.3}s;animation-duration:2.4s`} />)}
+      {bars.map((h, i) => (
+        <span
+          class="wave-bar"
+          style={`width:20px;height:${h}px;animation-delay:${i * 0.3}s;animation-duration:2.4s`}
+        />
+      ))}
     </div>
   </div>
 
@@ -63,7 +101,9 @@ const bars = [90, 170, 250, 140, 70];
         <strong class="cta-title">Rather we set it up?</strong>
         <span class="muted">Tell us about your calls and we'll build and test it for you.</span>
       </div>
-      <a href="/#contact" class="btn btn-primary">Request a build</a>
+      <a href="/#contact" class="btn btn-primary">
+        Request a build
+      </a>
     </aside>
 
     <div class="share">
@@ -78,27 +118,29 @@ const bars = [90, 170, 250, 140, 70];
         >
           <Icon name="linkedin" size={18} />
         </a>
-        <a class="btn icon-btn" href={`mailto:?subject=${encodeURIComponent(post.data.title)}&body=${encodeURIComponent(shareUrl)}`} aria-label="Share by email">
+        <a
+          class="btn icon-btn"
+          href={`mailto:?subject=${encodeURIComponent(post.data.title)}&body=${encodeURIComponent(shareUrl)}`}
+          aria-label="Share by email"
+        >
           <Icon name="link" size={18} />
         </a>
       </span>
     </div>
   </article>
 
-  {
-    related.length > 0 && (
-      <section class="section-band">
-        <div class="container related">
-          <h2 class="h-card">Keep reading</h2>
-          <div class="row-wrap" style="gap:24px">
-            {related.map((p) => (
-              <PostCard post={p} compact />
-            ))}
-          </div>
+  {related.length > 0 && (
+    <section class="section-band">
+      <div class="container related">
+        <h2 class="h-card">Keep reading</h2>
+        <div class="row-wrap" style="gap:24px">
+          {related.map((p) => (
+            <PostCard post={p} compact />
+          ))}
         </div>
-      </section>
-    )
-  }
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>

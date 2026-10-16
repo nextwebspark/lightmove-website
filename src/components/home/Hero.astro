@@ -8,35 +8,45 @@ const promises = ['No card to try', 'Keep your phone number', 'Pay only for minu
 
 <section class="hero">
   <div class="hero-dots" aria-hidden="true"></div>
-  <div class="glow" style="width:560px;height:560px;right:6%;top:60px;background:rgba(61,220,151,.24)" aria-hidden="true">
-  </div>
+  <div
+    class="glow"
+    style="width:560px;height:560px;right:6%;top:60px;background:rgba(61,220,151,.24)"
+    aria-hidden="true"
+  ></div>
   <div
     class="glow"
     style="width:340px;height:340px;left:-100px;top:-80px;background:rgba(255,136,62,.12);animation-delay:-7s"
     aria-hidden="true"
-  >
-  </div>
+  ></div>
   <div class="container hero-inner">
     <div class="hero-copy">
-      <span class="pill pill-outline in"><span class="live-dot"></span>Voice AI agents, made in Limerick</span>
-      <h1 class="display in d1">Every call answered.<br /><span class="accent">Day or night.</span></h1>
+      <span class="pill pill-outline in">
+        <span class="live-dot"></span>Voice AI agents, made in Limerick
+      </span>
+      <h1 class="display in d1">
+        Every call answered.
+        <br />
+        <span class="accent">Day or night.</span>
+      </h1>
       <p class="lead in d2">
-        LightMove.ai gives your business a voice agent that picks up the phone, books appointments and answers
-        questions in a natural voice, then hands over to your team when it matters.
+        LightMove.ai gives your business a voice agent that picks up the phone, books appointments
+        and answers questions in a natural voice, then hands over to your team when it matters.
       </p>
       <div class="hero-ctas in d3">
-        <a href={APP.signUpUrl} class="btn btn-primary btn-lg">Build your agent free <Icon name="arrow-right" size={18} strokeWidth={2} /></a>
-        <a href="/#contact" class="btn btn-secondary btn-lg">Have us build it</a>
+        <a href={APP.signUpUrl} class="btn btn-primary btn-lg">
+          Build your agent free <Icon name="arrow-right" size={18} strokeWidth={2} />
+        </a>
+        <a href="/#contact" class="btn btn-secondary btn-lg">
+          Have us build it
+        </a>
       </div>
       <ul class="hero-promises in d4">
-        {
-          promises.map((p) => (
-            <li>
-              <Icon name="check" size={18} strokeWidth={2} />
-              {p}
-            </li>
-          ))
-        }
+        {promises.map((p) => (
+          <li>
+            <Icon name="check" size={18} strokeWidth={2} />
+            {p}
+          </li>
+        ))}
       </ul>
     </div>
     <VoiceDemo />
