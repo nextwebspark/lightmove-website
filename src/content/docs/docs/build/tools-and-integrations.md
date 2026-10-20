@@ -11,9 +11,8 @@ Tools let an agent do things during a call instead of only talking.
 
 Connect a Google account under **Integrations** to give your agents:
 
-- **Google Calendar** — check availability and create, move or cancel events.
+- **Google Calendar** — check availability, and create or cancel events.
 - **Google Sheets** — look up rows (prices, stock, opening hours) or log each call as a new row.
-- **Gmail (send only)** — send a summary or confirmation email set up in your workflow.
 
 LightMove.ai only requests the access each integration needs. You can disconnect at any time. See the [Privacy Policy](/privacy) for how Google data is handled.
 

@@ -1,3 +1,12 @@
+/** The CRO record. Companies Act 2014 s.151 requires these on the website. */
+const LEGAL = {
+  entity: 'Nextwebspark Limited',
+  tradingName: 'Lightmove',
+  companyNumber: '779540',
+  registeredIn: 'Ireland',
+  registeredOffice: '48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland',
+} as const;
+
 export const SITE = {
   name: 'LightMove.ai',
   shortName: 'LightMove',
@@ -5,7 +14,8 @@ export const SITE = {
   tagline: 'AI voice agents for business',
   description:
     'LightMove.ai builds AI voice agents that answer your phone, book appointments and hand over to your team. Made in Limerick, Ireland.',
-  company: 'NextWebSpark',
+  company: LEGAL.entity,
+  legal: LEGAL,
   location: 'Limerick, Ireland',
   locale: 'en-IE',
   ogLocale: 'en_IE',
