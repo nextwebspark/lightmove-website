@@ -49,7 +49,7 @@ If you press **Talk to Aoife** on our home page, you talk to an AI voice agent a
 
 ## 6. Who we share it with
 
-We use trusted providers to run the service: Google Cloud for hosting, and Google Cloud Vertex AI in the EU for speech recognition, voices and language models, plus telephony carriers and our payment provider. Under Google Cloud's terms, Google does not use this data to train its models. If you connect your own account with another AI provider, calls on your agents are processed by that provider under its terms. Each is bound by a data processing agreement. [LINK TO SUB-PROCESSOR LIST]
+We use trusted providers to run the service: Google Cloud for hosting, and Google Cloud Vertex AI in the EU for speech recognition, voices and language models, plus telephony carriers and our payment provider. Under Google Cloud's terms, Google does not use this data to train its models. Each of these providers is bound by a data processing agreement with us. [LINK TO SUB-PROCESSOR LIST] If you connect your own account with another AI provider, calls on your agents are processed by that provider under your agreement with it.
 
 ## 7. How long we keep it
 
