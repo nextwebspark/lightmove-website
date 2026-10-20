@@ -1,11 +1,11 @@
 ---
 title: Terms of Service
-description: The terms for using LightMove.ai, including acceptable use, pay as you go billing, your content and the law that applies.
+description: The terms for using Lightmove, including acceptable use, pay as you go billing, your content and the law that applies.
 updated: 2026-10-20
 reviewedByCounsel: false
 ---
 
-These terms set out the rules for using LightMove.ai. Please read them carefully. By creating an account or using the service you agree to them.
+These terms set out the rules for using Lightmove. Please read them carefully. By creating an account or using the service you agree to them.
 
 ## 1. Agreement
 
@@ -13,7 +13,7 @@ These terms are between you (or the business you represent) and Nextwebspark Lim
 
 ## 2. The service
 
-LightMove.ai lets you build, test and run AI voice agents that answer phone and web calls. Features may change as we improve the product. We will give reasonable notice of changes that materially reduce what you are paying for.
+Lightmove lets you build, test and run AI voice agents that answer phone and web calls. Features may change as we improve the product. We will give reasonable notice of changes that materially reduce what you are paying for.
 
 ## 3. Your account
 
@@ -21,7 +21,7 @@ You must give accurate details and keep your login secure. You are responsible f
 
 ## 4. Acceptable use
 
-You agree not to use LightMove.ai to:
+You agree not to use Lightmove to:
 
 - break any law, including rules on marketing calls, call recording and consumer protection;
 - make unsolicited sales calls without the consent the law requires;
