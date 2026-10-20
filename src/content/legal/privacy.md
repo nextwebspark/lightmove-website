@@ -53,7 +53,7 @@ We use trusted providers to run the service: Google Cloud for hosting, and Googl
 
 ## 7. How long we keep it
 
-Call recordings, transcripts and other call content are deleted automatically after 90 days. Each customer can set a shorter or longer period, from 1 to 365 days, and can delete calls sooner. Technical data from web widget sessions and records of webhook deliveries are deleted after 30 days. Account data is kept while your account is open and deleted within 30 days after you close it, except invoices and billing records, which Irish tax law requires us to keep for six years. Deleted data drops out of our backups within two weeks.
+Call recordings, transcripts and other call content are deleted automatically after 90 days. Each customer can set a shorter or longer period, from 1 to 365 days, and can delete calls sooner. Technical data from web widget sessions, such as IP addresses, and the content of webhook deliveries are deleted after 30 days. Account data is kept while your account is open and deleted within 30 days after you close it, except invoices and billing records, which Irish tax law requires us to keep for six years. Deleted data drops out of our backups within two weeks.
 
 ## 8. Your rights
 
