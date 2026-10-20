@@ -25,7 +25,7 @@ Lightmove is the trading name of Nextwebspark Limited, a company registered in I
 - To support you, bill you and keep the service secure.
 - To improve the product, using aggregated or de-identified data where we can.
 
-We do not sell personal data. [CONFIRM POLICY ON USING CUSTOMER DATA TO TRAIN MODELS]
+We do not sell personal data. We never use customer data, including call recordings and transcripts, to train AI models.
 
 ## 4. Google user data
 
@@ -49,7 +49,7 @@ If you press **Talk to Aoife** on our home page, you talk to an AI voice agent a
 
 ## 6. Who we share it with
 
-We use trusted providers to run the service, including cloud hosting (Google Cloud), speech and language model providers, telephony carriers and our payment provider. Each is bound by a data processing agreement. [LINK TO SUB-PROCESSOR LIST]
+We use trusted providers to run the service: Google Cloud for hosting, and Google Cloud Vertex AI in the EU for speech recognition, voices and language models, plus telephony carriers and our payment provider. Under Google Cloud's terms, Google does not use this data to train its models. If you connect your own account with another AI provider, calls on your agents are processed by that provider under its terms. Each is bound by a data processing agreement. [LINK TO SUB-PROCESSOR LIST]
 
 ## 7. How long we keep it
 
