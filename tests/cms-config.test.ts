@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { z } from 'astro/zod';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
@@ -86,5 +86,14 @@ describe('Sveltia CMS config', () => {
       expect(file.file).toBe(`src/content/legal/${file.name}.md`);
       expectLockstep(legal, file.fields, true);
     }
+  });
+
+  it('offers every legal page in the content collection', () => {
+    const onDisk = readdirSync('src/content/legal')
+      .filter((name) => name.endsWith('.md'))
+      .map((name) => name.replace(/\.md$/, ''));
+    const inCms = (collection('legal').files ?? []).map((file) => file.name);
+
+    expect(inCms.toSorted()).toEqual(onDisk.toSorted());
   });
 });

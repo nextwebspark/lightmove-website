@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import LegalLayout from '../layouts/LegalLayout.astro';
+
+const entry = await getEntry('legal', 'dpa');
+if (!entry) throw new Error('src/content/legal/dpa.md is missing');
+---
+
+<LegalLayout entry={entry} />

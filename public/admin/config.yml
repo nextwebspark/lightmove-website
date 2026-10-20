@@ -101,3 +101,11 @@ collections:
         label: Terms of Service
         file: src/content/legal/terms.md
         fields: *legal_fields
+      - name: dpa
+        label: Data Processing Agreement
+        file: src/content/legal/dpa.md
+        fields: *legal_fields
+      - name: subprocessors
+        label: Sub-processors
+        file: src/content/legal/subprocessors.md
+        fields: *legal_fields

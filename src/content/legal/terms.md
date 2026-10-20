@@ -9,7 +9,7 @@ These terms set out the rules for using Lightmove. Please read them carefully. B
 
 ## 1. Agreement
 
-These terms are between you (or the business you represent) and Nextwebspark Limited, trading as Lightmove, a company registered in Ireland (company number 779540) with its registered office at 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland ("we", "us"). Our [Privacy Policy](/privacy) explains how we handle personal data.
+These terms are between you (or the business you represent) and Nextwebspark Limited, trading as Lightmove, a company registered in Ireland (company number 779540) with its registered office at 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland ("we", "us"). Our [Privacy Policy](/privacy) explains how we handle personal data. If you use Lightmove to process personal data as a business, our [Data Processing Agreement](/dpa) forms part of these terms.
 
 ## 2. The service
 
@@ -33,7 +33,7 @@ You are responsible for telling callers about recording and for having a lawful 
 
 ## 5. Your content
 
-You own your agent configurations, prompts and call data. You give us permission to process them only to provide and support the service, as described in the Privacy Policy.
+You own your agent configurations, prompts and call data. You give us permission to process them only to provide and support the service, as described in the Privacy Policy and the Data Processing Agreement.
 
 ## 6. Fees and billing
 
