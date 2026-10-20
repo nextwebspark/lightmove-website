@@ -1,6 +1,8 @@
 ---
 import { APP, SITE } from '../../lib/site';
 import BrandLockup from './BrandLockup.astro';
+import Icon from './Icon.astro';
+import { TRUST_ITEMS } from '../../lib/trust';
 
 const columns = [
   {
@@ -57,6 +59,16 @@ const year = new Date().getFullYear();
         ))}
       </div>
     </div>
+    <ul class="footer-trust" aria-label="Privacy and security">
+      {TRUST_ITEMS.map((item) => (
+        <li>
+          <a href={item.href}>
+            <Icon name={item.icon} size={14} />
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
     <div class="footer-bottom">
       <span>
         © {year} {SITE.legal.entity}, trading as {SITE.legal.tradingName}. Registered in{' '}
@@ -69,3 +81,25 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 0;
+    padding: 20px 0 0;
+    list-style: none;
+    font-size: 13px;
+  }
+  .footer-trust a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--lm-muted);
+    text-decoration: none;
+  }
+  .footer-trust a:hover {
+    color: var(--lm-text);
+  }
+</style>

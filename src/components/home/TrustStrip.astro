@@ -1,0 +1,51 @@
+---
+// Privacy and security facts, each linking to the page that backs it. Static: no motion.
+import Icon from '../site/Icon.astro';
+import { TRUST_ITEMS } from '../../lib/trust';
+---
+
+<section class="trust" aria-label="Privacy and security">
+  <ul class="container">
+    {TRUST_ITEMS.map((item) => (
+      <li>
+        <a href={item.href}>
+          <Icon name={item.icon} size={18} />
+          <span>{item.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .trust {
+    border-block: 1px solid var(--lm-border);
+    background: var(--lm-surface);
+    padding-block: 22px;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 32px;
+    margin: 0 auto;
+    list-style: none;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--lm-font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--lm-text);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--lm-brand);
+  }
+  a :global(svg) {
+    color: var(--lm-brand);
+    flex-shrink: 0;
+  }
+</style>
