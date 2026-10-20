@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
 description: How LightMove.ai collects, uses and protects personal data, including data from Google APIs, and the rights you have under the GDPR.
-updated: 2026-10-16
+updated: 2026-10-20
 reviewedByCounsel: false
 ---
 
@@ -9,7 +9,7 @@ This policy explains what personal data LightMove.ai collects, why, and the choi
 
 ## 1. Who we are
 
-LightMove.ai is operated by NextWebSpark [LEGAL ENTITY NAME, COMPANY NUMBER], [REGISTERED ADDRESS], Limerick, Ireland. For account and website data we are the data controller. For call data that our customers' agents handle, we act as a data processor on our customer's behalf.
+LightMove.ai is operated by Nextwebspark Limited, trading as Lightmove, a company registered in Ireland (company number 779540) with its registered office at 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland. For account and website data we are the data controller. For call data that our customers' agents handle, we act as a data processor on our customer's behalf.
 
 ## 2. What we collect
 
@@ -17,7 +17,7 @@ LightMove.ai is operated by NextWebSpark [LEGAL ENTITY NAME, COMPANY NUMBER], [R
 - **Call data:** audio recordings, transcripts, caller phone numbers, call summaries and anything callers say to an agent.
 - **Agent configuration:** the prompts, workflows and settings you create.
 - **Billing details:** handled by our payment provider. We do not store full card numbers.
-- **Usage data:** basic logs about how the website and app are used. [CONFIRM COOKIES AND ANALYTICS TOOLS]
+- **Usage data:** basic logs about how the website and app are used. Our website sets no cookies and runs no analytics. It remembers your light or dark theme choice in your browser, only if you pick one. Our hosting provider keeps server logs, including IP addresses, to deliver and secure the site. [CONFIRM ANALYTICS TOOLS IN THE APP]
 
 ## 3. How we use it
 
@@ -43,24 +43,28 @@ LightMove.ai's use and transfer to any other app of information received from Go
 
 We do not use Google user data for advertising, do not sell it, and do not let people read it unless you ask us to, it is needed for security, or the law requires it. You can disconnect at any time in the app or at [myaccount.google.com/permissions](https://myaccount.google.com/permissions).
 
-## 5. Who we share it with
+## 5. Demo calls on our website
+
+If you press **Talk to Aoife** on our home page, you talk to an AI voice agent and we are the controller of that call. We record your voice and make a transcript to run the demo and improve it, and we log technical data such as your IP address and browser. The legal basis is the consent you give by starting the call. You can end the call at any time, and you can ask us to delete the recording by emailing [privacy@lightmove.ai](mailto:privacy@lightmove.ai). The audio is processed on Google Cloud in the EU. We keep demo recordings and transcripts for [DEMO RETENTION PERIOD]. Please do not share sensitive information on a demo call.
+
+## 6. Who we share it with
 
 We use trusted providers to run the service, including cloud hosting (Google Cloud), speech and language model providers, telephony carriers and our payment provider. Each is bound by a data processing agreement. [LINK TO SUB-PROCESSOR LIST]
 
-## 6. How long we keep it
+## 7. How long we keep it
 
 Call recordings and transcripts are kept for [RETENTION PERIOD] unless you delete them sooner or change the setting. Account data is kept while your account is open and for [PERIOD] afterwards for legal and billing reasons.
 
-## 7. Your rights
+## 8. Your rights
 
 Under the GDPR you can ask to access, correct, delete, restrict or move your personal data, and object to how we use it. Email us to make a request. If you are unhappy with our response you can complain to the [Data Protection Commission](https://www.dataprotection.ie) in Ireland.
 
 If you called a business that uses LightMove.ai, that business controls your call data. Contact them first. We will help them answer your request.
 
-## 8. Security and transfers
+## 9. Security and transfers
 
-Data is encrypted in transit and access is limited to staff who need it. Data is hosted in [REGION]. Where data leaves the EEA, we use Standard Contractual Clauses or another lawful safeguard.
+Data is encrypted in transit and access is limited to staff who need it. The app and its data are hosted on Google Cloud in the EU (Belgium, europe-west1). Where data leaves the EEA, we use Standard Contractual Clauses or another lawful safeguard.
 
-## 9. Contact us
+## 10. Contact us
 
-Questions about privacy: [privacy@lightmove.ai](mailto:privacy@lightmove.ai), or write to NextWebSpark, [ADDRESS], Limerick, Ireland.
+Questions about privacy: [privacy@lightmove.ai](mailto:privacy@lightmove.ai), or write to Nextwebspark Limited, 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland.

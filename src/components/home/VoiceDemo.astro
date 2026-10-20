@@ -69,11 +69,20 @@ const bars = [34, 62, 88, 56, 30];
     mind halfway.
   </p>
 
-  <button type="button" class="btn btn-primary demo-call" data-demo-call>
+  <button
+    type="button"
+    class="btn btn-primary demo-call"
+    data-demo-call
+    aria-describedby="demo-notice"
+  >
     <Icon name="mic" />
     <span data-demo-label>Talk to Aoife</span>
   </button>
-  <p class="demo-note">Uses your microphone. Demo calls may be recorded to improve the agent.</p>
+  <p class="demo-note" id="demo-notice">
+    Aoife is an AI. Pressing the button uses your microphone and starts a call that we record and
+    transcribe to run and improve the demo.{' '}
+    <a href="/privacy#5-demo-calls-on-our-website">How we handle demo calls</a>
+  </p>
 </div>
 
 <style>
@@ -255,6 +264,10 @@ const bars = [34, 62, 88, 56, 30];
     line-height: 16px;
     color: var(--lm-muted);
     text-align: center;
+  }
+  .demo-note a {
+    color: inherit;
+    text-decoration: underline;
   }
   @media (max-width: 480px) {
     .chip {

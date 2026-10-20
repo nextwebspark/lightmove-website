@@ -57,7 +57,9 @@ const year = new Date().getFullYear();
     </div>
     <div class="footer-bottom">
       <span>
-        © {year} {SITE.company} · {SITE.location}
+        © {year} {SITE.legal.entity}, trading as {SITE.legal.tradingName}. Registered in{' '}
+        {SITE.legal.registeredIn}, company number {SITE.legal.companyNumber}. Registered office:{' '}
+        {SITE.legal.registeredOffice}.
       </span>
       <a href={`mailto:${SITE.emails.hello}`} class="muted">
         {SITE.emails.hello}

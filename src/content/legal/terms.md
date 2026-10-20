@@ -1,7 +1,7 @@
 ---
 title: Terms of Service
 description: The terms for using LightMove.ai, including acceptable use, pay as you go billing, your content and the law that applies.
-updated: 2026-10-16
+updated: 2026-10-20
 reviewedByCounsel: false
 ---
 
@@ -9,7 +9,7 @@ These terms set out the rules for using LightMove.ai. Please read them carefully
 
 ## 1. Agreement
 
-These terms are between you (or the business you represent) and NextWebSpark [LEGAL ENTITY NAME, COMPANY NUMBER], [REGISTERED ADDRESS], Limerick, Ireland ("we", "us"). Our [Privacy Policy](/privacy) explains how we handle personal data.
+These terms are between you (or the business you represent) and Nextwebspark Limited, trading as Lightmove, a company registered in Ireland (company number 779540) with its registered office at 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland ("we", "us"). Our [Privacy Policy](/privacy) explains how we handle personal data.
 
 ## 2. The service
 
