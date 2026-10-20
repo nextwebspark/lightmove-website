@@ -9,7 +9,7 @@ This policy explains what personal data Lightmove collects, why, and the choices
 
 ## 1. Who we are
 
-Lightmove is the trading name of Nextwebspark Limited, a company registered in Ireland (company number 779540) with its registered office at 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland. For account and website data we are the data controller. For call data that our customers' agents handle, we act as a data processor on our customer's behalf.
+Lightmove is the trading name of Nextwebspark Limited, a company registered in Ireland (company number 779540) with its registered office at 48 The Woods, Ros Mór, Crossagalla, Limerick, V94 8D51, Ireland. For account and website data we are the data controller. For call data that our customers' agents handle, we act as a data processor on our customer's behalf, under our [Data Processing Agreement](/dpa).
 
 ## 2. What we collect
 
@@ -58,7 +58,7 @@ We use these providers to run the service:
 - **Resend** for account emails such as sign-in links and invitations.
 - **Telephony carriers** that connect phone calls to your agents.
 
-Each of these providers is bound by a data processing agreement with us. [LINK TO SUB-PROCESSOR LIST] If you connect your own account with another AI or observability provider, calls on your agents are processed by that provider under your agreement with it.
+Each of these providers is bound by a data processing agreement with us. Our [sub-processor list](/subprocessors) gives the details of each provider, where it processes data and how transfers are protected. If you connect your own account with another AI or observability provider, calls on your agents are processed by that provider under your agreement with it.
 
 ## 7. How long we keep it
 
