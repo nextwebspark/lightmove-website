@@ -17,7 +17,7 @@ Lightmove is the trading name of Nextwebspark Limited, a company registered in I
 - **Call data:** audio recordings, transcripts, caller phone numbers, call summaries and anything callers say to an agent.
 - **Agent configuration:** the prompts, workflows and settings you create.
 - **Billing details:** handled by our payment provider. We do not store full card numbers.
-- **Usage data:** basic logs about how the website and app are used. Our website sets no cookies and runs no analytics. It remembers your light or dark theme choice in your browser, only if you pick one. Our hosting provider keeps server logs, including IP addresses, to deliver and secure the site. [CONFIRM ANALYTICS TOOLS IN THE APP]
+- **Usage data:** basic logs about how the website and app are used. Our website sets no cookies and runs no analytics. It remembers your light or dark theme choice in your browser, only if you pick one. Our hosting provider keeps server logs, including IP addresses, to deliver and secure the site. The app sets only the cookies needed to keep you signed in. We do not use analytics or advertising cookies.
 
 ## 3. How we use it
 
@@ -45,7 +45,7 @@ We do not use Google user data for advertising, do not sell it, and do not let p
 
 ## 5. Demo calls on our website
 
-If you press **Talk to Aoife** on our home page, you talk to an AI voice agent and we are the controller of that call. We record your voice and make a transcript to run the demo and improve it, and we log technical data such as your IP address and browser. The legal basis is the consent you give by starting the call. You can end the call at any time, and you can ask us to delete the recording by emailing [privacy@lightmove.ai](mailto:privacy@lightmove.ai). The audio is processed on Google Cloud in the EU. We keep demo recordings and transcripts for [DEMO RETENTION PERIOD]. Please do not share sensitive information on a demo call.
+If you press **Talk to Aoife** on our home page, you talk to an AI voice agent and we are the controller of that call. We record your voice and make a transcript to run the demo and improve it, and we log technical data such as your IP address and browser. The legal basis is the consent you give by starting the call. You can end the call at any time, and you can ask us to delete the recording by emailing [privacy@lightmove.ai](mailto:privacy@lightmove.ai). The audio is processed on Google Cloud in the EU. We keep demo recordings and transcripts for 30 days. Please do not share sensitive information on a demo call.
 
 ## 6. Who we share it with
 
@@ -53,7 +53,7 @@ We use trusted providers to run the service: Google Cloud for hosting, and Googl
 
 ## 7. How long we keep it
 
-Call recordings and transcripts are kept for [RETENTION PERIOD] unless you delete them sooner or change the setting. Account data is kept while your account is open and for [PERIOD] afterwards for legal and billing reasons.
+Call recordings, transcripts and other call content are deleted automatically after 90 days. Each customer can set a shorter or longer period, from 1 to 365 days, and can delete calls sooner. Technical data from web widget sessions and records of webhook deliveries are deleted after 30 days. Account data is kept while your account is open and deleted within 30 days after you close it, except invoices and billing records, which Irish tax law requires us to keep for six years. Deleted data drops out of our backups within two weeks.
 
 ## 8. Your rights
 
