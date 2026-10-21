@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
 description: How Lightmove collects, uses and protects personal data, including data from Google APIs, and the rights you have under the GDPR.
-updated: 2026-10-20
+updated: 2026-10-21
 reviewedByCounsel: false
 ---
 
@@ -53,7 +53,7 @@ If you press **Talk to Aoife** on our home page, you talk to an AI voice agent a
 
 We use these providers to run the service:
 
-- **Google Cloud** for hosting in the EU, and for the platform's AI: Vertex AI for language models, and Speech-to-Text and Text-to-Speech for speech and voices. Under Google Cloud's terms, Google does not use this data to train its models.
+- **Google Cloud** for hosting in the EU, and for the platform's AI: Vertex AI for language models and for searching the documents you add to an agent's knowledge base, and Speech-to-Text and Text-to-Speech for speech and voices. Under Google Cloud's terms, Google does not use this data to train its models.
 - **Stripe** for payments.
 - **Resend** for account emails such as sign-in links and invitations.
 - **Telephony carriers** that connect phone calls to your agents.
@@ -62,17 +62,17 @@ Each of these providers is bound by a data processing agreement with us. Our [su
 
 ## 7. How long we keep it
 
-- **Call content:** recordings, transcripts and other call content are deleted automatically after 90 days. Each customer can set a shorter or longer period, from 1 to 365 days. To delete specific calls sooner, email us. We keep each call's date, duration, status and cost for billing.
+- **Call content:** recordings, transcripts and other call content are deleted automatically after 90 days. Each customer can set a shorter or longer period, from 1 to 365 days. Customers can also delete a single call, or every call with a given phone number, at any time in the app. We keep each call's date, duration, status and cost for billing.
 - **Web widget and webhooks:** technical data from web widget sessions, such as IP addresses, and the content of completed webhook deliveries are deleted after 30 days.
-- **Accounts:** account data is kept while your account is open. Email us to close your account, and we delete your account data within 30 days. Invoices and billing records are kept for six years, as Irish tax law requires.
+- **Accounts:** account data is kept while your account is open. You can delete your account in the app at any time. When an organization is deleted, it is closed straight away and its data is deleted 30 days later; until then an admin can cancel. Invoices and billing records are kept for six years, as Irish tax law requires.
 - **Logs:** server and security logs are kept for [LOG RETENTION PERIOD].
 - **Backups:** our database backups are deleted after 30 days, so deleted data leaves them within 30 days.
 
 ## 8. Your rights
 
-Under the GDPR you can ask to access, correct, delete, restrict or move your personal data, and object to how we use it. Where we rely on your consent, you can withdraw it at any time. Email us to make a request. If you are unhappy with our response you can complain to the [Data Protection Commission](https://www.dataprotection.ie) in Ireland.
+Under the GDPR you can ask to access, correct, delete, restrict or move your personal data, and object to how we use it. Where we rely on your consent, you can withdraw it at any time. In the app you can download a copy of your data and delete your account yourself, and an organization's admins can download or delete the organization's data. For anything else, email us. If you are unhappy with our response you can complain to the [Data Protection Commission](https://www.dataprotection.ie) in Ireland.
 
-If you called a business that uses Lightmove, or were called by one, that business controls your call data and provided any contact details we hold for its campaigns. Contact them first. We will help them answer your request.
+If you called a business that uses Lightmove, or were called by one, that business controls your call data and provided any contact details we hold for its campaigns. Contact them first. They can find, download and delete the calls linked to your phone number in the app, and we will help them answer your request.
 
 ## 9. Security and transfers
 
