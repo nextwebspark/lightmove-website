@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
 description: How Lightmove collects, uses and protects personal data, including data from Google APIs, and the rights you have under the GDPR.
-updated: 2026-10-21
+updated: 2026-11-01
 reviewedByCounsel: false
 ---
 
@@ -17,11 +17,13 @@ Lightmove is the trading name of Nextwebspark Limited, a company registered in I
 - **Call data:** audio recordings, transcripts, caller phone numbers, call summaries and anything callers say to an agent. Our customers also upload contact lists for outbound call campaigns.
 - **Agent configuration:** the prompts, workflows and settings you create.
 - **Billing details:** payments are handled by Stripe. We do not store full card numbers.
-- **Usage data:** basic logs about how the website and app are used. Our website sets no cookies and runs no analytics. It remembers your light or dark theme choice in your browser, only if you pick one. Our hosting provider keeps server logs, including IP addresses, to deliver and secure the site. The app uses only the cookies and browser storage needed to sign you in and remember your display preferences, such as theme and sidebar. We do not use analytics or advertising cookies.
+- **Enquiries:** when you use our [contact form](/contact) or email us, your name, email address, company if you give it, what your message is about and what you write.
+- **Usage data:** basic logs about how the website and app are used. Our website sets no cookies and runs no analytics. It remembers your light or dark theme choice in your browser, only if you pick one. Our hosting provider keeps server logs, including IP addresses, to deliver and secure the site. The app uses only the cookies and browser storage needed to sign you in and remember your display preferences, such as theme and sidebar. We do not use analytics or advertising cookies. Our [Cookie Policy](/cookies) lists each item.
 
 ## 3. How we use it, and our legal basis
 
 - **To provide the service** you signed up for: answer calls, run your workflows and show you call logs. Legal basis: our contract with you.
+- **To answer your enquiries** sent through our contact form or by email. Legal basis: our legitimate interest in replying to people who contact us, or steps you ask us to take before entering into a contract.
 - **To bill you and keep records** that tax and company law require. Legal basis: legal obligation.
 - **To support you, keep the service secure and prevent abuse,** including server and security logs. Legal basis: our legitimate interest in running a secure, reliable service.
 - **To improve the product,** using aggregated or de-identified data where we can. Legal basis: our legitimate interest in improving the service.
@@ -55,7 +57,7 @@ We use these providers to run the service:
 
 - **Google Cloud** for hosting in the EU, and for the platform's AI: Vertex AI for language models and for searching the documents you add to an agent's knowledge base, and Speech-to-Text and Text-to-Speech for speech and voices. Under Google Cloud's terms, Google does not use this data to train its models.
 - **Stripe** for payments.
-- **Resend** for account emails such as sign-in links and invitations.
+- **Resend** for account emails such as sign-in links and invitations, and to deliver messages from our website contact form to our team.
 - **Telephony carriers** that connect phone calls to your agents.
 
 Each of these providers is bound by a data processing agreement with us. Our [sub-processor list](/subprocessors) gives the details of each provider, where it processes data and how transfers are protected. If you connect your own account with another AI or observability provider, calls on your agents are processed by that provider under your agreement with it.
@@ -65,6 +67,7 @@ Each of these providers is bound by a data processing agreement with us. Our [su
 - **Call content:** recordings, transcripts and other call content are deleted automatically after 90 days. Each customer can set a shorter or longer period, from 1 to 365 days. Customers can also delete a single call, or every call with a given phone number, at any time in the app. We keep each call's date, duration, status and cost for billing.
 - **Web widget and webhooks:** technical data from web widget sessions, such as IP addresses, and the content of completed webhook deliveries are deleted after 30 days.
 - **Accounts:** account data is kept while your account is open. You can delete your account in the app at any time. When an organization is deleted, it is closed straight away and its data is deleted 30 days later; until then an admin can cancel. Invoices and billing records are kept for six years, as Irish tax law requires.
+- **Enquiries:** messages sent through our contact form or by email are kept for [ENQUIRY RETENTION PERIOD].
 - **Logs:** server and security logs are kept for [LOG RETENTION PERIOD].
 - **Backups:** our database backups are deleted after 30 days, so deleted data leaves them within 30 days.
 

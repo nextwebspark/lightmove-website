@@ -83,6 +83,16 @@ describe('hosting config', () => {
     expect(headersFor('/blog').get('x-robots-tag')).toBeUndefined();
   });
 
+  it('serves the contact form endpoint same-origin from the EU function, never cached', () => {
+    expect(hosting.rewrites).toContainEqual({
+      source: '/api/contact',
+      function: { functionId: 'contact', region: 'europe-west1' },
+    });
+    expect(headersFor('/api/contact').get('cache-control')).toBe('no-store');
+    expect(cspFor('/contact').get('form-action')).toEqual(["'self'"]);
+    expect(cspFor('/contact').get('connect-src')).toContain("'self'");
+  });
+
   it('caches hashed assets forever and HTML not at all', () => {
     expect(headersFor('/_astro/index.Bx1.css').get('cache-control')).toBe(
       'public, max-age=31536000, immutable',

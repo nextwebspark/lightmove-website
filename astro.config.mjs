@@ -49,7 +49,8 @@ export default defineConfig({
     }),
     sitemap({
       filter: (page) =>
-        !/\/(admin|404)(\/|$)/.test(new URL(page).pathname) && !page.endsWith('/docs'),
+        !/\/(admin|404|contact\/sent)(\/|$)/.test(new URL(page).pathname) &&
+        !page.endsWith('/docs'),
     }),
   ],
   vite: {

@@ -28,6 +28,7 @@ jobs:
       FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
       PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
       PUBLIC_DEMO_AGENT_TOKEN: ${{ vars.PUBLIC_DEMO_AGENT_TOKEN }}
+      PUBLIC_CONTACT_FORM_ENABLED: ${{ vars.PUBLIC_CONTACT_FORM_ENABLED }}
       CHANNEL_ID: pr-${{ github.event.pull_request.number }}
     steps:
       - name: Check deploy configuration

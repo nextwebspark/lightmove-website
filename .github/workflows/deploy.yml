@@ -41,6 +41,9 @@ jobs:
       PUBLIC_BASE_URL: ${{ vars.PUBLIC_BASE_URL }}
       PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
       PUBLIC_DEMO_AGENT_TOKEN: ${{ vars.PUBLIC_DEMO_AGENT_TOKEN }}
+      PUBLIC_CONTACT_FORM_ENABLED: ${{ vars.PUBLIC_CONTACT_FORM_ENABLED }}
+      # Set to 'true' once the service account can deploy Cloud Functions (functions/README.md).
+      DEPLOY_FUNCTIONS: ${{ vars.DEPLOY_FUNCTIONS }}
     steps:
       # A dispatched ref is free text; only a release tag may reach production.
       - name: Check the ref is a release tag
@@ -100,7 +103,9 @@ jobs:
       - name: Deploy
         if: steps.config.outputs.enabled == 'true'
         run: |
-          npx --yes firebase-tools@15.30.0 deploy --only hosting --project "$FIREBASE_PROJECT_ID" \
+          ONLY=hosting
+          [ "$DEPLOY_FUNCTIONS" = "true" ] && ONLY=hosting,functions
+          npx --yes firebase-tools@15.30.0 deploy --only "$ONLY" --project "$FIREBASE_PROJECT_ID" \
             --message "${REF} ($(git rev-parse --short HEAD))" --non-interactive
 
       # A successful deploy means Firebase accepted the files, not that the site serves them as intended.

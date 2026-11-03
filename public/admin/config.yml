@@ -109,3 +109,7 @@ collections:
         label: Sub-processors
         file: src/content/legal/subprocessors.md
         fields: *legal_fields
+      - name: cookies
+        label: Cookie Policy
+        file: src/content/legal/cookies.md
+        fields: *legal_fields

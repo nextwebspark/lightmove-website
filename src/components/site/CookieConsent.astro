@@ -1,0 +1,261 @@
+---
+// The cookie banner and settings dialog. BaseLayout renders this when `consentRequired` (an optional
+// category exists in src/lib/consent.ts). Categories not in use yet are labelled as such, so the
+// banner never claims a tracker runs when it doesn't. Reject all, Accept all and Choose carry equal
+// weight, and nothing optional loads before a choice.
+import { CONSENT_MAX_AGE_DAYS, OPTIONAL_CATEGORIES, type ConsentCategory } from '../../lib/consent';
+
+interface Props {
+  categories?: readonly ConsentCategory[];
+}
+
+const { categories = OPTIONAL_CATEGORIES } = Astro.props;
+const names = categories.map((c) => c.label.toLowerCase()).join(' and ');
+const noneInUse = categories.every((c) => !c.inUse);
+---
+
+<section
+  class="cookie-banner"
+  aria-labelledby="cookie-banner-title"
+  data-cookie-banner
+  data-categories={JSON.stringify(categories)}
+  hidden
+>
+  <div class="cookie-copy">
+    <h2 id="cookie-banner-title">Cookies on lightmove.ai</h2>
+    {noneInUse ? (
+      <p>
+        Today we only use what the site needs to work. We plan to add {names}, and they will stay
+        off unless you agree. You can change your mind at any time.{' '}
+        <a href="/cookies">Read our Cookie Policy</a>.
+      </p>
+    ) : (
+      <p>
+        We use cookies needed to run the site. With your permission we'd also like to use {names}.
+        Nothing optional is set unless you agree. <a href="/cookies">Read our Cookie Policy</a>.
+      </p>
+    )}
+  </div>
+  <div class="cookie-actions">
+    <button type="button" class="btn btn-secondary" data-consent-reject>
+      Reject all
+    </button>
+    <button type="button" class="btn btn-secondary" data-consent-accept>
+      Accept all
+    </button>
+    <button type="button" class="btn btn-secondary" data-cookie-settings>
+      Choose
+    </button>
+  </div>
+</section>
+
+<dialog class="cookie-dialog" aria-labelledby="cookie-dialog-title" data-cookie-dialog>
+  <form method="dialog" data-consent-form>
+    <h2 id="cookie-dialog-title">Cookie settings</h2>
+    <p class="muted">
+      Choose which optional cookies we may use. We remember your choice for {CONSENT_MAX_AGE_DAYS}{' '}
+      days, and you can change it any time from the footer.
+    </p>
+    <fieldset>
+      <legend class="sr-only">Cookie categories</legend>
+      <label class="cookie-option">
+        <input type="checkbox" checked disabled />
+        <span>
+          <strong>Necessary</strong>
+          <span class="muted">
+            Needed for the site to work, such as remembering your theme. Always on.
+          </span>
+        </span>
+      </label>
+      {categories.map((category) => (
+        <label class="cookie-option">
+          <input type="checkbox" name="category" value={category.id} />
+          <span>
+            <strong>
+              {category.label}
+              {!category.inUse && <span class="cookie-status">Not in use yet</span>}
+            </strong>
+            <span class="muted">{category.description}</span>
+          </span>
+        </label>
+      ))}
+    </fieldset>
+    <div class="cookie-actions">
+      <button type="button" class="btn btn-secondary" data-consent-reject>
+        Reject all
+      </button>
+      <button type="button" class="btn btn-secondary" data-consent-accept>
+        Accept all
+      </button>
+      <button type="submit" class="btn btn-primary">
+        Save my choices
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  import {
+    CONSENT_EVENT,
+    CONSENT_STORAGE_KEY,
+    makeConsent,
+    needsBanner,
+    parseConsent,
+    withdrew,
+    type ConsentCategory,
+    type StoredConsent,
+  } from '../../lib/consent';
+
+  const banner = document.querySelector<HTMLElement>('[data-cookie-banner]');
+  const dialog = document.querySelector<HTMLDialogElement>('[data-cookie-dialog]');
+
+  if (banner && dialog) {
+    const categories = JSON.parse(banner.dataset.categories ?? '[]') as ConsentCategory[];
+    const read = (): StoredConsent | null => {
+      try {
+        return parseConsent(localStorage.getItem(CONSENT_STORAGE_KEY), categories, new Date());
+      } catch {
+        return null;
+      }
+    };
+
+    const save = (granted: string[]) => {
+      const before = read();
+      const after = makeConsent(granted, categories, new Date());
+      try {
+        localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(after));
+      } catch {
+        // Storage blocked: the choice applies to this page view only.
+      }
+      banner.hidden = true;
+      if (dialog.open) dialog.close();
+      window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: after }));
+      // Scripts that already ran can't be unloaded; a reload starts the page without them.
+      if (withdrew(before, after)) window.location.reload();
+    };
+
+    const openSettings = () => {
+      const current = read();
+      dialog
+        .querySelectorAll<HTMLInputElement>('input[name="category"]')
+        .forEach((box) => (box.checked = current?.choices[box.value] === true));
+      dialog.showModal();
+    };
+
+    banner.hidden = !needsBanner(categories, read());
+
+    document.addEventListener('click', (event) => {
+      const target = (event.target as Element | null)?.closest('button');
+      if (!target) return;
+      if (target.matches('[data-consent-reject]')) save([]);
+      else if (target.matches('[data-consent-accept]')) save(categories.map((c) => c.id));
+      else if (target.matches('[data-cookie-settings]')) openSettings();
+    });
+
+    dialog.querySelector('[data-consent-form]')?.addEventListener('submit', () => {
+      const boxes = dialog.querySelectorAll<HTMLInputElement>('input[name="category"]:checked');
+      save([...boxes].map((box) => box.value));
+    });
+  }
+</script>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    inset: auto 16px 16px;
+    z-index: 90;
+    max-width: 960px;
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+    padding: 20px 24px;
+    background: var(--lm-surface);
+    color: var(--lm-text);
+    border: 1px solid var(--lm-border);
+    border-radius: 20px;
+    box-shadow: var(--lm-shadow);
+  }
+  .cookie-banner[hidden] {
+    display: none;
+  }
+  .cookie-copy {
+    flex: 1 1 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  h2 {
+    font-family: var(--lm-font-display);
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .cookie-copy p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .cookie-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cookie-dialog {
+    width: min(560px, calc(100vw - 32px));
+    padding: 28px;
+    background: var(--lm-surface);
+    color: var(--lm-text);
+    border: 1px solid var(--lm-border);
+    border-radius: 24px;
+    box-shadow: var(--lm-shadow);
+  }
+  .cookie-dialog::backdrop {
+    background: rgba(11, 31, 23, 0.5);
+  }
+  .cookie-dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cookie-option {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border: 1px solid var(--lm-border);
+    border-radius: 14px;
+  }
+  .cookie-option > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .cookie-status {
+    margin-left: 8px;
+    padding: 2px 8px;
+    border: 1px solid var(--lm-border);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--lm-muted);
+    white-space: nowrap;
+  }
+  .cookie-option input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--lm-brand);
+  }
+</style>

@@ -12,6 +12,10 @@ export interface HostingConfig {
   readonly trailingSlash: boolean;
   readonly headers: readonly HeaderRule[];
   readonly redirects: readonly { source: string; destination: string; type: number }[];
+  readonly rewrites?: readonly {
+    source: string;
+    function?: { functionId: string; region: string };
+  }[];
 }
 
 export function loadHostingConfig(file = 'firebase.json'): HostingConfig {

@@ -43,6 +43,9 @@ jobs:
       - name: Unit tests
         run: npm test
 
+      - name: Functions type check and bundle
+        run: npm run check:functions
+
       - name: Build
         run: npm run build
 

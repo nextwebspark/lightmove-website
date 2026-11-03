@@ -27,7 +27,7 @@ Use npm 11 (bundled with Node 24, see `.nvmrc`). npm 10 fails to resolve vitest 
 | Path                                       | What                                                                                             |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | `design/*.dc.html`                         | **Source of truth for the UI** (exported from the design canvas). Read before changing UI.       |
-| `src/pages/`                               | Routes: home, `blog/` (index, post, tag, RSS), `privacy`, `terms`, `404`, `og/`, `llms.txt`.     |
+| `src/pages/`                               | Routes: home, `blog/`, `contact` (+ `contact/sent`), legal pages incl. `cookies`, `404`, `og/`.  |
 | `src/components/{site,home,blog,docs,seo}` | Astro components grouped by where they are used.                                                 |
 | `src/layouts/`                             | `BaseLayout` (every non-docs page, renders `Seo`) and `LegalLayout`.                             |
 | `src/content/`                             | `blog/*.md`, `authors/*.json`, `legal/*.md`, `docs/docs/**/*.md` (Starlight, at `/docs`).        |
@@ -37,6 +37,7 @@ Use npm 11 (bundled with Node 24, see `.nvmrc`). npm 10 fails to resolve vitest 
 | `public/`                                  | `theme-init.js`, icons (`scripts/make-icons.mjs`), `site.webmanifest`, `robots.txt`, CMS.        |
 | `scripts/`                                 | `check-csp.ts`, `check-seo.ts`, `gcp-bootstrap.sh`, `github-protect.sh`, `make-icons.mjs`.       |
 | `tests/`                                   | Config tests: `firebase.json` headers, CMS ↔ schema lockstep. Unit tests sit beside modules.     |
+| `functions/`                               | Cloud Function `contact` behind `/api/contact` (Resend → hello@). Setup: `functions/README.md`.  |
 
 ## Pipeline
 
@@ -80,6 +81,17 @@ Use npm 11 (bundled with Node 24, see `.nvmrc`). npm 10 fails to resolve vitest 
 - **CMS config and content schemas change together** (`tests/cms-config.test.ts`).
 - **A changed or removed URL gets a 301 in `firebase.json`.**
 - **Motion respects `prefers-reduced-motion`.**
+
+## Contact form and cookies
+
+- `/contact` shows the form only when `PUBLIC_CONTACT_FORM_ENABLED=true` (build-time repository variable);
+  otherwise it offers email links. Deploy ships the function only when `DEPLOY_FUNCTIONS=true`. Fields,
+  reasons and limits live in `src/lib/contact.ts`, shared by the page and the function.
+- **The cookie banner asks about planned categories only.** `src/lib/consent.ts` lists Analytics and
+  Error monitoring with `inUse: false`; the banner, the settings dialog and `/cookies` say they don't
+  run yet. Switching a tool on means: name it in `content/legal/cookies.md` and Privacy, list its
+  storage in `STORAGE_ITEMS`, load it only after `hasConsent()`, set `inUse: true` and bump
+  `CONSENT_VERSION` so everyone is asked again. "Cookieless" tools still need a category (EDPB 2/2023).
 
 ## Demo agent
 
