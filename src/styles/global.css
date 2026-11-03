@@ -8,6 +8,14 @@
     box-sizing: border-box;
   }
 
+  /* Vertical rhythm. One value spaces every section and page end, so the gap
+     between two sections is the same everywhere: 2 x this, 112px on a phone up
+     to 176px on a wide screen. */
+  :root {
+    --lm-section-y: clamp(56px, 7vw, 88px);
+    --lm-head-gap: clamp(32px, 4vw, 48px);
+  }
+
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
@@ -92,7 +100,7 @@
   }
 
   .section {
-    padding-block: 112px;
+    padding-block: var(--lm-section-y);
   }
 
   .section-band {
@@ -117,7 +125,7 @@
     flex-direction: column;
     gap: 14px;
     max-width: 680px;
-    margin-bottom: 48px;
+    margin-bottom: var(--lm-head-gap);
   }
 
   .section-head.center {
@@ -235,8 +243,10 @@
     border: 1.5px solid var(--lm-border);
   }
 
-  .btn-panel,
-  .btn-panel:hover {
+  /* Two classes, so it outranks `.card-panel a` (mint text on the mint button
+     made "Talk to us" invisible). */
+  .btn.btn-panel,
+  .btn.btn-panel:hover {
     background: var(--lm-panel-accent);
     color: #0a1f17;
   }

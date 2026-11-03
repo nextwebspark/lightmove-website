@@ -93,13 +93,23 @@ import { USE_CASES } from '../../lib/use-cases';
     border-color: var(--lm-text);
     color: var(--lm-bg);
   }
+  /* The story and its sample call sit on one tinted stage, so the call reads as
+     part of the story instead of floating beside it. */
   .panel:not([hidden]) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: clamp(28px, 5vw, 64px);
+    padding: clamp(20px, 4vw, 48px);
+    border-radius: 28px;
+    background: var(--lm-wash);
+  }
+  @media (max-width: 860px) {
+    .panel:not([hidden]) {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
   .panel-copy {
-    flex: 1 1 380px;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -142,7 +152,6 @@ import { USE_CASES } from '../../lib/use-cases';
     justify-content: center;
   }
   .transcript {
-    flex: 1 1 440px;
     min-width: 0;
     background: var(--lm-surface);
     border: 1px solid var(--lm-border);
