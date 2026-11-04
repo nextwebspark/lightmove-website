@@ -44,6 +44,17 @@ export default defineConfig({
         { label: 'Get started', items: [{ autogenerate: { directory: 'docs/getting-started' } }] },
         { label: 'Build agents', items: [{ autogenerate: { directory: 'docs/build' } }] },
         { label: 'Go live', items: [{ autogenerate: { directory: 'docs/go-live' } }] },
+        {
+          label: 'Integrations',
+          items: [
+            {
+              label: 'Telephony',
+              items: [{ autogenerate: { directory: 'docs/integrations/telephony' } }],
+            },
+            { slug: 'docs/integrations/paygent' },
+            { slug: 'docs/integrations/tuner' },
+          ],
+        },
         { label: 'Account', items: [{ autogenerate: { directory: 'docs/account' } }] },
       ],
     }),
