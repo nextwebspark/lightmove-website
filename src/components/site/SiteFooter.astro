@@ -3,6 +3,7 @@ import { APP, SITE } from '../../lib/site';
 import BrandLockup from './BrandLockup.astro';
 import Icon from './Icon.astro';
 import { TRUST_ITEMS } from '../../lib/trust';
+import { consentRequired } from '../../lib/consent';
 
 const columns = [
   {
@@ -26,11 +27,12 @@ const columns = [
   {
     title: 'Company',
     links: [
-      { href: '/#contact', label: 'Contact' },
+      { href: '/contact', label: 'Contact us' },
       { href: '/privacy', label: 'Privacy Policy' },
       { href: '/terms', label: 'Terms of Service' },
       { href: '/dpa', label: 'Data Processing Agreement' },
       { href: '/subprocessors', label: 'Sub-processors' },
+      { href: '/cookies', label: 'Cookie Policy' },
     ],
   },
 ];
@@ -55,6 +57,11 @@ const year = new Date().getFullYear();
             {column.links.map((link) => (
               <a href={link.href}>{link.label}</a>
             ))}
+            {column.title === 'Company' && consentRequired && (
+              <button type="button" class="footer-link-button" data-cookie-settings>
+                Cookie settings
+              </button>
+            )}
           </nav>
         ))}
       </div>
@@ -98,6 +105,18 @@ const year = new Date().getFullYear();
     gap: 6px;
     color: var(--lm-muted);
     text-decoration: none;
+  }
+  .footer-link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--lm-text);
+    text-align: left;
+    cursor: pointer;
+  }
+  .footer-link-button:hover {
+    color: var(--lm-brand);
   }
   .footer-trust a:hover {
     color: var(--lm-text);

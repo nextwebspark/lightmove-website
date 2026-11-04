@@ -24,6 +24,21 @@ export const staticPages = {
     description:
       "Guides, product news and what we're learning from building AI voice agents for Irish businesses.",
   },
+  contact: {
+    path: '/contact',
+    title: 'Contact us',
+    ogTitle: 'Talk to the LightMove team.',
+    description:
+      'Ask about a voice agent build, pricing, a demo or a VoIP partnership. Send us a message and the Lightmove team in Limerick will reply.',
+  },
+  contactSent: {
+    path: '/contact/sent',
+    title: 'Message sent',
+    ogTitle: 'Message sent',
+    description:
+      "Thanks for getting in touch with Lightmove. Your message has reached our team and we'll reply by email.",
+    noindex: true,
+  },
   notFound: {
     path: '/404',
     title: 'Page not found',

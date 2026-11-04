@@ -1,5 +1,5 @@
 ---
-import { SITE, contactHref } from '../../lib/site';
+import { SITE } from '../../lib/site';
 const bars = [120, 220, 300, 180, 90];
 ---
 
@@ -26,10 +26,10 @@ const bars = [120, 220, 300, 180, 90];
       </p>
     </div>
     <div class="cta-actions">
-      <a href={contactHref('Build me a voice agent')} class="btn btn-panel btn-lg">
+      <a href="/contact?reason=build" class="btn btn-panel btn-lg">
         Request a build
       </a>
-      <a href={contactHref('VoIP partnership')} class="btn btn-lg ghost">
+      <a href="/contact?reason=partnership" class="btn btn-lg ghost">
         VoIP partnerships
       </a>
       <p class="small">

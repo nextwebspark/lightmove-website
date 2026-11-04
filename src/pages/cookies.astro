@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+import LegalLayout from '../layouts/LegalLayout.astro';
+
+const entry = await getEntry('legal', 'cookies');
+if (!entry) throw new Error('src/content/legal/cookies.md is missing');
+---
+
+<LegalLayout entry={entry} />

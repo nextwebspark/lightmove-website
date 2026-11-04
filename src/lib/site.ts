@@ -37,6 +37,12 @@ export const APP = {
   demoToken: import.meta.env.PUBLIC_DEMO_AGENT_TOKEN || '',
 } as const;
 
-export function contactHref(subject: string): string {
-  return `mailto:${SITE.emails.hello}?subject=${encodeURIComponent(subject)}`;
-}
+/**
+ * The /contact form posts to /api/contact, a Cloud Function (functions/). Until that function is
+ * deployed with its Resend key, leave PUBLIC_CONTACT_FORM_ENABLED unset: the page then offers email
+ * links instead of a form that would fail.
+ */
+export const CONTACT_FORM = {
+  enabled: import.meta.env.PUBLIC_CONTACT_FORM_ENABLED === 'true',
+  endpoint: '/api/contact',
+} as const;
