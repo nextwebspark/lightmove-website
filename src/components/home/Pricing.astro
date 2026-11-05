@@ -1,29 +1,30 @@
 ---
 import { APP } from '../../lib/site';
 
-// Prices are placeholders until billing is set up; never publish a number that isn't decided.
+// Prices match the app's billing (failte-ai api/services/billing/pricing.py) and were signed off by
+// the owner on 2026-11-05. Change both together.
 const plans = [
   {
     name: 'Try',
-    price: 'Free',
-    unit: '',
-    blurb: 'Test templates in your browser.',
+    price: '€5',
+    unit: ' free credit',
+    blurb: 'About 40 minutes of calls to try it. No commitment.',
     features: ['All templates', 'Browser test calls', 'Transcripts'],
     cta: { label: 'Start free', href: APP.signUpUrl },
     featured: false,
   },
   {
     name: 'Pay as you go',
-    price: '[€X]',
+    price: '€0.12',
     unit: ' / minute',
-    blurb: 'Self-serve. Billed monthly by usage.',
+    blurb: 'Prepaid credit, charged per second. Top up from €20. Excludes VAT.',
     features: ['Agent Builder', 'Phone numbers and SIP', 'Web widget', 'Recordings and summaries'],
     cta: { label: 'Get started', href: APP.signUpUrl },
     featured: true,
   },
   {
     name: 'Done for you',
-    price: 'From [€X]',
+    price: 'On request',
     unit: '',
     blurb: 'One-off build, then pay as you go.',
     features: ['Workflow designed for you', 'Integrations set up', 'Tested with your team'],
