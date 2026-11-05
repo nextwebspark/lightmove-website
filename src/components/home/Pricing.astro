@@ -1,34 +1,58 @@
 ---
 import { APP } from '../../lib/site';
+import Icon from '../site/Icon.astro';
 
 // Prices match the app's billing (failte-ai api/services/billing/pricing.py) and were signed off by
-// the owner on 2026-11-05. Change both together.
+// the owner on 2026-11-05. Change both together. Every feature line is something the app does today:
+// "10 calls at once" is DEFAULT_ORG_CONCURRENCY_LIMIT; Enterprise rates, call limits and credit
+// limits are per-account settings (billing_accounts.price_per_minute_eur / credit_limit_eur and the
+// organisation's CONCURRENT_CALL_LIMIT).
 const plans = [
   {
+    audience: 'To try it',
     name: 'Try',
-    price: '€5',
-    unit: ' free credit',
-    blurb: 'About 40 minutes of calls to try it. No commitment.',
-    features: ['All templates', 'Browser test calls', 'Transcripts'],
+    summary: '€5 of free credit, about 40 minutes of calls.',
+    price: '€0',
+    unit: '',
+    note: 'No monthly fee. No commitment.',
     cta: { label: 'Start free', href: APP.signUpUrl },
+    features: ['All agent templates', 'Test calls in your browser', 'Transcripts and recordings'],
+    tone: 'try',
     featured: false,
   },
   {
+    audience: 'For businesses',
     name: 'Pay as you go',
+    summary: 'Prepaid credit. Top up from €20.',
     price: '€0.12',
-    unit: ' / minute',
-    blurb: 'Prepaid credit, charged per second. Top up from €20. Excludes VAT.',
-    features: ['Agent Builder', 'Phone numbers and SIP', 'Web widget', 'Recordings and summaries'],
+    unit: '/min',
+    note: '€0 monthly fee. Excludes VAT.',
     cta: { label: 'Get started', href: APP.signUpUrl },
+    features: [
+      'Charged by the second',
+      'Your own phone number or SIP',
+      'Up to 10 calls at once',
+      'Calendar booking and transfers',
+      'Recordings and call summaries',
+    ],
+    tone: 'payg',
     featured: true,
   },
   {
-    name: 'Done for you',
-    price: 'On request',
+    audience: 'For organisations',
+    name: 'Enterprise',
+    summary: 'Built and run with our team, at your volume.',
+    price: 'Custom',
     unit: '',
-    blurb: 'One-off build, then pay as you go.',
-    features: ['Workflow designed for you', 'Integrations set up', 'Tested with your team'],
-    cta: { label: 'Request a quote', href: '/contact?reason=build' },
+    note: 'Contracted to your volume.',
+    cta: { label: 'Talk to our team', href: '/contact?reason=pricing' },
+    features: [
+      'Volume per-minute rate',
+      'More calls at once',
+      'Agents and integrations built for you',
+      'Pay on invoice',
+    ],
+    tone: 'enterprise',
     featured: false,
   },
 ];
@@ -37,27 +61,38 @@ const plans = [
 <section class="section container" id="pricing">
   <div class="section-head center reveal">
     <span class="eyebrow">Pricing</span>
-    <h2 class="h-section">Simple and pay as you go</h2>
-    <p class="lead">No monthly commitment. Pay for the minutes your agents spend on calls.</p>
+    <h2 class="h-section">Clear pricing on every call</h2>
+    <p class="lead">One rate per minute. No token charges and no surprise bills.</p>
   </div>
   <div class="plans">
     {plans.map((p) => (
-      <article class:list={['card card-hover plan reveal', { featured: p.featured }]}>
-        {p.featured && <span class="flag">Most popular</span>}
-        <h3 class="plan-name">{p.name}</h3>
-        <p class="price">
-          {p.price}
-          {p.unit && <span class="unit">{p.unit}</span>}
-        </p>
-        <p class="muted small">{p.blurb}</p>
-        <ul>
-          {p.features.map((f) => (
-            <li>{f}</li>
-          ))}
-        </ul>
-        <a href={p.cta.href} class:list={['btn', p.featured ? 'btn-primary' : 'btn-secondary']}>
-          {p.cta.label}
-        </a>
+      <article class:list={['plan reveal', `tone-${p.tone}`, { featured: p.featured }]}>
+        <header class="plan-head">
+          <span class="audience">{p.audience}</span>
+          <h3 class="plan-name">{p.name}</h3>
+          <p class="summary">{p.summary}</p>
+        </header>
+        <div class="plan-body">
+          <p class="price">
+            {p.price}
+            {p.unit && <span class="unit">{p.unit}</span>}
+          </p>
+          <p class="note">{p.note}</p>
+          <a
+            href={p.cta.href}
+            class:list={['btn', p.tone === 'enterprise' ? 'btn-secondary' : 'btn-primary']}
+          >
+            {p.cta.label}
+          </a>
+          <ul>
+            {p.features.map((f) => (
+              <li>
+                <Icon name="check" size={18} strokeWidth={2} />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </article>
     ))}
   </div>
@@ -67,65 +102,108 @@ const plans = [
   .plans {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 20px;
     align-items: stretch;
   }
   .plan {
     flex: 1 1 300px;
-    position: relative;
-    padding: 36px;
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: 16px;
   }
   .plan.featured {
-    border: 2px solid var(--lm-brand);
+    border-color: var(--lm-brand);
     box-shadow: var(--lm-shadow);
   }
-  .flag {
-    position: absolute;
-    top: -14px;
-    left: 32px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    background: var(--lm-brand);
-    color: var(--lm-on-brand);
+  .plan-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 140px;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--lm-border);
+  }
+  .tone-try .plan-head {
+    background: var(--lm-surface-2);
+  }
+  .tone-payg .plan-head {
+    background: var(--lm-wash);
+  }
+  .tone-enterprise .plan-head {
+    background: var(--lm-warn-bg);
+  }
+  .audience {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    color: var(--lm-muted);
   }
   .plan-name {
-    font-size: 18px;
+    font-family: var(--lm-font-display);
+    font-size: 24px;
+    line-height: 30px;
     font-weight: 600;
+    color: var(--lm-heading);
+  }
+  .summary {
+    font-size: 15px;
+    line-height: 22px;
+    color: var(--lm-muted);
+  }
+  .plan-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 28px;
   }
   .price {
     font-family: var(--lm-font-display);
     font-weight: 600;
     font-size: 44px;
-    line-height: 48px;
+    line-height: 52px;
     letter-spacing: -0.03em;
     color: var(--lm-heading);
   }
   .unit {
+    margin-left: 4px;
     font-family: var(--lm-font-body);
     font-size: 16px;
     font-weight: 500;
     color: var(--lm-muted);
     letter-spacing: 0;
   }
-  .small {
-    font-size: 15px;
+  .note {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--lm-muted);
+  }
+  .btn {
+    min-height: 44px;
+    margin-block: 20px 8px;
   }
   ul {
     margin: 0;
-    padding: 0;
+    padding: 20px 0 0;
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    border-top: 1px solid var(--lm-border);
     font-size: 15px;
-    flex-grow: 1;
   }
-  .btn {
-    min-height: 48px;
+  li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  li :global(svg) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--lm-brand);
   }
 </style>
