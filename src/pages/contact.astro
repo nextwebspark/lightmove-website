@@ -269,7 +269,13 @@ const topics = [
       help.hidden = false;
     };
 
-    topics.forEach((topic) => topic.addEventListener('click', () => showFor(topic)));
+    topics.forEach((topic) =>
+      topic.addEventListener('click', () => {
+        showFor(topic);
+        // On a phone the options sit below the list, out of sight.
+        help.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }),
+    );
 
     copy?.addEventListener('click', async () => {
       try {
@@ -594,7 +600,7 @@ const topics = [
     flex-wrap: wrap;
     gap: 8px;
   }
-  .mail-help-btn {
+  .mail-help .mail-help-btn {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -609,7 +615,7 @@ const topics = [
     text-decoration: none;
     cursor: pointer;
   }
-  .mail-help-btn:hover {
+  .mail-help .mail-help-btn:hover {
     border-color: var(--lm-panel-accent);
   }
 </style>
