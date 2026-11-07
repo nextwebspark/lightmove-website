@@ -68,6 +68,7 @@ const plans = [
     {plans.map((p) => (
       <article class:list={['plan reveal', `tone-${p.tone}`, { featured: p.featured }]}>
         <header class="plan-head">
+          {p.featured && <span class="badge">Most popular</span>}
           <span class="audience">{p.audience}</span>
           <h3 class="plan-name">{p.name}</h3>
           <p class="summary">{p.summary}</p>
@@ -114,11 +115,47 @@ const plans = [
     border: 1px solid var(--lm-border);
     border-radius: 16px;
   }
+  /* The middle plan is the one we recommend: a solid brand header, a
+     stronger border and a slight lift, so it reads as already selected. */
   .plan.featured {
-    border-color: var(--lm-brand);
-    box-shadow: var(--lm-shadow);
+    position: relative;
+    border: 2px solid var(--lm-brand);
+    box-shadow:
+      0 18px 40px -18px color-mix(in srgb, var(--lm-brand) 55%, transparent),
+      var(--lm-shadow);
+  }
+  @media (min-width: 960px) {
+    .plan.featured {
+      transform: translateY(-10px);
+    }
+  }
+  .plan.featured .plan-head {
+    background: var(--lm-brand);
+    border-bottom-color: var(--lm-brand);
+  }
+  .plan.featured .audience,
+  .plan.featured .plan-name,
+  .plan.featured .summary {
+    color: #fff;
+  }
+  .plan.featured .audience,
+  .plan.featured .summary {
+    opacity: 0.88;
+  }
+  .badge {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--lm-brand);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
   .plan-head {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -162,6 +199,9 @@ const plans = [
     padding: 28px;
   }
   .price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
     font-family: var(--lm-font-display);
     font-weight: 600;
     font-size: 44px;
@@ -178,6 +218,7 @@ const plans = [
     letter-spacing: 0;
   }
   .note {
+    min-height: 20px;
     font-size: 14px;
     line-height: 20px;
     color: var(--lm-muted);
