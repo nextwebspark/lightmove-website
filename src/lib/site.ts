@@ -38,11 +38,11 @@ export const APP = {
 } as const;
 
 /**
- * The /contact form posts to /api/contact, a Cloud Function (functions/). Until that function is
- * deployed with its Resend key, leave PUBLIC_CONTACT_FORM_ENABLED unset: the page then offers email
- * links instead of a form that would fail.
+ * The /contact form posts to /api/contact, a Cloud Function (functions/) that sends through Resend.
+ * The form is on by default; set PUBLIC_CONTACT_FORM_ENABLED=false only to fall back to email links
+ * (for example while the function or its RESEND_API_KEY secret is unavailable).
  */
 export const CONTACT_FORM = {
-  enabled: import.meta.env.PUBLIC_CONTACT_FORM_ENABLED === 'true',
+  enabled: import.meta.env.PUBLIC_CONTACT_FORM_ENABLED !== 'false',
   endpoint: '/api/contact',
 } as const;

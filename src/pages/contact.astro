@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/site/Icon.astro';
 import { CONTACT_LIMITS, CONTACT_REASONS, HONEYPOT_FIELD } from '../lib/contact';
+import { CONTACT_TOPICS, CONTACT_TOPIC_COPY } from '../lib/contactTopics';
 import { staticPages } from '../lib/pages';
 import { breadcrumbList } from '../lib/seo/jsonld';
 import { gmailComposeUrl, mailtoUrl, outlookComposeUrl } from '../lib/mailCompose';
@@ -64,20 +65,31 @@ const topics = [
           aria-describedby="contact-privacy"
         >
           <h2 class="panel-title">Send us a message</h2>
+          <p class="panel-muted">A person on our team reads every message and replies by email.</p>
           <p class="form-errors" role="alert" data-form-errors hidden />
 
-          <div class="field">
-            <label for="contact-reason">What is your message about?</label>
-            <select id="contact-reason" name="reason" required aria-describedby="err-reason">
-              <option value="" disabled selected>
-                Choose a reason
-              </option>
-              {CONTACT_REASONS.map((reason) => (
-                <option value={reason.id}>{reason.label}</option>
+          <fieldset class="field topics" aria-describedby="err-reason">
+            <legend>What is this about?</legend>
+            <div class="chips">
+              {CONTACT_TOPICS.map((topic) => (
+                <label class="chip">
+                  <input
+                    class="chip-input"
+                    type="radio"
+                    name="reason"
+                    value={topic.id}
+                    required
+                    data-hint={topic.hint}
+                    data-placeholder={topic.placeholder}
+                    data-submit={topic.submit}
+                  />
+                  <span>{topic.chip}</span>
+                </label>
               ))}
-            </select>
+            </div>
+            <p class="topic-hint" data-topic-hint hidden />
             <p class="field-error" id="err-reason" hidden />
-          </div>
+          </fieldset>
 
           <div class="field" data-other-field>
             <label for="contact-reason-other">If you chose Other, what is it about?</label>
@@ -169,7 +181,7 @@ const topics = [
           </p>
 
           <button type="submit" class="btn btn-panel btn-lg" data-contact-submit>
-            Send message
+            {CONTACT_TOPIC_COPY.other.submit}
           </button>
           <p class="form-status" role="status" aria-live="polite" data-form-status />
         </form>
@@ -240,7 +252,8 @@ const topics = [
 </BaseLayout>
 
 <script>
-  import { CONTACT_REASONS, validateContact, type ContactField } from '../lib/contact';
+  import { validateContact, type ContactField } from '../lib/contact';
+  import { topicFromSearch } from '../lib/contactTopics';
   import { gmailComposeUrl, outlookComposeUrl } from '../lib/mailCompose';
 
   // Without the form: a topic opens the visitor's email app (mailto), and we
@@ -299,7 +312,10 @@ const topics = [
     const summary = form.querySelector<HTMLElement>('[data-form-errors]');
     const status = form.querySelector<HTMLElement>('[data-form-status]');
     const submit = form.querySelector<HTMLButtonElement>('[data-contact-submit]');
-    const reason = form.querySelector<HTMLSelectElement>('[name="reason"]');
+    const topics = [...form.querySelectorAll<HTMLInputElement>('input[name="reason"]')];
+    const hint = form.querySelector<HTMLElement>('[data-topic-hint]');
+    const messageBox = form.querySelector<HTMLTextAreaElement>('[name="message"]');
+    const chosen = () => topics.find((t) => t.checked) ?? null;
     const otherField = form.querySelector<HTMLElement>('[data-other-field]');
     const otherLabel = otherField?.querySelector('label');
     const fields: ContactField[] = ['reason', 'reasonOther', 'name', 'email', 'company', 'message'];
@@ -309,17 +325,35 @@ const topics = [
     if (otherLabel) otherLabel.textContent = 'What is it about?';
 
     const syncOther = () => {
-      if (!otherField || !reason) return;
-      const isOther = reason.value === 'other';
+      if (!otherField) return;
+      const isOther = chosen()?.value === 'other';
       otherField.hidden = !isOther;
       otherField.querySelector('input')?.toggleAttribute('required', isOther);
     };
 
-    // Links such as /contact?reason=partnership preselect the topic.
-    const preset = new URLSearchParams(window.location.search).get('reason');
-    if (reason && CONTACT_REASONS.some((r) => r.id === preset)) reason.value = preset ?? '';
-    syncOther();
-    reason?.addEventListener('change', syncOther);
+    // The chosen topic shapes the form: its hint, an example message and the button label.
+    const syncTopic = () => {
+      const topic = chosen();
+      syncOther();
+      if (hint) {
+        hint.textContent = topic?.dataset.hint ?? '';
+        hint.hidden = !topic;
+      }
+      if (messageBox) messageBox.placeholder = topic?.dataset.placeholder ?? '';
+      if (submit && topic?.dataset.submit) submit.textContent = topic.dataset.submit;
+    };
+
+    // Links such as /contact?reason=pricing (or ?kind=pricing) choose the topic.
+    const preset = topicFromSearch(window.location.search);
+    const presetInput = topics.find((t) => t.value === preset);
+    if (presetInput) presetInput.checked = true;
+    syncTopic();
+    topics.forEach((t) =>
+      t.addEventListener('change', () => {
+        syncTopic();
+        history.replaceState(null, '', `/contact?reason=${t.value}`);
+      }),
+    );
 
     const showErrors = (errors: Partial<Record<ContactField, string>>) => {
       let first: HTMLElement | null = null;
@@ -492,7 +526,7 @@ const topics = [
     font-weight: 400;
     color: var(--lm-panel-muted);
   }
-  input,
+  input:not(.chip-input),
   select,
   textarea {
     width: 100%;
@@ -547,6 +581,68 @@ const topics = [
   .contact-form .btn:disabled {
     opacity: 0.6;
     cursor: progress;
+  }
+  .topics {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .topics legend {
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--lm-panel-text);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--lm-panel-line);
+    background: var(--lm-panel-field);
+    color: var(--lm-panel-text);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chip:hover {
+    border-color: var(--lm-panel-accent);
+  }
+  .chips .chip-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .chip:has(.chip-input:checked) {
+    border-color: var(--lm-panel-accent);
+    background: var(--lm-panel-accent);
+    color: var(--lm-panel);
+  }
+  .chip:has(.chip-input:focus-visible) {
+    outline: 3px solid rgba(61, 220, 151, 0.55);
+    outline-offset: 2px;
+  }
+  .topic-hint {
+    margin: 4px 0 0;
+    color: var(--lm-panel-muted);
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .topic-hint[hidden] {
+    display: none;
   }
   .hp {
     position: absolute;
