@@ -126,7 +126,8 @@ const plans = [
   }
   @media (min-width: 960px) {
     .plan.featured {
-      transform: translateY(-10px);
+      /* `translate`, not `transform`: the scroll-in animation owns transform. */
+      translate: 0 -10px;
     }
   }
   .plan.featured .plan-head {
@@ -211,6 +212,7 @@ const plans = [
   }
   .unit {
     margin-left: 4px;
+    line-height: 1;
     font-family: var(--lm-font-body);
     font-size: 16px;
     font-weight: 500;
