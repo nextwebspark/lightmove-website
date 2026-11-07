@@ -4,11 +4,18 @@ import Icon from '../components/site/Icon.astro';
 import { CONTACT_LIMITS, CONTACT_REASONS, HONEYPOT_FIELD } from '../lib/contact';
 import { staticPages } from '../lib/pages';
 import { breadcrumbList } from '../lib/seo/jsonld';
+import { gmailComposeUrl, mailtoUrl, outlookComposeUrl } from '../lib/mailCompose';
 import { CONTACT_FORM, SITE } from '../lib/site';
 
 const page = staticPages.contact;
-const mailto = (subject: string) =>
-  `mailto:${SITE.emails.hello}?subject=${encodeURIComponent(subject)}`;
+const topics = [
+  ...CONTACT_REASONS.filter((reason) => reason.id !== 'other').map((reason) => ({
+    id: reason.id,
+    label: reason.label,
+    subject: reason.label,
+  })),
+  { id: 'other', label: 'Something else', subject: '' },
+];
 ---
 
 <BaseLayout
@@ -170,18 +177,55 @@ const mailto = (subject: string) =>
         <div class="contact-form">
           <h2 class="panel-title">Email us</h2>
           <p class="panel-muted">
-            Pick a topic and your email app opens with the subject filled in.
+            Pick a topic and your email app opens with the subject filled in. Use Gmail or Outlook
+            in your browser? You'll get a link for that too.
           </p>
           <ul class="mail-topics">
-            {CONTACT_REASONS.filter((reason) => reason.id !== 'other').map((reason) => (
+            {topics.map((topic) => (
               <li>
-                <a href={mailto(reason.label)}>{reason.label}</a>
+                <a
+                  href={mailtoUrl(SITE.emails.hello, topic.subject || undefined)}
+                  data-mail-topic={topic.id}
+                  data-subject={topic.subject}
+                >
+                  {topic.label}
+                </a>
               </li>
             ))}
-            <li>
-              <a href={`mailto:${SITE.emails.hello}`}>Something else</a>
-            </li>
           </ul>
+          <div class="mail-help" data-mail-help hidden>
+            <p class="mail-help-text" role="status" aria-live="polite" data-mail-help-text>
+              Write to {SITE.emails.hello}.
+            </p>
+            <div class="mail-help-actions">
+              <a
+                class="mail-help-btn"
+                href={gmailComposeUrl(SITE.emails.hello)}
+                target="_blank"
+                rel="noopener"
+                data-mail-gmail
+              >
+                Open in Gmail
+              </a>
+              <a
+                class="mail-help-btn"
+                href={outlookComposeUrl(SITE.emails.hello)}
+                target="_blank"
+                rel="noopener"
+                data-mail-outlook
+              >
+                Open in Outlook
+              </a>
+              <button
+                type="button"
+                class="mail-help-btn"
+                data-mail-copy
+                data-address={SITE.emails.hello}
+              >
+                Copy address
+              </button>
+            </div>
+          </div>
         </div>
       )}
       <div class="contact-done" tabindex="-1" data-contact-done hidden>
@@ -197,6 +241,50 @@ const mailto = (subject: string) =>
 
 <script>
   import { CONTACT_REASONS, validateContact, type ContactField } from '../lib/contact';
+  import { gmailComposeUrl, outlookComposeUrl } from '../lib/mailCompose';
+
+  // Without the form: a topic opens the visitor's email app (mailto), and we
+  // also show Gmail, Outlook and copy options, because a mailto click does
+  // nothing at all when no email app is set up.
+  const help = document.querySelector<HTMLElement>('[data-mail-help]');
+  if (help) {
+    const text = help.querySelector<HTMLElement>('[data-mail-help-text]');
+    const gmail = help.querySelector<HTMLAnchorElement>('[data-mail-gmail]');
+    const outlook = help.querySelector<HTMLAnchorElement>('[data-mail-outlook]');
+    const copy = help.querySelector<HTMLButtonElement>('[data-mail-copy]');
+    const address = copy?.dataset.address ?? 'hello@lightmove.ai';
+    const topics = document.querySelectorAll<HTMLAnchorElement>('[data-mail-topic]');
+
+    const showFor = (topic: HTMLAnchorElement) => {
+      const subject = topic.dataset.subject || undefined;
+      topics.forEach((t) => t.toggleAttribute('aria-current', t === topic));
+      if (text) {
+        text.textContent = subject
+          ? `If your email app didn't open, write to ${address} with the subject "${subject}", or use one of these:`
+          : `If your email app didn't open, write to ${address}, or use one of these:`;
+      }
+      if (gmail) gmail.href = gmailComposeUrl(address, subject);
+      if (outlook) outlook.href = outlookComposeUrl(address, subject);
+      if (copy) copy.textContent = 'Copy address';
+      help.hidden = false;
+    };
+
+    topics.forEach((topic) => topic.addEventListener('click', () => showFor(topic)));
+
+    copy?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(address);
+        copy.textContent = 'Copied';
+      } catch {
+        copy.textContent = address;
+      }
+    });
+
+    // Links such as /contact?reason=pricing show that topic's options straight away.
+    const preset = new URLSearchParams(window.location.search).get('reason');
+    const presetTopic = [...topics].find((t) => t.dataset.mailTopic === preset);
+    if (presetTopic) showFor(presetTopic);
+  }
 
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
 
@@ -481,7 +569,47 @@ const mailto = (subject: string) =>
     font-weight: 600;
     text-decoration: none;
   }
-  .mail-topics a:hover {
+  .mail-topics a:hover,
+  .mail-topics a[aria-current] {
+    border-color: var(--lm-panel-accent);
+  }
+  .mail-help {
+    margin-top: 16px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--lm-panel-accent);
+    background: var(--lm-panel-field);
+  }
+  .mail-help[hidden] {
+    display: none;
+  }
+  .mail-help-text {
+    margin: 0 0 12px;
+    color: var(--lm-panel-text);
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .mail-help-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mail-help-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--lm-panel-line);
+    background: transparent;
+    color: var(--lm-panel-text);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .mail-help-btn:hover {
     border-color: var(--lm-panel-accent);
   }
 </style>
