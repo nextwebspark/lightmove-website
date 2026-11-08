@@ -7,7 +7,7 @@ describe('absoluteUrl', () => {
     ['/blog/', 'https://lightmove.ai/blog'],
     ['/blog.html', 'https://lightmove.ai/blog'],
     ['/index.html', 'https://lightmove.ai/'],
-    ['/docs/quick-start/index.html', 'https://lightmove.ai/docs/quick-start'],
+    ['/blog/tag/guides/index.html', 'https://lightmove.ai/blog/tag/guides'],
     ['/privacy?utm=x#top', 'https://lightmove.ai/privacy'],
   ])('turns %s into the one canonical address %s', (input, expected) => {
     expect(absoluteUrl(input)).toBe(expected);
@@ -19,7 +19,7 @@ describe('ogImagePathFor', () => {
     ['/', '/og/index.png'],
     ['/blog', '/og/blog.png'],
     ['/blog/my-post/', '/og/blog/my-post.png'],
-    ['/docs/go-live/web-widget.html', '/og/docs/go-live/web-widget.png'],
+    ['/go-live/web-widget.html', '/og/go-live/web-widget.png'],
   ])('puts the share card for %s at %s', (input, expected) => {
     expect(ogImagePathFor(input)).toBe(expected);
   });

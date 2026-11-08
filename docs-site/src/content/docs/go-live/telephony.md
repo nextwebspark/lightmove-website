@@ -26,5 +26,5 @@ If you run a business phone system or work with a VoIP provider, point a SIP tru
 - Are there charges for forwarded minutes?
 
 :::note[VoIP operators]
-Want to offer LightMove agents to your own customers? [Talk to us](/contact).
+Want to offer LightMove agents to your own customers? [Talk to us](https://lightmove.ai/contact).
 :::

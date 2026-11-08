@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "dograh-eu"
+  },
+  "targets": {
+    "dograh-eu": {
+      "hosting": {
+        "website": [
+          "lightmove-website"
+        ],
+        "docs": [
+          "lightmove-docs"
+        ]
+      }
+    }
   }
 }

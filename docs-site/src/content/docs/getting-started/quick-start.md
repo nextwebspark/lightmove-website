@@ -30,11 +30,11 @@ Copy the embed snippet from **Deploy → Web widget** and paste it before the cl
 ></script>
 ```
 
-See [Web widget](/docs/go-live/web-widget) for the embed modes and the JavaScript API.
+See [Web widget](/go-live/web-widget) for the embed modes and the JavaScript API.
 
 ## 4. Connect a phone number
 
-Under **Deploy → Telephony**, connect a number from your provider or point your SIP trunk at LightMove. Calls to that number now reach your agent. See [Phone numbers and SIP](/docs/go-live/telephony).
+Under **Deploy → Telephony**, connect a number from your provider or point your SIP trunk at LightMove. Calls to that number now reach your agent. See [Phone numbers and SIP](/go-live/telephony).
 
 :::caution[Before going live]
 Run at least three test calls end to end, including one transfer to a person.

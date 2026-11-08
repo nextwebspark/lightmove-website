@@ -14,6 +14,9 @@ export default defineConfig([
     'design/',
     '.lighthouseci/',
     'public/',
+    'docs-site/dist/',
+    'docs-site/.astro/',
+    'docs-site/public/',
   ]),
   js.configs.recommended,
   tseslint.configs.strict,
@@ -29,7 +32,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['src/**/*.astro'],
+    files: ['src/**/*.astro', 'docs-site/src/**/*.astro'],
     languageOptions: { globals: { ...globals.browser } },
   },
 ]);

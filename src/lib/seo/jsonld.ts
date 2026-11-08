@@ -93,7 +93,11 @@ export interface BreadcrumbTrailItem {
   readonly path: string;
 }
 
-export function breadcrumbList(trail: readonly BreadcrumbTrailItem[]): JsonLdNode {
+/** `origin` is the host the trail lives on: the marketing site unless given (the docs pass theirs). */
+export function breadcrumbList(
+  trail: readonly BreadcrumbTrailItem[],
+  origin: string = SITE.url,
+): JsonLdNode {
   if (trail.length === 0) {
     throw new Error('A breadcrumb trail needs at least one item.');
   }
@@ -103,7 +107,7 @@ export function breadcrumbList(trail: readonly BreadcrumbTrailItem[]): JsonLdNod
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: absoluteUrl(item.path),
+      item: absoluteUrl(item.path, origin),
     })),
   };
 }

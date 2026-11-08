@@ -1,16 +1,18 @@
 ---
-// Replaces Starlight's site title with the LightMove lockup plus a "Docs" badge, linking home.
-import BrandMark from '../site/BrandMark.astro';
+// Replaces Starlight's site title with the LightMove lockup, linking to lightmove.ai, plus a "Docs"
+// badge linking to the docs home.
+import BrandMark from '../../../src/components/site/BrandMark.astro';
+import { SITE } from '../../../src/lib/site';
 ---
 
 <span class="docs-title">
-  <a href="/" class="docs-brand" aria-label="LightMove.ai home">
+  <a href={`${SITE.url}/`} class="docs-brand" aria-label="LightMove.ai home">
     <BrandMark size={28} />
     <span class="docs-word" translate="no">
       LightMove<span>.ai</span>
     </span>
   </a>
-  <a href="/docs" class="docs-badge">
+  <a href="/" class="docs-badge">
     Docs
   </a>
 </span>

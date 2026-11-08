@@ -2,7 +2,7 @@
   "name": "lightmove-website",
   "version": "0.0.0",
   "private": true,
-  "description": "The public website, blog and documentation for LightMove.ai at lightmove.ai.",
+  "description": "The public website and blog for LightMove.ai at lightmove.ai, and its documentation at docs.lightmove.ai.",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
@@ -11,9 +11,13 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "dev:docs": "astro dev --root docs-site --port 4322",
+    "build": "npm run build:site && npm run build:docs",
+    "build:site": "astro build",
+    "build:docs": "astro build --root docs-site",
     "preview": "astro preview",
-    "check": "astro check && tsc --noEmit",
+    "preview:docs": "astro preview --root docs-site --port 4322",
+    "check": "astro check && astro check --root docs-site && tsc --noEmit && tsc --noEmit -p docs-site",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -21,7 +25,7 @@
     "check:csp": "node scripts/check-csp.ts",
     "check:seo": "node scripts/check-seo.ts",
     "check:functions": "npm --prefix functions ci --no-audit --no-fund && npm --prefix functions run typecheck && npm --prefix functions run build",
-    "lhci": "lhci autorun",
+    "lhci": "lhci autorun && lhci autorun --config=lighthouserc.docs.json",
     "verify": "npm run lint && npm run format:check && npm run check && npm run test && npm run build && npm run check:csp && npm run check:seo"
   },
   "dependencies": {

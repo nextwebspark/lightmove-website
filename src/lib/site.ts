@@ -31,6 +31,20 @@ export const SITE = {
 
 const appUrl = (import.meta.env.PUBLIC_APP_URL || 'https://app.lightmove.ai').replace(/\/+$/, '');
 
+/**
+ * The docs live on their own site, https://docs.lightmove.ai (docs-site/). Every link from this site to
+ * the docs goes through DOCS_URL / docsUrl(), so a local docs server (PUBLIC_DOCS_URL=http://localhost:4322)
+ * or a preview channel can stand in for it.
+ */
+export const DOCS_URL = (import.meta.env.PUBLIC_DOCS_URL || 'https://docs.lightmove.ai').replace(
+  /\/+$/,
+  '',
+);
+
+/** The absolute address of a docs page, e.g. docsUrl('/go-live/web-widget'). */
+export const docsUrl = (path = '/'): string =>
+  `${DOCS_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+
 export const APP = {
   url: appUrl,
   signUpUrl: appUrl,

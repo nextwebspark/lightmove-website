@@ -1,6 +1,6 @@
 ---
 import Icon from '../site/Icon.astro';
-import { APP } from '../../lib/site';
+import { APP, docsUrl } from '../../lib/site';
 const bars = [60, 110, 150, 90];
 ---
 
@@ -56,7 +56,7 @@ const bars = [60, 110, 150, 90];
         Describe the agent in plain words and the builder drafts the workflow. Tweak each step, test
         it out loud, go live. Billed per minute.
       </p>
-      <a href="/docs/getting-started/quick-start" class="link-arrow">
+      <a href={docsUrl('/getting-started/quick-start')} class="link-arrow">
         Read the quick start →
       </a>
     </article>

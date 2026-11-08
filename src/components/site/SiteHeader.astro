@@ -1,5 +1,5 @@
 ---
-import { APP } from '../../lib/site';
+import { APP, docsUrl } from '../../lib/site';
 import BrandLockup from './BrandLockup.astro';
 import Icon from './Icon.astro';
 import ThemeToggle from './ThemeToggle.astro';
@@ -8,7 +8,7 @@ const links = [
   { href: '/#platform', label: 'Product' },
   { href: '/#use-cases', label: 'Use cases' },
   { href: '/#pricing', label: 'Pricing' },
-  { href: '/docs', label: 'Docs' },
+  { href: docsUrl(), label: 'Docs' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact us' },
 ];

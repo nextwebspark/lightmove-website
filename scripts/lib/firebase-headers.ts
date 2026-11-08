@@ -6,7 +6,7 @@ export interface HeaderRule {
 }
 
 export interface HostingConfig {
-  readonly site: string;
+  readonly target: HostingTarget;
   readonly public: string;
   readonly cleanUrls: boolean;
   readonly trailingSlash: boolean;
@@ -18,8 +18,24 @@ export interface HostingConfig {
   }[];
 }
 
-export function loadHostingConfig(file = 'firebase.json'): HostingConfig {
-  return (JSON.parse(readFileSync(file, 'utf8')) as { hosting: HostingConfig }).hosting;
+/** The two Hosting targets (.firebaserc): lightmove.ai and docs.lightmove.ai. */
+export const HOSTING_TARGETS = ['website', 'docs'] as const;
+export type HostingTarget = (typeof HOSTING_TARGETS)[number];
+
+/** The address each site is canonical on. */
+export const SITE_ORIGINS: Record<HostingTarget, string> = {
+  website: 'https://lightmove.ai',
+  docs: 'https://docs.lightmove.ai',
+};
+
+export function loadHostingConfig(
+  target: HostingTarget = 'website',
+  file = 'firebase.json',
+): HostingConfig {
+  const { hosting } = JSON.parse(readFileSync(file, 'utf8')) as { hosting: HostingConfig[] };
+  const config = hosting.find((entry) => entry.target === target);
+  if (!config) throw new Error(`${file} has no hosting entry with target "${target}".`);
+  return config;
 }
 
 /** Firebase header globs: `**` crosses slashes, `*` does not, `{a,b}` alternates; sources are rooted at `/`. */

@@ -26,4 +26,4 @@ If you run a business phone system or work with a VoIP provider, you can point a
 - Do you support SIP trunks, and can I route a number to an external SIP address?
 - Are there charges for forwarded minutes?
 
-The setup steps are in the docs under [phone numbers and SIP](/docs/go-live/telephony). If you're a VoIP operator and want to offer agents to your own customers, [get in touch](/contact).
+The setup steps are in the docs under [phone numbers and SIP](https://docs.lightmove.ai/go-live/telephony). If you're a VoIP operator and want to offer agents to your own customers, [get in touch](/contact).

@@ -19,12 +19,12 @@ LightMove.ai lets you build voice agents that answer your phone and website call
 ## Three ways to start
 
 1. **Try a template.** Pick a ready-made agent and talk to it in your browser. Free.
-2. **Build your own.** Describe the agent in plain words and the [Agent Builder](/docs/build/agent-builder) drafts the workflow. Pay as you go.
-3. **Have us build it.** Our team designs, connects and tests the agent for you. [Request a build](/#contact).
+2. **Build your own.** Describe the agent in plain words and the [Agent Builder](/build/agent-builder) drafts the workflow. Pay as you go.
+3. **Have us build it.** Our team designs, connects and tests the agent for you. [Request a build](https://lightmove.ai/#contact).
 
 ## How these docs are organised
 
-- **Get started:** this page, the [quick start](/docs/getting-started/quick-start) and the [key ideas](/docs/getting-started/key-ideas).
+- **Get started:** this page, the [quick start](/getting-started/quick-start) and the [key ideas](/getting-started/key-ideas).
 - **Build agents:** writing instructions, workflows, tools and transfers.
 - **Go live:** phone numbers, the web widget and the call log.
 - **Account:** billing and API keys.

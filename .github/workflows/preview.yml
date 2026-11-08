@@ -56,33 +56,46 @@ jobs:
         run: npm ci
 
       - if: steps.config.outputs.enabled == 'true'
-        run: npm run build && npm run check:csp
-
-      - if: steps.config.outputs.enabled == 'true'
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
           workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ env.SERVICE_ACCOUNT }}
           create_credentials_file: true
 
-      - name: Deploy preview channel
-        id: channel
+      # The docs go first, so the marketing preview can link to the docs preview instead of production.
+      - name: Build and deploy the docs preview channel
+        id: docs
         if: steps.config.outputs.enabled == 'true'
         run: |
-          npx --yes firebase-tools@15.30.0 hosting:channel:deploy "$CHANNEL_ID" \
+          npm run build:docs
+          npx --yes firebase-tools@15.30.0 hosting:channel:deploy "$CHANNEL_ID" --only docs \
+            --project "$FIREBASE_PROJECT_ID" --expires 7d --json > docs-channel.json
+          url=$(node -e "const r=require('./docs-channel.json').result; console.log(Object.values(r)[0].url)")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Build and deploy the website preview channel
+        id: website
+        if: steps.config.outputs.enabled == 'true'
+        env:
+          PUBLIC_DOCS_URL: ${{ steps.docs.outputs.url }}
+        run: |
+          npm run build:site
+          npm run check:csp
+          npx --yes firebase-tools@15.30.0 hosting:channel:deploy "$CHANNEL_ID" --only website \
             --project "$FIREBASE_PROJECT_ID" --expires 7d --json > channel.json
           url=$(node -e "const r=require('./channel.json').result; console.log(Object.values(r)[0].url)")
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Comment the preview URL
+      - name: Comment the preview URLs
         if: steps.config.outputs.enabled == 'true'
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
-          PREVIEW_URL: ${{ steps.channel.outputs.url }}
+          PREVIEW_URL: ${{ steps.website.outputs.url }}
+          DOCS_PREVIEW_URL: ${{ steps.docs.outputs.url }}
         with:
           script: |
             const marker = '<!-- firebase-preview -->';
-            const body = `${marker}\nPreview: ${process.env.PREVIEW_URL}\n\nExpires in 7 days. Rebuilt on every push to this pull request.`;
+            const body = `${marker}\nPreview: ${process.env.PREVIEW_URL}\nDocs preview: ${process.env.DOCS_PREVIEW_URL}\n\nExpires in 7 days. Rebuilt on every push to this pull request.`;
             const { owner, repo } = context.repo;
             const issue_number = context.payload.pull_request.number;
             const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });

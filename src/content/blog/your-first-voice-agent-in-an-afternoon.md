@@ -38,4 +38,4 @@ Press **Test call** and try to break it. Mumble, change your mind halfway, ask s
 
 When three test calls in a row go well, connect your number or add the web widget to your site. Keep an eye on the call log for the first week. That's where you'll find the next thing to teach it.
 
-The full steps are in the [quick start](/docs/getting-started/quick-start). Rather we set it up for you? [Tell us about your calls](/contact).
+The full steps are in the [quick start](https://docs.lightmove.ai/getting-started/quick-start). Rather we set it up for you? [Tell us about your calls](/contact).

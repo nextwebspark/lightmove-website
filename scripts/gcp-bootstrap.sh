@@ -12,7 +12,12 @@ set -euo pipefail
 
 PROJECT="${GCP_PROJECT:-dograh-eu}"
 REPO="${GITHUB_REPO:-nextwebspark/lightmove-website}"
-SITE="$(node -p 'require("./firebase.json").hosting.site')"
+# The Hosting sites behind the two targets in .firebaserc: website (lightmove.ai), docs (docs.lightmove.ai).
+site_for() {
+    node -p "JSON.parse(require('fs').readFileSync('.firebaserc', 'utf8')).targets['${PROJECT}'].hosting['$1'][0]"
+}
+SITE="$(site_for website)"
+DOCS_SITE="$(site_for docs)"
 
 DEPLOY_SA="lightmove-website-deployer"
 POOL="github-pool"                    # shared with the other apps in this project
@@ -58,19 +63,22 @@ else
     echo "  ✓ added Firebase to ${PROJECT}"
 fi
 
-# A site of its own, so this website never shares a release history with anything else in the project.
-RESPONSE="$(firebase_api GET "https://firebasehosting.googleapis.com/v1beta1/projects/${PROJECT}/sites/${SITE}")"
-if [ "$(status_of "$RESPONSE")" = 200 ]; then
-    echo "  ✓ Hosting site '${SITE}' exists"
-else
-    RESPONSE="$(firebase_api POST "https://firebasehosting.googleapis.com/v1beta1/projects/${PROJECT}/sites?siteId=${SITE}" '{}')"
-    if [ "$(status_of "$RESPONSE")" != 200 ]; then
-        body_of "$RESPONSE"
-        echo "Site ids are global. If '${SITE}' is taken, change hosting.site in firebase.json and re-run." >&2
-        exit 1
+# Sites of their own, so the website and the docs never share a release history with anything else in
+# the project, or with each other.
+for HOSTING_SITE in "$SITE" "$DOCS_SITE"; do
+    RESPONSE="$(firebase_api GET "https://firebasehosting.googleapis.com/v1beta1/projects/${PROJECT}/sites/${HOSTING_SITE}")"
+    if [ "$(status_of "$RESPONSE")" = 200 ]; then
+        echo "  ✓ Hosting site '${HOSTING_SITE}' exists"
+    else
+        RESPONSE="$(firebase_api POST "https://firebasehosting.googleapis.com/v1beta1/projects/${PROJECT}/sites?siteId=${HOSTING_SITE}" '{}')"
+        if [ "$(status_of "$RESPONSE")" != 200 ]; then
+            body_of "$RESPONSE"
+            echo "Site ids are global. If '${HOSTING_SITE}' is taken, change it in .firebaserc and re-run." >&2
+            exit 1
+        fi
+        echo "  ✓ created Hosting site '${HOSTING_SITE}' (https://${HOSTING_SITE}.web.app)"
     fi
-    echo "  ✓ created Hosting site '${SITE}' (https://${SITE}.web.app)"
-fi
+done
 
 # ── Deploy service account ────────────────────────────────────────────────────
 say "Deploy service account"
@@ -129,15 +137,17 @@ Done. What remains is deliberately manual.
      gh variable set PUBLIC_APP_URL                 --repo ${REPO} --body 'https://app.lightmove.ai'
      gh variable set PUBLIC_DEMO_AGENT_TOKEN        --repo ${REPO} --body '<the demo agent embed token>'
 
-   Once lightmove.ai is connected (step 3), also:
+   Once lightmove.ai and docs.lightmove.ai are connected (step 3), also:
 
      gh variable set PUBLIC_BASE_URL                --repo ${REPO} --body 'https://lightmove.ai'
+     gh variable set PUBLIC_DOCS_URL                --repo ${REPO} --body 'https://docs.lightmove.ai'
 
 2. Merge and release gates: ./scripts/github-protect.sh
    GitHub → Settings → Environments → production: deployment branches limited to 'main'.
 
 3. Firebase console → Hosting → site '${SITE}' → Add custom domain: lightmove.ai, then www.lightmove.ai
-   redirecting to it. Records in Cloudflare as DNS only (grey cloud).
+   redirecting to it. Site '${DOCS_SITE}' → Add custom domain: docs.lightmove.ai. Records in
+   Cloudflare as DNS only (grey cloud). See README.md, "The docs site".
 
 Then ship: Actions → Release → Run workflow.
 EOF

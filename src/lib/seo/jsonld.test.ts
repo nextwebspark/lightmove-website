@@ -57,6 +57,14 @@ describe('structured data', () => {
     ]);
   });
 
+  it('puts a docs trail on the docs host', () => {
+    const trail = breadcrumbList([{ name: 'Docs', path: '/' }], 'https://docs.lightmove.ai');
+
+    expect(trail.itemListElement).toEqual([
+      { '@type': 'ListItem', position: 1, name: 'Docs', item: 'https://docs.lightmove.ai/' },
+    ]);
+  });
+
   it('refuses empty breadcrumb trails and FAQ pages', () => {
     expect(() => breadcrumbList([])).toThrow();
     expect(() => faqPage([])).toThrow();

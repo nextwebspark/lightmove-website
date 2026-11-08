@@ -14,7 +14,7 @@ Connect a Google account under **Integrations** to give your agents:
 - **Google Calendar** — check availability, and create or cancel events.
 - **Google Sheets** — look up rows (prices, stock, opening hours) or log each call as a new row.
 
-LightMove.ai only requests the access each integration needs. You can disconnect at any time. See the [Privacy Policy](/privacy) for how Google data is handled.
+LightMove.ai only requests the access each integration needs. You can disconnect at any time. See the [Privacy Policy](https://lightmove.ai/privacy) for how Google data is handled.
 
 ## Webhooks
 

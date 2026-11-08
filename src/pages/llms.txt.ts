@@ -4,12 +4,11 @@ import { getPublishedPosts } from '../lib/blog';
 import { FAQS } from '../lib/faqs';
 import { staticPages } from '../lib/pages';
 import { absoluteUrl } from '../lib/seo/url';
-import { APP, SITE } from '../lib/site';
+import { APP, DOCS_URL, SITE, docsUrl } from '../lib/site';
 
 /** A plain-text map of the site for AI assistants and answer engines (llmstxt.org). */
 export const GET: APIRoute = async () => {
   const posts = await getPublishedPosts();
-  const docs = (await getCollection('docs')).toSorted((a, b) => a.id.localeCompare(b.id));
   const legal = await getCollection('legal');
   const link = (title: string, path: string, description: string) =>
     `- [${title}](${absoluteUrl(path)}): ${description}`;
@@ -19,7 +18,7 @@ export const GET: APIRoute = async () => {
     '',
     `> ${SITE.description}`,
     '',
-    `${SITE.name} is a product of ${SITE.company}, based in ${SITE.location}. The application runs at ${APP.url}. This site is the public website, blog and documentation.`,
+    `${SITE.name} is a product of ${SITE.company}, based in ${SITE.location}. The application runs at ${APP.url}. This site is the public website and blog; the documentation is at ${DOCS_URL}.`,
     '',
     '## Pages',
     link('Home', '/', staticPages.home.description),
@@ -27,7 +26,8 @@ export const GET: APIRoute = async () => {
     ...legal.map((entry) => link(entry.data.title, `/${entry.id}`, entry.data.description)),
     '',
     '## Docs',
-    ...docs.map((doc) => link(doc.data.title, `/${doc.id}`, doc.data.description ?? '')),
+    `- [${SITE.name} Docs](${docsUrl()}): How to build, test and run voice agents on ${SITE.name}.`,
+    `- [Docs index for AI assistants](${docsUrl('/llms.txt')}): Every docs page with a one-line summary.`,
     '',
     '## Blog',
     ...posts.map((post) => link(post.data.title, `/blog/${post.id}`, post.data.description)),

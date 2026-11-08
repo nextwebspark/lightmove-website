@@ -39,6 +39,9 @@ jobs:
       SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
       FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
       PUBLIC_BASE_URL: ${{ vars.PUBLIC_BASE_URL }}
+      # Where the marketing site links to the docs, and where the smoke test finds them. Unset, links
+      # go to https://docs.lightmove.ai and the smoke test uses the docs site's .web.app address.
+      PUBLIC_DOCS_URL: ${{ vars.PUBLIC_DOCS_URL }}
       PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
       PUBLIC_DEMO_AGENT_TOKEN: ${{ vars.PUBLIC_DEMO_AGENT_TOKEN }}
       PUBLIC_CONTACT_FORM_ENABLED: ${{ vars.PUBLIC_CONTACT_FORM_ENABLED }}
@@ -79,6 +82,7 @@ jobs:
       - if: steps.config.outputs.enabled == 'true'
         run: npm ci
 
+      # Builds and audits both sites: dist/ (lightmove.ai) and docs-site/dist/ (docs.lightmove.ai).
       - name: Verify and build
         if: steps.config.outputs.enabled == 'true'
         run: npm run verify
@@ -89,7 +93,8 @@ jobs:
           node -e '
             const { writeFileSync } = require("node:fs");
             const [version, commit] = process.argv.slice(1);
-            writeFileSync("dist/version.json", JSON.stringify({ version, commit, deployedAt: new Date().toISOString() }) + "\n");
+            const stamp = JSON.stringify({ version, commit, deployedAt: new Date().toISOString() }) + "\n";
+            for (const dir of ["dist", "docs-site/dist"]) writeFileSync(`${dir}/version.json`, stamp);
           ' "$REF" "$(git rev-parse HEAD)"
 
       - name: Authenticate to Google Cloud
@@ -100,6 +105,7 @@ jobs:
           service_account: ${{ env.SERVICE_ACCOUNT }}
           create_credentials_file: true
 
+      # `hosting` ships both targets in .firebaserc: website (lightmove.ai) and docs (docs.lightmove.ai).
       - name: Deploy
         if: steps.config.outputs.enabled == 'true'
         run: |
@@ -112,16 +118,22 @@ jobs:
       - name: Smoke test
         if: steps.config.outputs.enabled == 'true'
         run: |
-          SITE="$(node -p 'require("./firebase.json").hosting.site')"
-          URL="${PUBLIC_BASE_URL:-https://${SITE}.web.app}"
+          site_for() {
+            node -p "const rc = JSON.parse(require('fs').readFileSync('.firebaserc', 'utf8')); rc.targets[rc.projects.default].hosting['$1'][0]"
+          }
+          URL="${PUBLIC_BASE_URL:-https://$(site_for website).web.app}"
           URL="${URL%/}"
+          DOCS="${PUBLIC_DOCS_URL:-https://$(site_for docs).web.app}"
+          DOCS="${DOCS%/}"
 
-          echo "the release is what is live"
-          for ATTEMPT in 1 2 3 4 5 6; do
-            LIVE="$(curl -fsS "$URL/version.json" || true)"
-            grep -q "\"version\":\"${REF}\"" <<<"$LIVE" && break
-            [ "$ATTEMPT" = 6 ] && { echo "::error::${URL}/version.json serves '${LIVE}', not ${REF}."; exit 1; }
-            sleep 5
+          echo "the release is what is live, on both sites"
+          for SITE_URL in "$URL" "$DOCS"; do
+            for ATTEMPT in 1 2 3 4 5 6; do
+              LIVE="$(curl -fsS "$SITE_URL/version.json" || true)"
+              grep -q "\"version\":\"${REF}\"" <<<"$LIVE" && break
+              [ "$ATTEMPT" = 6 ] && { echo "::error::${SITE_URL}/version.json serves '${LIVE}', not ${REF}."; exit 1; }
+              sleep 5
+            done
           done
 
           echo "the home page renders"
@@ -138,11 +150,23 @@ jobs:
           curl -fsS "$URL/sitemap-index.xml" | grep -q '<sitemapindex'
           curl -fsS "$URL/llms.txt" | grep -q '^# LightMove.ai'
 
-          echo "the docs redirect works"
-          curl -fsSI "$URL/docs" | grep -qi '^location: .*/docs/getting-started/introduction'
+          echo "the old docs addresses 301 to docs.lightmove.ai, path kept"
+          curl -fsSI "$URL/docs" | grep -qi '^location: https://docs.lightmove.ai/\s*$'
+          curl -fsSI "$URL/docs/integrations/telephony/twilio" \
+            | grep -qi '^location: https://docs.lightmove.ai/integrations/telephony/twilio\s*$'
+
+          echo "the docs site serves its pages, headers and search files"
+          curl -fsSI "$DOCS/" | grep -qi '^location: .*/getting-started/introduction'
+          curl -fsS "$DOCS/integrations/telephony/twilio" | grep -q '<h1'
+          DOCS_HEADERS="$(curl -fsSI "$DOCS/getting-started/introduction")"
+          grep -qi '^content-security-policy:' <<<"$DOCS_HEADERS"
+          grep -qi '^strict-transport-security:' <<<"$DOCS_HEADERS"
+          curl -fsS "$DOCS/robots.txt" | grep -q 'Sitemap: https://docs.lightmove.ai/'
+          curl -fsS "$DOCS/sitemap-index.xml" | grep -q '<sitemapindex'
+          curl -fsS "$DOCS/llms.txt" | grep -q '^# LightMove.ai Docs'
 
           echo "the CMS stays out of search"
           ADMIN_HEADERS="$(curl -fsSIL "$URL/admin")"
           grep -qi '^x-robots-tag:' <<<"$ADMIN_HEADERS"
 
-          echo "::notice::Deployed ${REF} ($(git rev-parse --short HEAD)) to ${URL}"
+          echo "::notice::Deployed ${REF} ($(git rev-parse --short HEAD)) to ${URL} and ${DOCS}"

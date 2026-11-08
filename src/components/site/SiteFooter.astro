@@ -1,5 +1,5 @@
 ---
-import { APP, SITE } from '../../lib/site';
+import { APP, SITE, docsUrl } from '../../lib/site';
 import BrandLockup from './BrandLockup.astro';
 import Icon from './Icon.astro';
 import { TRUST_ITEMS } from '../../lib/trust';
@@ -18,9 +18,9 @@ const columns = [
   {
     title: 'Resources',
     links: [
-      { href: '/docs', label: 'Docs' },
+      { href: docsUrl(), label: 'Docs' },
       { href: '/blog', label: 'Blog' },
-      { href: '/docs/go-live/web-widget', label: 'Web widget' },
+      { href: docsUrl('/go-live/web-widget'), label: 'Web widget' },
       { href: '/blog/rss.xml', label: 'RSS' },
     ],
   },

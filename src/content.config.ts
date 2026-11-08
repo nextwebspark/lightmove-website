@@ -1,5 +1,3 @@
-import { docsLoader } from '@astrojs/starlight/loaders';
-import { docsSchema } from '@astrojs/starlight/schema';
 import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { authorSchema, blogSchema, legalSchema } from './lib/content-schemas';
@@ -19,9 +17,4 @@ const legal = defineCollection({
   schema: legalSchema(),
 });
 
-const docs = defineCollection({
-  loader: docsLoader(),
-  schema: docsSchema(),
-});
-
-export const collections = { blog, authors, legal, docs };
+export const collections = { blog, authors, legal };

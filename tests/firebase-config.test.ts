@@ -1,15 +1,21 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import astroConfig from '../astro.config.mjs';
+import docsAstroConfig from '../docs-site/astro.config.mjs';
 import {
   effectiveHeaders,
   globToRegExp,
+  HOSTING_TARGETS,
   loadHostingConfig,
   parseCsp,
 } from '../scripts/lib/firebase-headers';
 
-const hosting = loadHostingConfig();
+const hosting = loadHostingConfig('website');
+const docsHosting = loadHostingConfig('docs');
 const headersFor = (path: string) => effectiveHeaders(hosting.headers, path);
 const cspFor = (path: string) => parseCsp(headersFor(path).get('content-security-policy'));
+const docsHeadersFor = (path: string) => effectiveHeaders(docsHosting.headers, path);
+const docsCspFor = (path: string) => parseCsp(docsHeadersFor(path).get('content-security-policy'));
 
 describe('firebase.json header globs', () => {
   it('match the way Firebase roots and expands them', () => {
@@ -30,16 +36,48 @@ describe('hosting config', () => {
     expect(astroConfig.build?.format).toBe('file');
   });
 
-  it('redirects /docs to the first docs page the way Astro does', () => {
-    expect(hosting.redirects).toContainEqual({
-      source: '/docs',
-      destination: '/docs/getting-started/introduction',
-      type: 301,
-    });
-    expect(astroConfig.redirects?.['/docs']).toBe('/docs/getting-started/introduction');
+  it('serves the docs build at docs.lightmove.ai with the same trailing-slash policy', () => {
+    expect(docsHosting.public).toBe('docs-site/dist');
+    expect(docsHosting.cleanUrls).toBe(true);
+    expect(docsHosting.trailingSlash).toBe(false);
+    expect(docsAstroConfig.site).toBe('https://docs.lightmove.ai');
+    expect(docsAstroConfig.trailingSlash).toBe('never');
+    expect(docsAstroConfig.build?.format).toBe('file');
   });
 
-  it.each(['/', '/blog/some-post', '/docs/getting-started/introduction', '/admin'])(
+  it('maps every Hosting target to a site in .firebaserc', () => {
+    const rc = JSON.parse(readFileSync('.firebaserc', 'utf8')) as {
+      projects: { default: string };
+      targets: Record<string, { hosting: Record<string, string[]> }>;
+    };
+    const targets = rc.targets[rc.projects.default]?.hosting ?? {};
+    for (const target of HOSTING_TARGETS) expect(targets[target]).toHaveLength(1);
+  });
+
+  it('301s every old docs address to the same path on docs.lightmove.ai', () => {
+    expect(hosting.redirects).toContainEqual({
+      source: '/docs',
+      destination: 'https://docs.lightmove.ai/',
+      type: 301,
+    });
+    expect(hosting.redirects).toContainEqual({
+      source: '/docs/:path*',
+      destination: 'https://docs.lightmove.ai/:path',
+      type: 301,
+    });
+    expect(astroConfig.redirects?.['/docs']).toBeUndefined();
+  });
+
+  it('opens the introduction at the docs root, the way the docs build does', () => {
+    expect(docsHosting.redirects).toContainEqual({
+      source: '/',
+      destination: '/getting-started/introduction',
+      type: 302,
+    });
+    expect(docsAstroConfig.redirects?.['/']).toBe('/getting-started/introduction');
+  });
+
+  it.each(['/', '/blog/some-post', '/admin'])(
     'sends the baseline security headers on %s',
     (path) => {
       const headers = headersFor(path);
@@ -67,11 +105,28 @@ describe('hosting config', () => {
     expect(headersFor('/').get('permissions-policy')).toContain('microphone=(self)');
   });
 
+  it.each(['/', '/getting-started/introduction', '/integrations/telephony/twilio'])(
+    'sends the baseline security headers on docs %s',
+    (path) => {
+      const headers = docsHeadersFor(path);
+
+      expect(headers.get('strict-transport-security')).toBe(
+        'max-age=63072000; includeSubDomains; preload',
+      );
+      expect(headers.get('x-content-type-options')).toBe('nosniff');
+      expect(headers.get('x-frame-options')).toBe('DENY');
+      expect(headers.get('referrer-policy')).toBe('strict-origin-when-cross-origin');
+      expect(headers.get('permissions-policy')).toContain('camera=()');
+      expect(docsCspFor(path).get('frame-ancestors')).toEqual(["'none'"]);
+    },
+  );
+
   it('loosens the docs only as far as Starlight and Pagefind need', () => {
-    const scriptSrc = cspFor('/docs/go-live/web-widget').get('script-src') ?? [];
+    const scriptSrc = docsCspFor('/go-live/web-widget').get('script-src') ?? [];
 
     expect(scriptSrc).toContain("'wasm-unsafe-eval'");
     expect(scriptSrc.some((source) => source.startsWith('https:'))).toBe(false);
+    expect(cspFor('/').get('script-src')).not.toContain("'wasm-unsafe-eval'");
   });
 
   it('allows the CMS its CDN and GitHub only under /admin, which is never indexed', () => {

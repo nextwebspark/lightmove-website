@@ -35,12 +35,7 @@ export const getStaticPaths = (async () => {
     props: { title: entry.data.title, description: entry.data.description, section: 'Legal' },
   }));
 
-  const docCards = (await getCollection('docs')).map((doc) => ({
-    params: { slug: doc.id },
-    props: { title: doc.data.title, description: doc.data.description ?? '', section: 'Docs' },
-  }));
-
-  return [...pages, ...postCards, ...tagCards, ...legalCards, ...docCards];
+  return [...pages, ...postCards, ...tagCards, ...legalCards];
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;

@@ -6,8 +6,7 @@
         "http://localhost/index.html",
         "http://localhost/blog.html",
         "http://localhost/blog/your-first-voice-agent-in-an-afternoon.html",
-        "http://localhost/privacy.html",
-        "http://localhost/docs/getting-started/quick-start.html"
+        "http://localhost/privacy.html"
       ],
       "numberOfRuns": 3,
       "settings": {

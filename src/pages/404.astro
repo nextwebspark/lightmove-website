@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { staticPages } from '../lib/pages';
+import { docsUrl } from '../lib/site';
 
 const page = staticPages.notFound;
 ---
@@ -14,7 +15,7 @@ const page = staticPages.notFound;
       <a href="/" class="btn btn-primary btn-lg">
         Go home
       </a>
-      <a href="/docs" class="btn btn-secondary btn-lg">
+      <a href={docsUrl()} class="btn btn-secondary btn-lg">
         Read the docs
       </a>
     </div>

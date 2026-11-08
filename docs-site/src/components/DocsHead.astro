@@ -1,0 +1,34 @@
+---
+// Starlight's head plus what the marketing site emits: a per-page share card, icons, the manifest
+// and a breadcrumb trail for search results. Every address is on docs.lightmove.ai.
+import Default from '@astrojs/starlight/components/Head.astro';
+import JsonLd from '../../../src/components/seo/JsonLd.astro';
+import { breadcrumbList } from '../../../src/lib/seo/jsonld';
+import { absoluteUrl, ogImagePathFor } from '../../../src/lib/seo/url';
+import { DOCS_SITE } from '../site';
+
+const { entry } = Astro.locals.starlightRoute;
+// The 404 page has no share card or place in the trail.
+const isNotFound = entry.id === '404';
+const imageUrl = absoluteUrl(ogImagePathFor(Astro.url.pathname), DOCS_SITE.url);
+const trail = [
+  { name: 'Docs', path: '/' },
+  { name: entry.data.title, path: Astro.url.pathname },
+];
+---
+
+<Default />
+{!isNotFound && (
+  <>
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={entry.data.title} />
+    <meta name="twitter:image" content={imageUrl} />
+  </>
+)}
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<JsonLd nodes={isNotFound ? [] : [breadcrumbList(trail, DOCS_SITE.url)]} />

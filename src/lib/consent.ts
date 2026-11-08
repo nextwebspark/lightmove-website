@@ -7,7 +7,8 @@
  *   1. name the provider, what it collects and where, in content/legal/cookies.md (and Privacy),
  *   2. list each cookie or storage item it sets in STORAGE_ITEMS (shown on /cookies),
  *   3. load it only after `hasConsent(category)` is true, and listen for `CONSENT_EVENT`,
- *   4. render the banner on docs pages too (DocsHead) if the tool runs there,
+ *   4. render the banner on docs pages too (docs-site/src/components/DocsHead.astro) if the tool
+ *      runs there,
  *   5. set its category's `inUse: true` and bump CONSENT_VERSION, so everyone is asked again with
  *      the real details. Do the same whenever a category is added or changes.
  * S.I. 336/2011 Reg. 5 requires consent before; the DPC guidance asks for Reject as easy as Accept.

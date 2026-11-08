@@ -1,7 +1,12 @@
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
-import { effectiveHeaders, loadHostingConfig, parseCsp } from './lib/firebase-headers.ts';
+import {
+  effectiveHeaders,
+  HOSTING_TARGETS,
+  loadHostingConfig,
+  parseCsp,
+} from './lib/firebase-headers.ts';
 
 /**
  * Post-build audit: every page in dist must run under the Content-Security-Policy firebase.json will
@@ -9,8 +14,6 @@ import { effectiveHeaders, loadHostingConfig, parseCsp } from './lib/firebase-he
  * unlisted origin, fails here instead of in production. The failure prints the hash to allow.
  */
 
-const hosting = loadHostingConfig();
-const distDir = hosting.public;
 const problems: string[] = [];
 let pagesChecked = 0;
 
@@ -22,54 +25,66 @@ function htmlFiles(dir: string): string[] {
   });
 }
 
-function routeFor(file: string): string {
-  const path = `/${relative(distDir, file).split(sep).join('/')}`.replace(/\.html$/, '');
-  return path.replace(/\/index$/, '') || '/';
-}
+// Both builds: lightmove.ai (dist) and docs.lightmove.ai (docs-site/dist), each against its own headers.
+for (const target of HOSTING_TARGETS) {
+  const hosting = loadHostingConfig(target);
+  const distDir = hosting.public;
+  if (!existsSync(distDir)) {
+    problems.push(`${distDir} is missing; build the ${target} site first.`);
+    continue;
+  }
 
-for (const file of htmlFiles(distDir)) {
-  // Expressive Code keeps each code block's raw text in data-code for its copy button; a <script>
-  // example in the docs would otherwise read as a real script tag.
-  const html = readFileSync(file, 'utf8').replace(/\sdata-code="[^"]*"/g, '');
-  if (html.includes('http-equiv="refresh"')) continue;
-  pagesChecked += 1;
+  const routeFor = (file: string): string => {
+    const path = `/${relative(distDir, file).split(sep).join('/')}`.replace(/\.html$/, '');
+    return path.replace(/\/index$/, '') || '/';
+  };
 
-  const route = routeFor(file);
-  const csp = parseCsp(effectiveHeaders(hosting.headers, route).get('content-security-policy'));
-  const scriptSrc = csp.get('script-src') ?? csp.get('default-src') ?? [];
-  const styleSrc = csp.get('style-src') ?? csp.get('default-src') ?? [];
-  const formAction = csp.get('form-action') ?? [];
+  for (const file of htmlFiles(distDir)) {
+    // Expressive Code keeps each code block's raw text in data-code for its copy button; a <script>
+    // example in the docs would otherwise read as a real script tag.
+    const html = readFileSync(file, 'utf8').replace(/\sdata-code="[^"]*"/g, '');
+    if (html.includes('http-equiv="refresh"')) continue;
+    pagesChecked += 1;
 
-  if (csp.size === 0) problems.push(`${route}: no Content-Security-Policy header applies.`);
+    const route = `${target}:${routeFor(file)}`;
+    const csp = parseCsp(
+      effectiveHeaders(hosting.headers, routeFor(file)).get('content-security-policy'),
+    );
+    const scriptSrc = csp.get('script-src') ?? csp.get('default-src') ?? [];
+    const styleSrc = csp.get('style-src') ?? csp.get('default-src') ?? [];
+    const formAction = csp.get('form-action') ?? [];
 
-  for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
-    const attributes = match[1] ?? '';
-    const body = match[2] ?? '';
-    const src = /\bsrc="([^"]+)"/.exec(attributes)?.[1];
-    if (src) {
-      if (!src.startsWith('/') && !scriptSrc.includes(new URL(src).origin)) {
-        problems.push(`${route}: script ${src} is not allowed by script-src.`);
+    if (csp.size === 0) problems.push(`${route}: no Content-Security-Policy header applies.`);
+
+    for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+      const attributes = match[1] ?? '';
+      const body = match[2] ?? '';
+      const src = /\bsrc="([^"]+)"/.exec(attributes)?.[1];
+      if (src) {
+        if (!src.startsWith('/') && !scriptSrc.includes(new URL(src).origin)) {
+          problems.push(`${route}: script ${src} is not allowed by script-src.`);
+        }
+        continue;
       }
-      continue;
+      if (/type="application\/(ld\+)?json"/.test(attributes)) continue;
+      const hash = `'sha256-${createHash('sha256').update(body).digest('base64')}'`;
+      if (!scriptSrc.includes(hash)) {
+        problems.push(
+          `${route}: inline script ${hash} is not allowed by script-src. Starts: ${body.trim().slice(0, 60)}`,
+        );
+      }
     }
-    if (/type="application\/(ld\+)?json"/.test(attributes)) continue;
-    const hash = `'sha256-${createHash('sha256').update(body).digest('base64')}'`;
-    if (!scriptSrc.includes(hash)) {
-      problems.push(
-        `${route}: inline script ${hash} is not allowed by script-src. Starts: ${body.trim().slice(0, 60)}`,
-      );
+
+    const hasInlineStyle = /<style\b/.test(html) || /\sstyle="/.test(html);
+    if (hasInlineStyle && !styleSrc.includes("'unsafe-inline'")) {
+      problems.push(`${route}: has a <style> element or style attribute, which style-src blocks.`);
     }
-  }
 
-  const hasInlineStyle = /<style\b/.test(html) || /\sstyle="/.test(html);
-  if (hasInlineStyle && !styleSrc.includes("'unsafe-inline'")) {
-    problems.push(`${route}: has a <style> element or style attribute, which style-src blocks.`);
-  }
-
-  for (const match of html.matchAll(/<form\b[^>]*\baction="(https?:[^"]+)"/g)) {
-    const origin = new URL(match[1] ?? '').origin;
-    if (!formAction.includes(origin)) {
-      problems.push(`${route}: form posts to ${origin}; add it to form-action in firebase.json.`);
+    for (const match of html.matchAll(/<form\b[^>]*\baction="(https?:[^"]+)"/g)) {
+      const origin = new URL(match[1] ?? '').origin;
+      if (!formAction.includes(origin)) {
+        problems.push(`${route}: form posts to ${origin}; add it to form-action in firebase.json.`);
+      }
     }
   }
 }
