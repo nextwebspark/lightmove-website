@@ -25,6 +25,6 @@ export const FAQS: readonly FrequentlyAskedQuestion[] = [
   {
     question: 'How does pay as you go work?',
     answer:
-      'There is no monthly commitment. You pay for the minutes your agents spend on calls, billed monthly. Trying templates in the browser is free.',
+      'There is no monthly commitment. You buy credit in advance and calls are charged at €0.12 a minute, by the second, excluding VAT. New workspaces get €5 of free credit, about 40 minutes of calls. Top-ups start at €20.',
   },
 ];

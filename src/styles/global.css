@@ -375,8 +375,47 @@
     .nav-menu {
       display: block;
     }
+    /* Kept on phones: the main action shouldn't disappear behind the menu. */
     .nav .btn-primary.nav-cta {
+      height: 36px;
+      padding: 0 14px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+  }
+
+  /* Narrow phones: logo, theme, menu and Start free share one row. */
+  @media (max-width: 420px) {
+    .site-header .container {
+      gap: 8px;
+      padding-inline: 16px;
+    }
+    .site-header .brand-word {
+      font-size: 18px;
+    }
+    .site-header .icon-btn {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  /* The theme switch sits inside the menu on the narrowest phones, so Start free fits. */
+  .nav-menu-theme {
+    display: none;
+  }
+  @media (max-width: 380px) {
+    .nav > .theme-toggle {
       display: none;
+    }
+    .nav-menu-theme {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--lm-border);
+      color: var(--lm-muted);
+      font-size: 15px;
     }
   }
 

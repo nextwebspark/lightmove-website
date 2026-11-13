@@ -46,6 +46,10 @@ const isCurrent = (href: string) => !href.includes('#') && path.startsWith(href)
           <a href={APP.url} class="nav-link">
             Sign in
           </a>
+          <div class="nav-menu-theme">
+            <span>Light or dark</span>
+            <ThemeToggle />
+          </div>
         </div>
       </details>
       <a href={APP.signUpUrl} class="btn btn-primary nav-cta">
