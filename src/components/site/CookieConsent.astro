@@ -251,6 +251,42 @@ const noneInUse = categories.every((c) => !c.inUse);
     color: var(--lm-muted);
     white-space: nowrap;
   }
+  /* Phones: the same notice and the same three equal choices, in about a third of the
+     height, so it no longer covers the first screen. The heading stays for screen readers. */
+  @media (max-width: 640px) {
+    .cookie-banner {
+      inset: auto 8px 8px;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+    }
+    .cookie-banner h2 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .cookie-copy {
+      flex-basis: 100%;
+    }
+    .cookie-copy p {
+      font-size: 13.5px;
+      line-height: 19px;
+    }
+    .cookie-banner .cookie-actions {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .cookie-banner .cookie-actions .btn {
+      width: 100%;
+      min-height: 40px;
+      padding-inline: 8px;
+    }
+  }
   .cookie-option input {
     flex: none;
     width: 20px;
